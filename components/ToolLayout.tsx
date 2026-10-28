@@ -29,6 +29,41 @@ const HOW_TO_STEPS: Record<string, { title: string; text: string }[]> = {
     { title: "Click Check Tags", text: "We fetch the page and read its title, description, headings and social tags." },
     { title: "Fix the warnings", text: "Follow the suggestions on each card to improve your on-page SEO." },
   ],
+    "slug-generator": [
+    { title: "Enter your title", text: "Type or paste the page title or any text you want to turn into a slug." },
+    { title: "Choose options", text: "Pick a hyphen or underscore, and optionally remove small words." },
+    { title: "Copy the slug", text: "Press Copy slug and use it in your page URL." },
+  ],
+    "keyword-density-checker": [
+    { title: "Paste your content", text: "Add your article or page text into the box." },
+    { title: "Choose what to show", text: "Pick single words or 2-3 word phrases, and ignore common words if you like." },
+    { title: "Review the density", text: "Check which keywords repeat most and avoid stuffing any one term." },
+  ],
+    "utm-link-builder": [
+    { title: "Enter your URL", text: "Paste the page address you want to track." },
+    { title: "Fill in the campaign", text: "Add the source, medium and campaign name." },
+    { title: "Copy the link", text: "Press Copy link and use it in your ads, emails or posts." },
+  ],
+    "hreflang-tag-generator": [
+    { title: "Pick languages", text: "Choose a language or region for each version of your page." },
+    { title: "Add the URLs", text: "Enter the full address of each language version." },
+    { title: "Copy the tags", text: "Paste the tags inside the head of every language version." },
+  ],
+  "links-counter": [
+    { title: "Enter a page URL", text: "Paste the full public address of the page you want to scan." },
+    { title: "Click Count Links", text: "We list every link found on that page." },
+    { title: "Filter the results", text: "Click Internal, External or Nofollow to see just that group." },
+  ],
+    "alt-tag-checker": [
+    { title: "Enter a page URL", text: "Paste the full public address of the page you want to scan." },
+    { title: "Click Check Images", text: "We list every image and its alt text." },
+    { title: "Fix missing alt text", text: "Filter by Missing or Empty and add descriptive alt text to those images." },
+  ],
+    "broken-link-checker": [
+    { title: "Enter a page URL", text: "Paste the full public address of the page you want to scan." },
+    { title: "Click Check Links", text: "We test up to 25 unique links found on that page." },
+    { title: "Fix the broken ones", text: "Errors and failed links are listed first so you can replace or remove them." },
+  ],
   "word-counter": [
     { title: "Paste your text", text: "Type or paste your content into the text box." },
     { title: "See live counts", text: "Words, characters, sentences and paragraphs update as you type." },
