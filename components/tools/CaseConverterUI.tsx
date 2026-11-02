@@ -8,25 +8,75 @@ import {
   toSentenceCase,
   getTextStats,
 } from "@/lib/caseUtils";
-import {
-  Copy,
-  Check,
-  RotateCcw,
-  ArrowDownAZ,
-  FileText,
-  AlignLeft,
-  Hash,
-} from "lucide-react";
+import { Copy, Check, Download, Trash2, Undo2 } from "lucide-react";
+
+/** First letter of every word in capitals, the rest in lowercase. */
+function toCapitalizedCase(input: string): string {
+  return input
+    .toLowerCase()
+    .split(/(\s+)/)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join("");
+}
+
+/** Letters switch between lower and upper case one after another. */
+function toAlternatingCase(input: string): string {
+  let index = 0;
+  return input
+    .split("")
+    .map((char) => {
+      if (!/[a-z]/i.test(char)) return char;
+      const result = index % 2 === 0 ? char.toLowerCase() : char.toUpperCase();
+      index += 1;
+      return result;
+    })
+    .join("");
+}
+
+/** Upper case letters become lower case and the other way around. */
+function toInverseCase(input: string): string {
+  return input
+    .split("")
+    .map((char) =>
+      char === char.toUpperCase() ? char.toLowerCase() : char.toUpperCase()
+    )
+    .join("");
+}
+
+const CASE_BUTTONS: {
+  label: string;
+  badge: string;
+  convert: (input: string) => string;
+}[] = [
+  { label: "Sentence case", badge: "Sc", convert: toSentenceCase },
+  { label: "lower case", badge: "lc", convert: toLowerCase },
+  { label: "UPPER CASE", badge: "UC", convert: toUpperCase },
+  { label: "Capitalized Case", badge: "CC", convert: toCapitalizedCase },
+  { label: "aLtErNaTiNg cAsE", badge: "aC", convert: toAlternatingCase },
+  { label: "Title Case", badge: "TC", convert: toTitleCase },
+  { label: "InVeRsE CaSe", badge: "iC", convert: toInverseCase },
+];
+
+const iconButton =
+  "inline-flex h-9 w-9 items-center justify-center rounded-md border border-slate-300 bg-white text-slate-700 transition-colors hover:border-accent-500 hover:text-accent-600 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-slate-300 disabled:hover:text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:text-accent-400";
 
 export function CaseConverterUI() {
   const [text, setText] = useState("");
+  const [previous, setPrevious] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   const stats = getTextStats(text);
 
   const handleConvert = (converter: (input: string) => string) => {
     if (!text) return;
+    setPrevious(text); // remember the text so Undo can bring it back
     setText(converter(text));
+  };
+
+  const handleUndo = () => {
+    if (previous === null) return;
+    setText(previous);
+    setPrevious(null);
   };
 
   const handleCopy = async () => {
@@ -40,180 +90,123 @@ export function CaseConverterUI() {
     }
   };
 
+  const handleDownload = () => {
+    if (!text) return;
+    const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "converted-text.txt";
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
   const handleClear = () => {
     setText("");
+    setPrevious(null);
     setCopied(false);
   };
 
   return (
-    <div className="space-y-6">
-      {/* Live Counter Statistics Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="flex items-center gap-3 rounded-xl border border-slate-200/90 bg-slate-50/70 p-3.5 dark:border-slate-800 dark:bg-slate-900/60">
-          <div className="rounded-lg bg-indigo-50 p-2 text-indigo-600 dark:bg-indigo-950/70 dark:text-indigo-400">
-            <Hash className="h-4 w-4" />
-          </div>
-          <div>
-            <div className="text-xs font-medium text-slate-500 dark:text-slate-400">
-              Characters
-            </div>
-            <div className="text-lg font-bold text-slate-900 dark:text-white">
-              {stats.characters.toLocaleString()}
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3 rounded-xl border border-slate-200/90 bg-slate-50/70 p-3.5 dark:border-slate-800 dark:bg-slate-900/60">
-          <div className="rounded-lg bg-emerald-50 p-2 text-emerald-600 dark:bg-emerald-950/70 dark:text-emerald-400">
-            <FileText className="h-4 w-4" />
-          </div>
-          <div>
-            <div className="text-xs font-medium text-slate-500 dark:text-slate-400">
-              Words
-            </div>
-            <div className="text-lg font-bold text-slate-900 dark:text-white">
-              {stats.words.toLocaleString()}
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3 rounded-xl border border-slate-200/90 bg-slate-50/70 p-3.5 dark:border-slate-800 dark:bg-slate-900/60">
-          <div className="rounded-lg bg-sky-50 p-2 text-sky-600 dark:bg-sky-950/70 dark:text-sky-400">
-            <AlignLeft className="h-4 w-4" />
-          </div>
-          <div>
-            <div className="text-xs font-medium text-slate-500 dark:text-slate-400">
-              Sentences
-            </div>
-            <div className="text-lg font-bold text-slate-900 dark:text-white">
-              {stats.sentences.toLocaleString()}
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3 rounded-xl border border-slate-200/90 bg-slate-50/70 p-3.5 dark:border-slate-800 dark:bg-slate-900/60">
-          <div className="rounded-lg bg-amber-50 p-2 text-amber-600 dark:bg-amber-950/70 dark:text-amber-400">
-            <AlignLeft className="h-4 w-4" />
-          </div>
-          <div>
-            <div className="text-xs font-medium text-slate-500 dark:text-slate-400">
-              Lines
-            </div>
-            <div className="text-lg font-bold text-slate-900 dark:text-white">
-              {stats.lines.toLocaleString()}
-            </div>
-          </div>
-        </div>
+    <div className="space-y-4">
+      {/* Text box */}
+      <div>
+        <label
+          htmlFor="case-converter-input"
+          className="mb-2 block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300"
+        >
+          Enter or paste your text
+        </label>
+        <textarea
+          id="case-converter-input"
+          rows={10}
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Type or paste your content here"
+          className="w-full resize-y rounded-md border border-slate-300 bg-white p-4 text-base text-slate-900 placeholder-slate-400 transition-colors focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500"
+        />
       </div>
 
-      {/* Main Textarea Input */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <label
-            htmlFor="case-converter-input"
-            className="text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300"
-          >
-            Enter or Paste Text
-          </label>
-          <span className="text-xs text-slate-500 dark:text-slate-400">
-            {stats.charactersNoSpaces} characters excluding spaces
-          </span>
-        </div>
-
-        <div className="relative">
-          <textarea
-            id="case-converter-input"
-            rows={10}
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="Type or paste your text here to convert case instantly..."
-            className="w-full resize-y rounded-xl border border-slate-300 bg-white p-4 text-sm text-slate-900 placeholder-slate-400 transition-colors focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500"
-            aria-label="Input text for case transformation"
-          />
-        </div>
-      </div>
-
-      {/* Action Buttons Toolbar */}
-      <div className="flex flex-wrap items-center gap-3">
-        {/* 4 Required Transformation Buttons */}
-        <button
-          type="button"
-          onClick={() => handleConvert(toUpperCase)}
-          disabled={!text}
-          className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm transition-all hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:scale-95"
-        >
-          <ArrowDownAZ className="h-4 w-4" />
-          UPPERCASE
-        </button>
-
-        <button
-          type="button"
-          onClick={() => handleConvert(toLowerCase)}
-          disabled={!text}
-          className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm transition-all hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:scale-95"
-        >
-          <ArrowDownAZ className="h-4 w-4" />
-          lowercase
-        </button>
-
-        <button
-          type="button"
-          onClick={() => handleConvert(toTitleCase)}
-          disabled={!text}
-          className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm transition-all hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:scale-95"
-        >
-          <ArrowDownAZ className="h-4 w-4" />
-          Title Case
-        </button>
-
-        <button
-          type="button"
-          onClick={() => handleConvert(toSentenceCase)}
-          disabled={!text}
-          className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-sm transition-all hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:scale-95"
-        >
-          <ArrowDownAZ className="h-4 w-4" />
-          Sentence case
-        </button>
-
-        {/* Copy & Clear Controls */}
-        <div className="ml-auto flex items-center gap-2">
+      {/* Toolbar: icon buttons on the left, live counts on the right */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={handleCopy}
             disabled={!text}
-            className={`inline-flex items-center gap-1.5 rounded-lg border px-3.5 py-2 text-xs sm:text-sm font-medium transition-all ${
-              copied
-                ? "border-emerald-300 bg-emerald-50 text-emerald-700 dark:border-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300"
-                : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
-            } disabled:opacity-50 disabled:cursor-not-allowed`}
-            aria-label="Copy converted text to clipboard"
+            title="Copy text"
+            aria-label="Copy text to clipboard"
+            className={iconButton}
           >
             {copied ? (
-              <>
-                <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-                <span className="font-semibold text-emerald-700 dark:text-emerald-300">
-                  Copied!
-                </span>
-              </>
+              <Check className="h-4 w-4 text-emerald-600" />
             ) : (
-              <>
-                <Copy className="h-4 w-4" />
-                <span>Copy</span>
-              </>
+              <Copy className="h-4 w-4" />
             )}
           </button>
-
+          <button
+            type="button"
+            onClick={handleDownload}
+            disabled={!text}
+            title="Download as .txt"
+            aria-label="Download text as a file"
+            className={iconButton}
+          >
+            <Download className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            onClick={handleUndo}
+            disabled={previous === null}
+            title="Undo last conversion"
+            aria-label="Undo last conversion"
+            className={iconButton}
+          >
+            <Undo2 className="h-4 w-4" />
+          </button>
           <button
             type="button"
             onClick={handleClear}
             disabled={!text}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-xs sm:text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-red-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-red-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Clear text"
             aria-label="Clear all text"
+            className={iconButton}
           >
-            <RotateCcw className="h-4 w-4" />
-            <span>Clear</span>
+            <Trash2 className="h-4 w-4" />
           </button>
+          {copied && (
+            <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">
+              Copied!
+            </span>
+          )}
+        </div>
+
+        <p className="text-sm tabular-nums text-slate-600 dark:text-slate-400">
+          Character Count: <strong className="text-slate-900 dark:text-white">{stats.characters.toLocaleString()}</strong>
+          <span className="mx-2 text-slate-300 dark:text-slate-700">|</span>
+          Word Count: <strong className="text-slate-900 dark:text-white">{stats.words.toLocaleString()}</strong>
+          <span className="mx-2 text-slate-300 dark:text-slate-700">|</span>
+          Line Count: <strong className="text-slate-900 dark:text-white">{stats.lines.toLocaleString()}</strong>
+        </p>
+      </div>
+
+      {/* Case buttons */}
+      <div className="rounded-md border border-slate-200 bg-slate-100/70 p-3 dark:border-slate-800 dark:bg-slate-900/60">
+        <div className="flex flex-wrap gap-2">
+          {CASE_BUTTONS.map((item) => (
+            <button
+              key={item.label}
+              type="button"
+              onClick={() => handleConvert(item.convert)}
+              disabled={!text}
+              className="inline-flex items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-800 transition-colors hover:border-accent-500 hover:text-accent-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-slate-200 disabled:hover:text-slate-800 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:text-accent-400"
+            >
+              <span className="rounded bg-indigo-50 px-1.5 py-0.5 text-[11px] font-bold text-indigo-700 dark:bg-indigo-950 dark:text-accent-400">
+                {item.badge}
+              </span>
+              {item.label}
+            </button>
+          ))}
         </div>
       </div>
     </div>

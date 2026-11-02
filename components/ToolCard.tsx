@@ -11,45 +11,28 @@ interface ToolCardProps {
 
 export function ToolCard({ tool }: ToolCardProps) {
   return (
-    <div className="group relative flex flex-col justify-between rounded-xl border border-slate-200/90 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-indigo-400 hover:shadow-md dark:border-slate-800 dark:bg-slate-900/80 dark:hover:border-indigo-500/70">
-      <div>
-        {/* Header: Icon, Category & Status Badge */}
-        <div className="flex items-start justify-between gap-3 mb-4">
-          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 transition-colors group-hover:bg-indigo-600 group-hover:text-white dark:bg-indigo-950/60 dark:text-indigo-400 dark:group-hover:bg-indigo-500 dark:group-hover:text-white">
-            <ToolIcon name={tool.icon} className="h-5 w-5" />
-          </div>
-          <div className="flex flex-col items-end gap-1.5">
-            <ComingSoonBadge status={tool.status} />
-            <span className="text-[11px] font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500">
-              {tool.category}
-            </span>
-          </div>
-        </div>
+    <Link
+      href={`/tools/${tool.slug}`}
+      className="group flex items-center gap-4 border-b border-slate-200 px-2 py-4 transition-colors hover:bg-white dark:border-slate-800 dark:hover:bg-slate-900"
+    >
+      <ToolIcon
+        name={tool.icon}
+        className="h-5 w-5 shrink-0 text-indigo-700 dark:text-accent-400"
+      />
 
-        {/* Title */}
-        <h3 className="text-lg font-semibold text-slate-900 transition-colors group-hover:text-indigo-600 dark:text-slate-100 dark:group-hover:text-indigo-400">
-          <Link href={`/tools/${tool.slug}`} className="focus:outline-none">
-            <span className="absolute inset-0" aria-hidden="true" />
+      <div className="min-w-0 flex-1">
+        <div className="flex flex-wrap items-center gap-2">
+          <h3 className="text-base font-semibold text-slate-900 transition-colors group-hover:text-accent-600 dark:text-slate-100 dark:group-hover:text-accent-400">
             {tool.name}
-          </Link>
-        </h3>
-
-        {/* Short Description */}
-        <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400 line-clamp-2">
+          </h3>
+          <ComingSoonBadge status={tool.status} />
+        </div>
+        <p className="mt-0.5 line-clamp-2 text-sm text-slate-600 dark:text-slate-400">
           {tool.shortDescription}
         </p>
       </div>
 
-      {/* Footer link cue */}
-      <div className="mt-6 flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800/80 text-xs font-medium text-slate-500 dark:text-slate-400">
-        <span className="text-slate-400 dark:text-slate-500">
-          {tool.estimatedStep}
-        </span>
-        <span className="inline-flex items-center gap-1 text-indigo-600 group-hover:translate-x-0.5 transition-transform font-semibold dark:text-indigo-400">
-          Open Tool
-          <ArrowRight className="h-3.5 w-3.5" />
-        </span>
-      </div>
-    </div>
+      <ArrowRight className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-hover:translate-x-1 group-hover:text-accent-600 dark:group-hover:text-accent-400" />
+    </Link>
   );
 }

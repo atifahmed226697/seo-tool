@@ -30,22 +30,65 @@ export default function WordCounterUI() {
   const [text, setText] = useState("");
   const stats = useMemo(() => analyze(text), [text]);
 
-  const cards = [
-    { label: "Words", value: stats.words.toLocaleString() },
-    { label: "Characters", value: stats.characters.toLocaleString() },
+  // Main numbers: shown big at the top
+  const mainStats = [
+    { label: "Words", value: stats.words.toLocaleString(), highlight: true },
+    { label: "Characters", value: stats.characters.toLocaleString(), highlight: false },
+    { label: "Sentences", value: stats.sentences.toLocaleString(), highlight: false },
+    { label: "Paragraphs", value: stats.paragraphs.toLocaleString(), highlight: false },
+  ];
+
+  // Extra numbers: smaller, in a second row
+  const extraStats = [
     { label: "Characters (no spaces)", value: stats.charactersNoSpaces.toLocaleString() },
-    { label: "Sentences", value: stats.sentences.toLocaleString() },
-    { label: "Paragraphs", value: stats.paragraphs.toLocaleString() },
     { label: "Reading time", value: formatTime(stats.readingMinutes) },
     { label: "Speaking time", value: formatTime(stats.speakingMinutes) },
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
+      {/* Results: placed above the text box so counts are always in view */}
+      <div className="overflow-hidden rounded-md border border-slate-300 dark:border-slate-700">
+        <div className="grid grid-cols-2 gap-px bg-slate-200 sm:grid-cols-4 dark:bg-slate-800">
+          {mainStats.map((item) => (
+            <div key={item.label} className="bg-white px-4 py-4 dark:bg-slate-900">
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                {item.label}
+              </p>
+              <p
+                className={`mt-1 font-serif text-3xl font-bold tabular-nums ${
+                  item.highlight
+                    ? "text-accent-600 dark:text-accent-400"
+                    : "text-indigo-700 dark:text-white"
+                }`}
+              >
+                {item.value}
+              </p>
+            </div>
+          ))}
+        </div>
+        <div className="grid grid-cols-1 gap-px border-t border-slate-200 bg-slate-200 sm:grid-cols-3 dark:border-slate-800 dark:bg-slate-800">
+          {extraStats.map((item) => (
+            <div
+              key={item.label}
+              className="flex items-baseline justify-between gap-3 bg-slate-50 px-4 py-3 dark:bg-slate-900/70"
+            >
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                {item.label}
+              </p>
+              <p className="font-serif text-lg font-bold tabular-nums text-indigo-700 dark:text-white">
+                {item.value}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Text box */}
       <div>
         <label
           htmlFor="word-counter-input"
-          className="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-400"
+          className="mb-2 block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300"
         >
           Your text
         </label>
@@ -53,35 +96,21 @@ export default function WordCounterUI() {
           id="word-counter-input"
           value={text}
           onChange={(e) => setText(e.target.value)}
-          rows={10}
+          rows={12}
           placeholder="Type or paste your text here..."
-          className="w-full rounded-xl border border-slate-300 bg-white p-4 text-slate-900 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+          className="w-full resize-y rounded-md border border-slate-300 bg-white p-4 text-base text-slate-900 placeholder-slate-400 outline-none transition-colors focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500"
         />
         <div className="mt-3 flex justify-end">
           <button
             type="button"
             onClick={() => setText("")}
             disabled={!text}
-            className="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+            className="inline-flex items-center gap-2 rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-accent-500 hover:text-accent-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-slate-300 disabled:hover:text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:text-accent-400"
           >
             <Trash2 className="h-4 w-4" aria-hidden="true" />
             Clear
           </button>
         </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-        {cards.map((card) => (
-          <div
-            key={card.label}
-            className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900"
-          >
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-              {card.label}
-            </p>
-            <p className="mt-1 text-2xl font-bold text-slate-900 dark:text-slate-100">{card.value}</p>
-          </div>
-        ))}
       </div>
     </div>
   );

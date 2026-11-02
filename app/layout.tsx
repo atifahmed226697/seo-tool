@@ -1,7 +1,22 @@
 import type { Metadata } from "next";
+import { Source_Serif_4, Public_Sans } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+
+// Headings ke liye serif font
+const serif = Source_Serif_4({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-serif",
+});
+
+// Baqi poore text ke liye sans font
+const sans = Public_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -46,8 +61,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className="font-sans antialiased bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+    <html
+      lang="en"
+      className={`scroll-smooth ${serif.variable} ${sans.variable}`}
+    >
+      <body className="font-sans text-base leading-relaxed antialiased bg-background text-foreground min-h-screen flex flex-col selection:bg-accent-500 selection:text-white">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

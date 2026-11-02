@@ -3,157 +3,174 @@ import Link from "next/link";
 import { tools } from "@/lib/tools";
 import { ToolCard } from "@/components/ToolCard";
 import { FaqAccordion } from "@/components/FaqAccordion";
-import { ArrowDown, Zap, Lock, Smartphone, CheckCircle2 } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "SEO Toolkit - Free SEO Tools for Webmasters and Marketers",
   description:
-    "Free SEO tools: Case Converter, Meta Tag Generator, Meta Tag Analyzer and Domain Age Checker. Fast, simple and no signup needed.",
+    "Free SEO tools: Case Converter, Meta Tag Generator, Meta Tag Analyzer, Domain Age Checker and more. Fast, simple and no signup needed.",
 };
 
+/**
+ * Ad slot: abhi sirf dotted dabba dikhta hai.
+ * AdSense approve hone ke baad is dabbe ke andar ad ka code lagayenge.
+ * min-h is liye hai ke ad aane par page neeche upar na hile.
+ */
+function AdSlot({ className = "" }: { className?: string }) {
+  return (
+    <div className={`mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 ${className}`}>
+      <div className="flex min-h-[100px] items-center justify-center rounded-md border border-dashed border-slate-300 bg-slate-50 text-xs uppercase tracking-widest text-slate-400 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-600">
+        Advertisement
+      </div>
+    </div>
+  );
+}
+
 export default function HomePage() {
+  const liveCount = tools.filter((t) => t.status === "ready").length;
+  const categories = Array.from(new Set(tools.map((t) => t.category)));
+
   return (
     <div className="flex flex-col min-h-screen">
-      {/* 1. HERO SECTION */}
-      <section className="relative overflow-hidden border-b border-slate-200/80 bg-gradient-to-b from-slate-50 via-white to-slate-50/50 py-20 sm:py-28 dark:border-slate-800 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-        <div
-          aria-hidden="true"
-          className="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-tr from-indigo-500/15 to-sky-400/15 blur-3xl pointer-events-none rounded-full"
-        />
+      {/* 1. HERO */}
+      <section className="bg-indigo-700 py-14 sm:py-20 dark:bg-indigo-900">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <p className="text-sm font-bold uppercase tracking-widest text-accent-400">
+              {liveCount} free tools, live now
+            </p>
+            <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-5xl">
+              Free SEO tools that do one job well.
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-indigo-100 sm:text-lg">
+              Check domain age, analyze meta tags, scan a page for broken links,
+              count words and more. No signup, no popups.
+            </p>
 
-        <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-6xl dark:text-white">
-            <span className="block">Free SEO Tools by</span>
-            <span className="bg-gradient-to-r from-indigo-600 via-indigo-500 to-sky-500 bg-clip-text text-transparent">
-              SEO Toolkit
-            </span>
-          </h1>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Link
+                href="#tools"
+                className="inline-flex items-center gap-2 rounded-md bg-accent-500 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-accent-600"
+              >
+                <span>Explore Tools</span>
+                <ArrowDown className="h-4 w-4" />
+              </Link>
+              <Link
+                href="#about"
+                className="inline-flex items-center rounded-md border border-indigo-300/50 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+              >
+                About SEO Toolkit
+              </Link>
+            </div>
 
-          <p className="mx-auto mt-6 max-w-2xl text-base sm:text-xl text-slate-600 dark:text-slate-300 leading-relaxed">
-            Check domain age, analyze meta tags, generate tags and convert text case. Fast, simple and free.
-          </p>
-
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <Link
-              href="#tools"
-              className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-6 py-3.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/20 hover:bg-indigo-500 transition-all hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <span>Explore Tools</span>
-              <ArrowDown className="h-4 w-4 animate-bounce" />
-            </Link>
-            <Link
-              href="#why-us"
-              className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 transition-colors"
-            >
-              Why Use These Tools
-            </Link>
-          </div>
-
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-6 text-xs font-medium text-slate-500 dark:text-slate-400">
-            <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-              Free to use
-            </span>
-            <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-              No signup needed
-            </span>
-            <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-              Works on mobile
-            </span>
+            <p className="mt-8 text-xs font-medium text-indigo-200">
+              Free to use &nbsp;·&nbsp; No signup needed &nbsp;·&nbsp; Works on mobile
+            </p>
           </div>
         </div>
       </section>
 
-      {/* 2. TOOLS GRID SECTION */}
-      <section id="tools" className="py-16 sm:py-24 bg-white dark:bg-slate-900/60">
+      {/* AD SLOT 1: hero ke neeche */}
+      <AdSlot className="mt-8" />
+
+      {/* 2. TOOLS, CATEGORY WISE */}
+      <section id="tools" className="scroll-mt-20 py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+          <div className="mb-10 flex flex-col justify-between gap-2 sm:flex-row sm:items-end">
             <div>
-              <div className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
-                All Tools
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white mt-1">
-                SEO and Content Tools
+              <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
+                All SEO Tools
               </h2>
               <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
                 Pick a tool and get your result in seconds.
               </p>
             </div>
-            <div className="text-xs text-slate-500 dark:text-slate-400">
-              <strong>{tools.length}</strong> tools
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tools.map((tool) => (
-              <ToolCard key={tool.slug} tool={tool} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 3. WHY USE THESE TOOLS SECTION */}
-      <section
-        id="why-us"
-        className="py-16 sm:py-24 bg-slate-50/70 border-y border-slate-200/80 dark:border-slate-800 dark:bg-slate-950/40"
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-14">
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
-              Why Use These Tools
-            </h2>
-            <p className="mt-3 text-sm sm:text-base text-slate-600 dark:text-slate-400">
-              Simple tools that do one job well, without clutter.
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              <strong className="text-slate-900 dark:text-white">{tools.length}</strong> tools
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-400 mb-5">
-                <Zap className="h-6 w-6" />
-              </div>
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-                Fast and simple
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                Fast pages with no popups, no forced signup and no clutter. Open a tool and get your result.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400 mb-5">
-                <Lock className="h-6 w-6" />
-              </div>
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-                Respects your privacy
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                Text tools like the Case Converter and Meta Tag Generator run entirely in your browser. Tools that check a live URL or domain send only that address to our server, and we don&apos;t store it.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-sky-50 text-sky-600 dark:bg-sky-950 dark:text-sky-400 mb-5">
-                <Smartphone className="h-6 w-6" />
-              </div>
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-                Works on any device
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                Works on phones, tablets and desktops, with dark mode support.
-              </p>
-            </div>
+          <div className="space-y-12">
+            {categories.map((category) => {
+              const items = tools.filter((t) => t.category === category);
+              return (
+                <div key={category}>
+                  <div className="mb-2 flex items-center gap-3">
+                    <span className="h-5 w-1 rounded-full bg-accent-500" aria-hidden="true" />
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-indigo-700 dark:text-slate-200">
+                      {category}
+                    </h3>
+                    <span className="text-xs text-slate-400">{items.length}</span>
+                  </div>
+                  <div className="grid grid-cols-1 gap-x-10 md:grid-cols-2">
+                    {items.map((tool) => (
+                      <ToolCard key={tool.slug} tool={tool} />
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* 4. FAQ SECTION */}
-      <section id="faq" className="py-16 sm:py-24 bg-white dark:bg-slate-900/60">
+      {/* AD SLOT 2: tools ke baad */}
+      <AdSlot />
+
+      {/* 3. ABOUT (content section, SEO / AEO ke liye) */}
+      <section id="about" className="scroll-mt-20 py-14 sm:py-20">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
+            What is SEO Toolkit?
+          </h2>
+          <p className="mt-4 text-base leading-relaxed text-slate-700 dark:text-slate-300">
+            SEO Toolkit is a free collection of online tools for webmasters,
+            bloggers and digital marketers. Each tool does one job: check how
+            old a domain is, read the meta tags of a page, find broken links,
+            or clean up text. You open the tool, paste your input and get the
+            result right away.
+          </p>
+
+          <h3 className="mt-10 text-lg font-bold text-slate-900 dark:text-white">
+            What can I do with these tools?
+          </h3>
+          <p className="mt-2 text-base leading-relaxed text-slate-700 dark:text-slate-300">
+            You can write and test meta tags, build UTM links for campaigns,
+            generate hreflang tags for multi-language sites, check heading
+            structure and image alt text, count internal and external links,
+            and measure keyword density in your content. Content tools such as
+            the Word Counter and Slug Generator help you prepare articles
+            before you publish them.
+          </p>
+
+          <h3 className="mt-10 text-lg font-bold text-slate-900 dark:text-white">
+            Are the tools really free?
+          </h3>
+          <p className="mt-2 text-base leading-relaxed text-slate-700 dark:text-slate-300">
+            Yes. Every live tool is free to use, with no registration and no
+            credit card. A few tools marked Coming soon need paid data sources,
+            and we will announce them when they launch.
+          </p>
+
+          <h3 className="mt-10 text-lg font-bold text-slate-900 dark:text-white">
+            Is my data safe?
+          </h3>
+          <p className="mt-2 text-base leading-relaxed text-slate-700 dark:text-slate-300">
+            Text tools like the Case Converter and Meta Tag Generator run
+            entirely in your browser. Tools that check a live URL or domain
+            send only that address to our server, and we do not store it.
+          </p>
+        </div>
+      </section>
+
+      {/* 4. FAQ */}
+      <section
+        id="faq"
+        className="scroll-mt-20 border-t border-slate-200 py-14 sm:py-20 dark:border-slate-800"
+      >
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+          <div className="mb-10">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
               Frequently Asked Questions
             </h2>
             <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">

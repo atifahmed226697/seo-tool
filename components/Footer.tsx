@@ -1,71 +1,86 @@
 import React from "react";
 import Link from "next/link";
-import { tools, getCategories } from "@/lib/tools";
-import { Wrench, ShieldCheck, Zap } from "lucide-react";
+import { tools } from "@/lib/tools";
+import { Wrench } from "lucide-react";
+
+const quickLinks = [
+  { label: "Blog", href: "/blog" },
+  { label: "About Us", href: "/about" },
+  { label: "Contact Us", href: "/contact" },
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms & Conditions", href: "/terms" },
+];
 
 export function Footer() {
-  const categories = getCategories();
+  // Sirf pehle 6 live tools footer mein dikhayenge
+  const popularTools = tools.filter((t) => t.status === "ready").slice(0, 6);
+
+  const linkClass =
+    "text-sm text-indigo-200 transition-colors hover:text-accent-400";
+  const headingClass =
+    "text-xs font-bold uppercase tracking-widest text-white";
 
   return (
-    <footer className="border-t border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950/80 transition-colors">
+    <footer className="bg-indigo-800 dark:bg-slate-950">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-4 lg:grid-cols-5">
-          {/* Brand & mission */}
-          <div className="md:col-span-2 space-y-4">
-            <Link
-              href="/"
-              className="flex items-center gap-2 font-bold tracking-tight text-slate-900 dark:text-white"
-            >
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-white">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Brand */}
+          <div className="space-y-4">
+            <Link href="/" className="inline-flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-accent-500 text-white">
                 <Wrench className="h-4 w-4" />
               </div>
-              <span className="text-lg font-black bg-gradient-to-r from-indigo-600 to-sky-500 bg-clip-text text-transparent">
+              <span className="text-lg font-extrabold tracking-tight text-white">
                 SEO Toolkit
               </span>
             </Link>
-            <p className="max-w-sm text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-              Free, fast SEO tools for webmasters, digital marketers, content creators and developers.
+            <p className="max-w-xs text-sm leading-relaxed text-indigo-200">
+              Free, fast SEO tools for webmasters, bloggers and digital
+              marketers. No signup, no clutter.
             </p>
-            <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
-              <span className="inline-flex items-center gap-1">
-                <Zap className="h-3.5 w-3.5 text-amber-500" />
-                Fast &amp; simple
-              </span>
-              <span className="inline-flex items-center gap-1">
-                <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" />
-                No signup needed
-              </span>
-            </div>
           </div>
 
-          {/* Tools by Category */}
-          {categories.map((category) => {
-            const categoryTools = tools.filter((t) => t.category === category);
-            return (
-              <div key={category} className="space-y-3">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100">
-                  {category}
-                </h4>
-                <ul className="space-y-2 text-sm">
-                  {categoryTools.map((tool) => (
-                    <li key={tool.slug}>
-                      <Link
-                        href={`/tools/${tool.slug}`}
-                        className="text-slate-600 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 transition-colors block truncate"
-                      >
-                        {tool.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            );
-          })}
+          {/* Quick Links */}
+          <div>
+            <h4 className={headingClass}>Quick Links</h4>
+            <ul className="mt-4 space-y-3">
+              {quickLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className={linkClass}>
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Popular Tools */}
+          <div>
+            <h4 className={headingClass}>Popular Tools</h4>
+            <ul className="mt-4 space-y-3">
+              {popularTools.map((tool) => (
+                <li key={tool.slug}>
+                  <Link href={`/tools/${tool.slug}`} className={linkClass}>
+                    {tool.name}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link
+                  href="/#tools"
+                  className="text-sm font-semibold text-accent-400 transition-colors hover:text-accent-300"
+                >
+                  View all tools →
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        {/* Bottom copyright line */}
-        <div className="mt-12 border-t border-slate-100 pt-8 dark:border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+        {/* Bottom line */}
+        <div className="mt-12 flex flex-col items-center justify-between gap-2 border-t border-white/10 pt-6 text-xs text-indigo-300 sm:flex-row">
           <p>© {new Date().getFullYear()} SEO Toolkit. All rights reserved.</p>
+          <p>Made for webmasters and marketers.</p>
         </div>
       </div>
     </footer>
