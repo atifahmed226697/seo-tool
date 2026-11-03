@@ -15,38 +15,117 @@ interface Result {
   results: LinkResult[];
 }
 
-/** Turns a status code into a label and color. */
-function describe(status: number): { label: string; cls: string; broken: boolean } {
-  if (status === 0)
-    return { label: "Failed to load", cls: "bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300", broken: true };
-  if (status >= 400)
-    return { label: `Error ${status}`, cls: "bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300", broken: true };
-  if (status >= 300)
-    return { label: `Redirect ${status}`, cls: "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300", broken: false };
-  return { label: `OK ${status}`, cls: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300", broken: false };
+type Kind = "broken" | "redirect" | "ok";
+type Filter = "all" | Kind;
+
+interface StatusInfo {
+  kind: Kind;
+  label: string;
+  explain: string;
 }
+
+const labelClass =
+  "text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300";
+const inputClass =
+  "w-full rounded-md border-2 border-slate-300 bg-white px-4 py-3.5 text-base text-slate-900 placeholder-slate-500 outline-none transition-colors hover:border-slate-400 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-400";
+const toggleBase =
+  "rounded-md border px-4 py-2 text-sm font-bold transition-colors";
+const toggleActive =
+  "border-indigo-700 bg-indigo-700 text-white dark:border-accent-500 dark:bg-accent-500";
+const toggleIdle =
+  "border-slate-300 bg-white text-slate-700 hover:border-accent-500 hover:text-accent-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200";
+
+const chipTone: Record<Kind, string> = {
+  broken:
+    "border-red-200 bg-red-50 text-red-800 dark:border-red-900 dark:bg-red-950 dark:text-red-200",
+  redirect:
+    "border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-200",
+  ok: "border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950 dark:text-emerald-200",
+};
+
+const EXAMPLES = ["https://example.com", "https://www.wikipedia.org"];
+
+/** Turns a status code into a label and a plain-English explanation. */
+function describe(status: number): StatusInfo {
+  if (status === 0) {
+    return {
+      kind: "broken",
+      label: "Not reachable",
+      explain: "The link did not respond or could not be opened.",
+    };
+  }
+  if (status === 404 || status === 410) {
+    return {
+      kind: "broken",
+      label: `Error ${status}`,
+      explain: "The page was not found. It may have been moved or deleted.",
+    };
+  }
+  if (status >= 500) {
+    return {
+      kind: "broken",
+      label: `Error ${status}`,
+      explain: "The other website had a server problem.",
+    };
+  }
+  if (status >= 400) {
+    return {
+      kind: "broken",
+      label: `Error ${status}`,
+      explain: "The other website refused or could not handle the request.",
+    };
+  }
+  if (status >= 300) {
+    return {
+      kind: "redirect",
+      label: `Redirect ${status}`,
+      explain: "The link sends visitors to a different address.",
+    };
+  }
+  return {
+    kind: "ok",
+    label: `OK ${status}`,
+    explain: "The link is working.",
+  };
+}
+
+const ORDER: Record<Kind, number> = { broken: 0, redirect: 1, ok: 2 };
 
 export default function BrokenLinkCheckerUI() {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [result, setResult] = useState<Result | null>(null);
+  const [filter, setFilter] = useState<Filter>("all");
 
   async function handleCheck(e: React.FormEvent) {
     e.preventDefault();
-    if (!url.trim() || loading) return;
+    if (loading) return;
+
+    if (!url.trim()) {
+      setResult(null);
+      setError("Please enter a page URL first.");
+      return;
+    }
+
     setLoading(true);
     setError("");
     setResult(null);
+    setFilter("all");
     try {
       const res = await fetch("/api/page-scan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url, mode: "broken" }),
       });
-      const data = await res.json();
-      if (!res.ok) setError(data.error || "Something went wrong. Please try again.");
-      else setResult(data as Result);
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !data) {
+        setError(
+          (data && data.error) || "Something went wrong. Please try again."
+        );
+      } else {
+        setResult(data as Result);
+      }
     } catch {
       setError("Network error. Please check your connection and try again.");
     } finally {
@@ -55,19 +134,32 @@ export default function BrokenLinkCheckerUI() {
   }
 
   const rows = result?.results ?? [];
-  const brokenCount = rows.filter((r) => describe(r.status).broken).length;
-  const sorted = [...rows].sort((a, b) => Number(describe(b.status).broken) - Number(describe(a.status).broken));
+  const withInfo = rows
+    .map((r) => ({ ...r, info: describe(r.status) }))
+    .sort((a, b) => ORDER[a.info.kind] - ORDER[b.info.kind]);
+
+  const counts = {
+    all: withInfo.length,
+    broken: withInfo.filter((r) => r.info.kind === "broken").length,
+    redirect: withInfo.filter((r) => r.info.kind === "redirect").length,
+    ok: withInfo.filter((r) => r.info.kind === "ok").length,
+  };
+
+  const visible =
+    filter === "all" ? withInfo : withInfo.filter((r) => r.info.kind === filter);
+
+  const filters: { key: Filter; label: string }[] = [
+    { key: "all", label: "All" },
+    { key: "broken", label: "Broken" },
+    { key: "redirect", label: "Redirects" },
+    { key: "ok", label: "Working" },
+  ];
 
   return (
     <div className="space-y-6">
-      <form
-        onSubmit={handleCheck}
-        className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900"
-      >
-        <label
-          htmlFor="bl-url"
-          className="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-400"
-        >
+      {/* Input (no extra card, the page already has one) */}
+      <form onSubmit={handleCheck} noValidate>
+        <label htmlFor="bl-url" className={`mb-2 block ${labelClass}`}>
           Page URL
         </label>
         <div className="flex flex-col gap-3 sm:flex-row">
@@ -75,84 +167,163 @@ export default function BrokenLinkCheckerUI() {
             id="bl-url"
             type="text"
             value={url}
-            onChange={(e) => setUrl(e.target.value)}
+            onChange={(e) => {
+              setUrl(e.target.value);
+              if (error) setError("");
+            }}
             placeholder="https://example.com/blog/my-post"
-            className="w-full flex-1 rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+            className={`${inputClass} flex-1`}
+            autoComplete="off"
+            aria-invalid={error ? true : undefined}
           />
           <button
             type="submit"
-            disabled={loading || !url.trim()}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 font-semibold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
+            disabled={loading}
+            className="inline-flex items-center justify-center gap-2 rounded-md bg-accent-500 px-7 py-3.5 text-base font-bold text-white transition-colors hover:bg-accent-600 disabled:cursor-wait disabled:opacity-90"
           >
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <Search className="h-4 w-4" aria-hidden="true" />}
+            {loading ? (
+              <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
+            ) : (
+              <Search className="h-5 w-5" aria-hidden="true" />
+            )}
             {loading ? "Scanning..." : "Check Links"}
           </button>
         </div>
-        <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">
-          To keep the tool fast, up to 25 unique links per page are checked. This can take a few seconds.
+
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
+            Try an example:
+          </span>
+          {EXAMPLES.map((ex) => (
+            <button
+              key={ex}
+              type="button"
+              onClick={() => {
+                setUrl(ex);
+                setError("");
+              }}
+              className="rounded-md border border-slate-300 bg-white px-2.5 py-1 font-mono text-xs text-slate-800 transition-colors hover:border-accent-500 hover:text-accent-600 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200"
+            >
+              {ex}
+            </button>
+          ))}
+        </div>
+
+        <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
+          To keep the tool fast, up to 25 unique links per page are checked. This
+          can take a few seconds.
         </p>
       </form>
 
+      {/* Error */}
       {error && (
-        <div role="alert" className="flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-red-800 dark:border-red-900 dark:bg-red-950 dark:text-red-200">
+        <div
+          role="alert"
+          className="flex items-start gap-3 rounded-md border border-red-200 bg-red-50 p-4 text-red-800 dark:border-red-900 dark:bg-red-950 dark:text-red-200"
+        >
           <AlertCircle className="mt-0.5 h-5 w-5 shrink-0" aria-hidden="true" />
           <p className="text-sm">{error}</p>
         </div>
       )}
 
-      {!result && !error && !loading && (
-        <div className="rounded-2xl border border-dashed border-slate-300 p-10 text-center dark:border-slate-700">
-          <p className="font-semibold text-slate-900 dark:text-slate-100">No page checked yet</p>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Enter a page URL to find broken links.</p>
-        </div>
-      )}
-
+      {/* Result */}
       {result && (
-        <div className="space-y-4">
-          <div className="grid grid-cols-3 gap-3">
-            <div className="rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-              <p className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Links found</p>
-              <p className="mt-1 text-2xl font-bold text-slate-900 dark:text-slate-100">{result.totalFound}</p>
-            </div>
-            <div className="rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-              <p className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Checked</p>
-              <p className="mt-1 text-2xl font-bold text-slate-900 dark:text-slate-100">{result.checked}</p>
-            </div>
-            <div className="rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-              <p className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Broken</p>
-              <p className="mt-1 text-2xl font-bold text-red-600 dark:text-red-400">{brokenCount}</p>
-            </div>
+        <div className="rounded-md border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+          {/* Headline */}
+          <div className="border-b border-slate-200 p-5 dark:border-slate-800">
+            <p className={labelClass}>Result</p>
+            <p
+              className={`mt-1 font-serif text-3xl font-bold ${
+                counts.broken > 0
+                  ? "text-red-700 dark:text-red-400"
+                  : counts.all > 0
+                  ? "text-emerald-700 dark:text-emerald-400"
+                  : "text-indigo-700 dark:text-slate-100"
+              }`}
+            >
+              {counts.all === 0
+                ? "No links found"
+                : counts.broken === 0
+                ? "No broken links found"
+                : `${counts.broken} broken ${counts.broken === 1 ? "link" : "links"}`}
+            </p>
+            <p className="mt-1 break-words text-sm text-slate-600 dark:text-slate-400">
+              Checked{" "}
+              <span className="font-bold text-slate-800 dark:text-slate-200">
+                {result.checked}
+              </span>{" "}
+              of{" "}
+              <span className="font-bold text-slate-800 dark:text-slate-200">
+                {result.totalFound}
+              </span>{" "}
+              links on {result.url}
+            </p>
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-            {sorted.length === 0 ? (
-              <p className="text-sm text-slate-500 dark:text-slate-400">No links found on this page.</p>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm">
-                  <thead>
-                    <tr className="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-500 dark:border-slate-800 dark:text-slate-400">
-                      <th className="py-2 pr-4">Link</th>
-                      <th className="py-2">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {sorted.map((r) => {
-                      const d = describe(r.status);
-                      return (
-                        <tr key={r.href} className="border-b border-slate-100 dark:border-slate-800/60">
-                          <td className="max-w-md break-all py-2 pr-4 text-slate-800 dark:text-slate-200">{r.href}</td>
-                          <td className="py-2">
-                            <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${d.cls}`}>{d.label}</span>
+          {counts.all === 0 ? (
+            <p className="p-5 text-sm text-slate-500 dark:text-slate-400">
+              We could not find any links on this page.
+            </p>
+          ) : (
+            <>
+              {/* Filters */}
+              <div className="flex flex-wrap gap-2 border-b border-slate-200 p-5 dark:border-slate-800">
+                {filters.map((f) => (
+                  <button
+                    key={f.key}
+                    type="button"
+                    onClick={() => setFilter(f.key)}
+                    aria-pressed={filter === f.key}
+                    className={`${toggleBase} ${
+                      filter === f.key ? toggleActive : toggleIdle
+                    }`}
+                  >
+                    {f.label} ({counts[f.key]})
+                  </button>
+                ))}
+              </div>
+
+              {/* Table */}
+              {visible.length === 0 ? (
+                <p className="p-5 text-sm text-slate-500 dark:text-slate-400">
+                  No links in this group.
+                </p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm">
+                    <thead>
+                      <tr className="border-b border-slate-200 dark:border-slate-800">
+                        <th className={`px-5 py-3 ${labelClass}`}>Link</th>
+                        <th className={`px-5 py-3 ${labelClass}`}>Status</th>
+                        <th className={`hidden px-5 py-3 sm:table-cell ${labelClass}`}>
+                          What it means
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+                      {visible.map((r) => (
+                        <tr key={r.href}>
+                          <td className="max-w-md break-all px-5 py-3 text-slate-800 dark:text-slate-200">
+                            {r.href}
+                          </td>
+                          <td className="whitespace-nowrap px-5 py-3 align-top">
+                            <span
+                              className={`inline-flex items-center rounded-md border px-2.5 py-1 text-xs font-bold ${chipTone[r.info.kind]}`}
+                            >
+                              {r.info.label}
+                            </span>
+                          </td>
+                          <td className="hidden px-5 py-3 text-slate-600 sm:table-cell dark:text-slate-400">
+                            {r.info.explain}
                           </td>
                         </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </>
+          )}
         </div>
       )}
     </div>

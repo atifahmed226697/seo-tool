@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Loader2, AlertCircle } from "lucide-react";
+import { Search, Loader2, AlertCircle, Image as ImageIcon } from "lucide-react";
 
 interface ImageItem {
   src: string;
@@ -13,13 +13,118 @@ interface Result {
   images: ImageItem[];
 }
 
-type Filter = "all" | "missing" | "empty" | "ok";
+type Status = "missing" | "empty" | "ok";
+type Filter = "all" | Status;
+
+const labelClass =
+  "text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300";
+const inputClass =
+  "w-full rounded-md border-2 border-slate-300 bg-white px-4 py-3.5 text-base text-slate-900 placeholder-slate-500 outline-none transition-colors hover:border-slate-400 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-400";
+const toggleBase =
+  "rounded-md border px-4 py-2 text-sm font-bold transition-colors";
+const toggleActive =
+  "border-indigo-700 bg-indigo-700 text-white dark:border-accent-500 dark:bg-accent-500";
+const toggleIdle =
+  "border-slate-300 bg-white text-slate-700 hover:border-accent-500 hover:text-accent-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200";
+
+const EXAMPLES = ["https://example.com", "https://www.wikipedia.org"];
+
+const statusText: Record<Status, string> = {
+  missing: "text-red-700 dark:text-red-400",
+  empty: "text-amber-700 dark:text-amber-400",
+  ok: "text-emerald-700 dark:text-emerald-400",
+};
+const statusDot: Record<Status, string> = {
+  missing: "bg-red-600",
+  empty: "bg-amber-500",
+  ok: "bg-emerald-600",
+};
+
+const statusInfo: Record<Status, { label: string; explain: string }> = {
+  missing: {
+    label: "No alt",
+    explain:
+      "This image has no alt attribute. Add a short description so screen readers and search engines understand it.",
+  },
+  empty: {
+    label: "Empty alt",
+    explain:
+      "The alt text is blank. That is fine for purely decorative images, but add a description if the image carries meaning.",
+  },
+  ok: {
+    label: "Has alt",
+    explain: "This image has alt text.",
+  },
+};
+
+const ORDER: Record<Status, number> = { missing: 0, empty: 1, ok: 2 };
 
 /** Decides the alt status of one image. */
-function statusOf(img: ImageItem): "missing" | "empty" | "ok" {
+function statusOf(img: ImageItem): Status {
   if (img.alt === null) return "missing";
   if (img.alt.trim() === "") return "empty";
   return "ok";
+}
+
+function isInline(src: string): boolean {
+  return src.trim().toLowerCase().startsWith("data:");
+}
+
+/** A short, readable name instead of a very long address. */
+function shortName(src: string): { name: string; sub: string } {
+  if (isInline(src)) {
+    const m = src.match(/^data:image\/([a-zA-Z0-9.+-]+)/i);
+    let type = m ? m[1].toLowerCase() : "";
+    if (type.startsWith("svg")) type = "SVG";
+    else if (type) type = type.toUpperCase();
+    return {
+      name: type ? `Inline ${type} image` : "Inline image",
+      sub: "Embedded directly in the page code",
+    };
+  }
+  try {
+    const u = new URL(src);
+    const last = u.pathname.split("/").filter(Boolean).pop() || u.hostname;
+    let name = last;
+    try {
+      name = decodeURIComponent(last);
+    } catch {
+      /* keep raw name */
+    }
+    return { name, sub: u.hostname };
+  } catch {
+    return {
+      name: src.length > 60 ? src.slice(0, 57) + "..." : src,
+      sub: "",
+    };
+  }
+}
+
+/** Small preview. Falls back to an icon if the image cannot load. */
+function Thumb({ src }: { src: string }) {
+  const [failed, setFailed] = useState(false);
+  const showImage = !failed && !isInline(src) && /^https?:\/\//i.test(src);
+
+  return (
+    <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-md border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
+      {showImage ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={src}
+          alt=""
+          loading="lazy"
+          referrerPolicy="no-referrer"
+          onError={() => setFailed(true)}
+          className="h-full w-full object-contain"
+        />
+      ) : (
+        <ImageIcon
+          className="h-5 w-5 text-slate-400 dark:text-slate-500"
+          aria-hidden="true"
+        />
+      )}
+    </div>
+  );
 }
 
 export default function AltTagCheckerUI() {
@@ -31,7 +136,14 @@ export default function AltTagCheckerUI() {
 
   async function handleCheck(e: React.FormEvent) {
     e.preventDefault();
-    if (!url.trim() || loading) return;
+    if (loading) return;
+
+    if (!url.trim()) {
+      setResult(null);
+      setError("Please enter a page URL first.");
+      return;
+    }
+
     setLoading(true);
     setError("");
     setResult(null);
@@ -42,9 +154,14 @@ export default function AltTagCheckerUI() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url, mode: "images" }),
       });
-      const data = await res.json();
-      if (!res.ok) setError(data.error || "Something went wrong. Please try again.");
-      else setResult(data as Result);
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !data) {
+        setError(
+          (data && data.error) || "Something went wrong. Please try again."
+        );
+      } else {
+        setResult(data as Result);
+      }
     } catch {
       setError("Network error. Please check your connection and try again.");
     } finally {
@@ -52,37 +169,58 @@ export default function AltTagCheckerUI() {
     }
   }
 
-  const images = result?.images ?? [];
-  const missing = images.filter((i) => statusOf(i) === "missing").length;
-  const empty = images.filter((i) => statusOf(i) === "empty").length;
-  const ok = images.filter((i) => statusOf(i) === "ok").length;
+  const rows = (result?.images ?? [])
+    .map((img) => ({ img, status: statusOf(img) }))
+    .sort((a, b) => ORDER[a.status] - ORDER[b.status]);
 
-  const shown = images.filter((i) => filter === "all" || statusOf(i) === filter);
+  const counts = {
+    all: rows.length,
+    missing: rows.filter((r) => r.status === "missing").length,
+    empty: rows.filter((r) => r.status === "empty").length,
+    ok: rows.filter((r) => r.status === "ok").length,
+  };
 
-  const cards: { key: Filter; label: string; value: number }[] = [
-    { key: "all", label: "Total images", value: images.length },
-    { key: "missing", label: "Missing alt", value: missing },
-    { key: "empty", label: "Empty alt", value: empty },
-    { key: "ok", label: "Has alt text", value: ok },
+  const visible =
+    filter === "all" ? rows : rows.filter((r) => r.status === filter);
+
+  const filters: { key: Filter; label: string }[] = [
+    { key: "all", label: "All" },
+    { key: "missing", label: "No alt" },
+    { key: "empty", label: "Empty alt" },
+    { key: "ok", label: "Has alt" },
   ];
 
-  const badge = {
-    missing: "bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300",
-    empty: "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300",
-    ok: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300",
-  };
-  const badgeText = { missing: "Missing", empty: "Empty", ok: "OK" };
+  let headline = "No images found";
+  let headTone = "text-indigo-700 dark:text-slate-100";
+  let headNote = "We could not find any images on this page.";
+
+  if (counts.all > 0) {
+    if (counts.missing > 0) {
+      headline = `${counts.missing} ${
+        counts.missing === 1 ? "image has" : "images have"
+      } no alt text`;
+      headTone = "text-red-700 dark:text-red-400";
+      headNote =
+        "Add a short description to these first. It helps visitors who use screen readers and helps search engines understand your images.";
+    } else if (counts.empty > 0) {
+      headline = `${counts.empty} ${
+        counts.empty === 1 ? "image has" : "images have"
+      } empty alt text`;
+      headTone = "text-amber-700 dark:text-amber-400";
+      headNote =
+        "Empty alt is correct for decorative images. If an image shows something useful, give it a short description.";
+    } else {
+      headline = "All images have alt text";
+      headTone = "text-emerald-700 dark:text-emerald-400";
+      headNote = "Nothing to fix here. Good work.";
+    }
+  }
 
   return (
     <div className="space-y-6">
-      <form
-        onSubmit={handleCheck}
-        className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900"
-      >
-        <label
-          htmlFor="alt-url"
-          className="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-400"
-        >
+      {/* Input (no extra card, the page already has one) */}
+      <form onSubmit={handleCheck} noValidate>
+        <label htmlFor="alt-url" className={`mb-2 block ${labelClass}`}>
           Page URL
         </label>
         <div className="flex flex-col gap-3 sm:flex-row">
@@ -90,89 +228,177 @@ export default function AltTagCheckerUI() {
             id="alt-url"
             type="text"
             value={url}
-            onChange={(e) => setUrl(e.target.value)}
+            onChange={(e) => {
+              setUrl(e.target.value);
+              if (error) setError("");
+            }}
             placeholder="https://example.com/blog/my-post"
-            className="w-full flex-1 rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+            className={`${inputClass} flex-1`}
+            autoComplete="off"
+            aria-invalid={error ? true : undefined}
           />
           <button
             type="submit"
-            disabled={loading || !url.trim()}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 font-semibold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
+            disabled={loading}
+            className="inline-flex items-center justify-center gap-2 rounded-md bg-accent-500 px-7 py-3.5 text-base font-bold text-white transition-colors hover:bg-accent-600 disabled:cursor-wait disabled:opacity-90"
           >
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <Search className="h-4 w-4" aria-hidden="true" />}
+            {loading ? (
+              <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
+            ) : (
+              <Search className="h-5 w-5" aria-hidden="true" />
+            )}
             {loading ? "Checking..." : "Check Images"}
           </button>
         </div>
+
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
+            Try an example:
+          </span>
+          {EXAMPLES.map((ex) => (
+            <button
+              key={ex}
+              type="button"
+              onClick={() => {
+                setUrl(ex);
+                setError("");
+              }}
+              className="rounded-md border border-slate-300 bg-white px-2.5 py-1 font-mono text-xs text-slate-800 transition-colors hover:border-accent-500 hover:text-accent-600 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200"
+            >
+              {ex}
+            </button>
+          ))}
+        </div>
       </form>
 
+      {/* Error */}
       {error && (
-        <div role="alert" className="flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-red-800 dark:border-red-900 dark:bg-red-950 dark:text-red-200">
+        <div
+          role="alert"
+          className="flex items-start gap-3 rounded-md border border-red-200 bg-red-50 p-4 text-red-800 dark:border-red-900 dark:bg-red-950 dark:text-red-200"
+        >
           <AlertCircle className="mt-0.5 h-5 w-5 shrink-0" aria-hidden="true" />
           <p className="text-sm">{error}</p>
         </div>
       )}
 
-      {!result && !error && !loading && (
-        <div className="rounded-2xl border border-dashed border-slate-300 p-10 text-center dark:border-slate-700">
-          <p className="font-semibold text-slate-900 dark:text-slate-100">No page checked yet</p>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Enter a page URL to find images with missing alt text.</p>
-        </div>
-      )}
-
+      {/* Result */}
       {result && (
-        <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {cards.map((c) => (
-              <button
-                key={c.key}
-                type="button"
-                onClick={() => setFilter(c.key)}
-                className={`rounded-xl border p-4 text-left transition ${
-                  filter === c.key
-                    ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-950"
-                    : "border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900"
-                }`}
-              >
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">{c.label}</p>
-                <p className="mt-1 text-2xl font-bold text-slate-900 dark:text-slate-100">{c.value}</p>
-              </button>
-            ))}
+        <div className="rounded-md border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+          {/* Headline */}
+          <div className="border-b border-slate-200 p-5 dark:border-slate-800">
+            <p className={labelClass}>Result</p>
+            <p className={`mt-1 font-serif text-3xl font-bold ${headTone}`}>
+              {headline}
+            </p>
+            <p className="mt-1 break-words text-sm text-slate-600 dark:text-slate-400">
+              Found{" "}
+              <span className="font-bold text-slate-800 dark:text-slate-200">
+                {counts.all}
+              </span>{" "}
+              {counts.all === 1 ? "image" : "images"} on {result.url}
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+              {headNote}
+            </p>
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-400">
-              Images ({shown.length})
-            </p>
-            {shown.length === 0 ? (
-              <p className="text-sm text-slate-500 dark:text-slate-400">No images in this group.</p>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm">
-                  <thead>
-                    <tr className="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-500 dark:border-slate-800 dark:text-slate-400">
-                      <th className="py-2 pr-4">Image</th>
-                      <th className="py-2 pr-4">Alt text</th>
-                      <th className="py-2">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {shown.map((img, i) => {
-                      const s = statusOf(img);
-                      return (
-                        <tr key={i} className="border-b border-slate-100 dark:border-slate-800/60">
-                          <td className="max-w-xs break-all py-2 pr-4 text-slate-800 dark:text-slate-200">{img.src}</td>
-                          <td className="py-2 pr-4 text-slate-600 dark:text-slate-400">{img.alt || "-"}</td>
-                          <td className="py-2">
-                            <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${badge[s]}`}>{badgeText[s]}</span>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+          {counts.all > 0 && (
+            <>
+              {/* Filters */}
+              <div className="flex flex-wrap gap-2 border-b border-slate-200 p-5 dark:border-slate-800">
+                {filters.map((f) => (
+                  <button
+                    key={f.key}
+                    type="button"
+                    onClick={() => setFilter(f.key)}
+                    aria-pressed={filter === f.key}
+                    className={`${toggleBase} ${
+                      filter === f.key ? toggleActive : toggleIdle
+                    }`}
+                  >
+                    {f.label} ({counts[f.key]})
+                  </button>
+                ))}
               </div>
-            )}
-          </div>
+
+              {/* List */}
+              {visible.length === 0 ? (
+                <p className="p-5 text-sm text-slate-500 dark:text-slate-400">
+                  No images in this group.
+                </p>
+              ) : (
+                <ul className="divide-y divide-slate-200 dark:divide-slate-800">
+                  {visible.map(({ img, status }, i) => {
+                    const { name, sub } = shortName(img.src);
+                    const info = statusInfo[status];
+                    const altText = img.alt ? img.alt.trim() : "";
+                    const tooLong = status === "ok" && altText.length > 125;
+                    return (
+                      <li
+                        key={`${img.src.slice(0, 80)}-${i}`}
+                        className="flex gap-4 p-5"
+                      >
+                        <Thumb src={img.src} />
+
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-start justify-between gap-2">
+                            <div className="min-w-0">
+                              <p
+                                className="break-all text-sm font-bold text-slate-900 dark:text-slate-100"
+                                title={isInline(img.src) ? undefined : img.src}
+                              >
+                                {name}
+                              </p>
+                              {sub && (
+                                <p className="text-xs text-slate-500 dark:text-slate-400">
+                                  {sub}
+                                </p>
+                              )}
+                            </div>
+                                                        <span
+                              className={`inline-flex w-24 shrink-0 items-center gap-2 text-sm font-bold ${statusText[status]}`}
+                            >
+                              <span
+                                className={`h-2 w-2 rounded-full ${statusDot[status]}`}
+                                aria-hidden="true"
+                              />
+                              {info.label}
+                            </span>
+                          </div>
+
+                          <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">
+                            <span className="font-bold text-slate-600 dark:text-slate-400">
+                              Alt text:{" "}
+                            </span>
+                            {altText ? (
+                              <span>&ldquo;{altText}&rdquo;</span>
+                            ) : (
+                              <span className="text-slate-500 dark:text-slate-400">
+                                none
+                              </span>
+                            )}
+                          </p>
+
+                          {status !== "ok" && (
+                            <p className="mt-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                              {info.explain}
+                            </p>
+                          )}
+                          {tooLong && (
+                            <p className="mt-1 text-sm leading-relaxed text-amber-700 dark:text-amber-400">
+                              This alt text is quite long. Try to keep it under
+                              125 characters.
+                            </p>
+                          )}
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </>
+          )}
         </div>
       )}
     </div>
