@@ -1,17 +1,17 @@
 import type { Config } from "tailwindcss";
 
-const navy = {
-  50: "#EEF3FA",
-  100: "#D9E4F3",
-  200: "#B3C8E6",
-  300: "#7FA0CF",
-  400: "#4A74B3",
-  500: "#264F8C",
-  600: "#163A6E",
-  700: "#0B2545",
-  800: "#081C35",
-  900: "#061526",
-  950: "#040E1A",
+const mint = {
+  50: "#EFF7F6",
+  100: "#DBEEEC",
+  200: "#BDDEDA",
+  300: "#9CC9C3",
+  400: "#679C94",
+  500: "#3C7269",
+  600: "#305C55",
+  700: "#244943",
+  800: "#193632",
+  900: "#162522",
+  950: "#101A17",
 };
 
 const config: Config = {
@@ -24,28 +24,26 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-sans)", "system-ui", "Arial", "sans-serif"],
-        serif: ["var(--font-serif)", "Georgia", "Times New Roman", "serif"],
+        sans: ["var(--font-manrope)", "system-ui", "Arial", "sans-serif"],
+        serif: ["var(--font-manrope)", "system-ui", "Arial", "sans-serif"],
       },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        // Purane indigo/violet/purple classes ab navy ban jayengi
-        indigo: navy,
-        violet: navy,
-        purple: navy,
-        // Orange accent: bg-accent-500, text-accent-600 waghera
+        indigo: mint,
+        violet: mint,
+        purple: mint,
         accent: {
-          50: "#FFF4EA",
-          100: "#FFE6D0",
-          200: "#FFCBA0",
-          300: "#FDAB6B",
-          400: "#FB923C",
-          500: "#F97316",
-          600: "#EA580C",
-          700: "#C2410C",
-          800: "#9A3412",
-          900: "#7C2D12",
+          50: "#F8F4FF",
+          100: "#ECE9FC",
+          200: "#E1D1FB",
+          300: "#C090FE",
+          400: "#9161C8",
+          500: "#7445A4",
+          600: "#62358F",
+          700: "#502878",
+          800: "#3D205B",
+          900: "#2E1746",
         },
       },
     },

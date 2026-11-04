@@ -20,8 +20,6 @@ import type { Tool } from "@/lib/tools";
 /**
  * Homepage hero + tool directory.
  * The hero search box and the directory share one state, so typing filters the list live.
- * Colours are fixed hex values on purpose (no Tailwind config changes needed):
- *   #181D16 text and dark buttons, #DDEDEC hero, #DBEEEC row hover, #ECE9FC small accent.
  */
 
 const ICONS: Record<Tool["icon"], LucideIcon> = {
@@ -77,7 +75,7 @@ export default function HomeTools({ tools, liveCount }: { tools: Tool[]; liveCou
   return (
     <>
       {/* HERO */}
-      <section className="bg-[#DDEDEC] py-10 md:py-16">
+      <section className="bg-gradient-to-b from-indigo-100 to-accent-100 py-12 md:py-20">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
           <p className="inline-block rounded-md bg-[#ECE9FC] px-3 py-1 text-sm font-semibold text-[#181D16]">
             {liveCount} free tools, live now
@@ -114,7 +112,7 @@ export default function HomeTools({ tools, liveCount }: { tools: Tool[]; liveCou
             </div>
             <button
               type="submit"
-              className="rounded-md bg-[#181D16] px-7 py-3.5 text-base font-bold text-white transition-opacity hover:opacity-90"
+              className="rounded-full bg-[#181D16] px-7 py-3.5 text-base font-bold text-white transition-opacity hover:opacity-90"
             >
               Search
             </button>
@@ -140,29 +138,28 @@ export default function HomeTools({ tools, liveCount }: { tools: Tool[]; liveCou
           </div>
 
           {filtered.length > 0 ? (
-            <ul className="grid grid-cols-1 gap-x-12 md:grid-cols-2">
+            <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {filtered.map((tool) => {
                 const Icon = ICONS[tool.icon];
                 return (
                   <li
                     key={tool.slug}
-                    className="border-b border-[#181D16]/15 first:border-t md:[&:nth-child(2)]:border-t"
                   >
                     <Link
                       href={`/tools/${tool.slug}`}
-                      className="group flex items-center gap-4 px-3 py-4 transition-colors hover:bg-[#DBEEEC] focus-visible:bg-[#DBEEEC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#181D16]"
+                      className="group flex h-full min-h-40 flex-col items-start gap-3 rounded-md bg-indigo-100 p-5 transition-colors hover:bg-indigo-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#181D16]"
                     >
                       <Icon className="h-6 w-6 shrink-0 text-[#181D16]" strokeWidth={1.75} aria-hidden="true" />
                       <span className="min-w-0 flex-1">
                         <span className="block text-[18px] font-semibold leading-snug text-[#181D16]">
                           {tool.name}
                         </span>
-                        <span className="block truncate text-base text-[#181D16]/75">
+                        <span className="mt-1 block text-sm text-[#181D16]/75">
                           {SHORT_DESCRIPTIONS[tool.slug] ?? tool.shortDescription}
                         </span>
                       </span>
                       <ArrowRight
-                        className="h-5 w-5 shrink-0 text-[#181D16] transition-transform group-hover:translate-x-1"
+                        className="mt-auto h-8 w-8 self-end rounded-full p-1.5 text-[#181D16] transition-colors group-hover:bg-accent-300"
                         aria-hidden="true"
                       />
                     </Link>
