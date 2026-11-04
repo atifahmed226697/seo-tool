@@ -15,11 +15,11 @@ const rateLimitStore = new Map<string, RateLimitRecord>();
  */
 function cleanupExpiredRecords(): void {
   const now = Date.now();
-  for (const [key, record] of rateLimitStore.entries()) {
+  rateLimitStore.forEach((record, key) => {
     if (now > record.resetTime) {
       rateLimitStore.delete(key);
     }
-  }
+  });
 }
 
 // Run cleanup every 2 minutes
