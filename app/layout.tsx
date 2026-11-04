@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Source_Serif_4, Public_Sans } from "next/font/google";
+import { Source_Serif_4, Public_Sans, Manrope } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -16,6 +16,13 @@ const sans = Public_Sans({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-sans",
+});
+
+// Manrope: used on the homepage (see app/page.tsx)
+const manrope = Manrope({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-manrope",
 });
 
 export const metadata: Metadata = {
@@ -63,7 +70,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`scroll-smooth ${serif.variable} ${sans.variable}`}
+      className={`scroll-smooth ${serif.variable} ${sans.variable} ${manrope.variable}`}
     >
       <body className="font-sans text-base leading-relaxed antialiased bg-background text-foreground min-h-screen flex flex-col selection:bg-accent-500 selection:text-white">
         <Navbar />
