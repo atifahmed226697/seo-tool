@@ -28,10 +28,7 @@ export default function HomePage() {
   const liveCount = tools.filter((t) => t.status === "ready").length;
 
   return (
-    <div className="home-manrope flex min-h-screen flex-col bg-white text-[#181D16]">
-      {/* Manrope for everything on the homepage (the font itself is loaded in app/layout.tsx) */}
-      <style>{`.home-manrope, .home-manrope * { font-family: var(--font-manrope), system-ui, sans-serif !important; }`}</style>
-
+    <div className="flex min-h-screen flex-col bg-white text-foreground">
       {/* 1 + 2. HERO and TOOL DIRECTORY */}
       <HomeTools tools={tools} liveCount={liveCount} />
 

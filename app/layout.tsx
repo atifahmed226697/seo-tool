@@ -1,24 +1,9 @@
 import type { Metadata } from "next";
-import { Source_Serif_4, Public_Sans, Manrope } from "next/font/google";
+import { Manrope } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
-// Headings ke liye serif font
-const serif = Source_Serif_4({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-serif",
-});
-
-// Baqi poore text ke liye sans font
-const sans = Public_Sans({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-sans",
-});
-
-// Manrope: used on the homepage (see app/page.tsx)
 const manrope = Manrope({
   subsets: ["latin"],
   display: "swap",
@@ -70,9 +55,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`scroll-smooth ${serif.variable} ${sans.variable} ${manrope.variable}`}
+      className={`scroll-smooth ${manrope.variable}`}
     >
-      <body className="font-sans text-base leading-relaxed antialiased bg-background text-foreground min-h-screen flex flex-col selection:bg-accent-500 selection:text-white">
+      <body className="font-sans text-base leading-relaxed antialiased bg-background text-foreground min-h-screen flex flex-col selection:bg-accent-300 selection:text-foreground">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

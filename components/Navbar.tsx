@@ -32,7 +32,7 @@ export function Navbar() {
           href="/"
           className="flex items-center gap-2 transition-opacity hover:opacity-90"
         >
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-indigo-700 text-white dark:bg-accent-500">
+          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-[#181D16] text-white dark:bg-[#181D16]">
             <Wrench className="h-4 w-4" />
           </div>
           <span className="text-lg font-extrabold leading-none tracking-tight text-indigo-700 dark:text-white">
@@ -127,7 +127,7 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <Link
             href="/#tools"
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-md bg-accent-500 px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-accent-600"
+            className="hidden sm:inline-flex items-center gap-1.5 rounded-md bg-[#181D16] px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-indigo-800"
           >
             <span>Browse Tools</span>
             <ArrowRight className="h-3.5 w-3.5" />
