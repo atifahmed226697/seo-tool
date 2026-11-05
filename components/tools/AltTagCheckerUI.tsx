@@ -338,6 +338,24 @@ export default function AltTagCheckerUI() {
                 ))}
               </div>
 
+              {/* Explain statuses once above the results. */}
+              <div className="space-y-2 border-b border-slate-200 px-5 py-4 text-sm leading-relaxed text-slate-600 dark:border-slate-800 dark:text-slate-400">
+                <p>
+                  <strong className="text-slate-800 dark:text-slate-200">
+                    No alt:
+                  </strong>{" "}
+                  The image has no alt attribute. Review its purpose and add
+                  appropriate alternative text.
+                </p>
+                <p>
+                  <strong className="text-slate-800 dark:text-slate-200">
+                    Empty alt:
+                  </strong>{" "}
+                  An empty alt attribute is suitable for decorative images.
+                  Meaningful images need text that describes their purpose.
+                </p>
+              </div>
+
               {/* List */}
               {visible.length === 0 ? (
                 <p className="p-5 text-sm text-slate-500 dark:text-slate-400">
@@ -396,11 +414,7 @@ export default function AltTagCheckerUI() {
                             )}
                           </p>
 
-                          {status !== "ok" && (
-                            <p className="mt-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                              {info.explain}
-                            </p>
-                          )}
+                          
                           {tooLong && (
                             <p className="mt-1 text-sm leading-relaxed text-amber-700 dark:text-amber-400">
                               This alt text is quite long. Try to keep it under

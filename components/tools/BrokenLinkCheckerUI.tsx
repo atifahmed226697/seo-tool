@@ -16,7 +16,7 @@ interface Result {
   results: LinkResult[];
 }
 
-type Kind = "broken" | "redirect" | "ok";
+type Kind = "broken" | "blocked" | "redirect" | "ok";
 type Filter = "all" | Kind;
 
 interface StatusInfo {
@@ -37,6 +37,8 @@ const toggleIdle =
   "border-slate-300 bg-white text-slate-700 hover:border-accent-500 hover:text-accent-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200";
 
 const chipTone: Record<Kind, string> = {
+  blocked:
+    "border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-200",
   broken:
     "border-red-200 bg-red-50 text-red-800 dark:border-red-900 dark:bg-red-950 dark:text-red-200",
   redirect:
@@ -48,6 +50,14 @@ const EXAMPLES = ["https://example.com", "https://www.wikipedia.org"];
 
 /** Turns a status code into a label and a plain-English explanation. */
 function describe(status: number): StatusInfo {
+  if (status === 403 || status === 999) {
+    return {
+      kind: "blocked",
+      label: `Blocked by site (${status})`,
+      explain:
+        "The website refused this check. Open the link in your browser to verify whether the page works.",
+    };
+  }
   if (status === 0) {
     return {
       kind: "broken",
@@ -90,7 +100,12 @@ function describe(status: number): StatusInfo {
   };
 }
 
-const ORDER: Record<Kind, number> = { broken: 0, redirect: 1, ok: 2 };
+const ORDER: Record<Kind, number> = {
+  broken: 0,
+  blocked: 1,
+  redirect: 2,
+  ok: 3,
+};
 
 export default function BrokenLinkCheckerUI() {
   const [url, setUrl] = useState("");
@@ -152,6 +167,7 @@ export default function BrokenLinkCheckerUI() {
   const counts = {
     all: withInfo.length,
     broken: withInfo.filter((r) => r.info.kind === "broken").length,
+    blocked: withInfo.filter((r) => r.info.kind === "blocked").length,
     redirect: withInfo.filter((r) => r.info.kind === "redirect").length,
     ok: withInfo.filter((r) => r.info.kind === "ok").length,
   };
@@ -162,6 +178,7 @@ export default function BrokenLinkCheckerUI() {
   const filters: { key: Filter; label: string }[] = [
     { key: "all", label: "All" },
     { key: "broken", label: "Broken" },
+    { key: "blocked", label: "Blocked" },
     { key: "redirect", label: "Redirects" },
     { key: "ok", label: "Working" },
   ];
@@ -252,6 +269,8 @@ export default function BrokenLinkCheckerUI() {
               className={`mt-1 font-serif text-3xl font-bold ${
                 counts.broken > 0
                   ? "text-red-700 dark:text-red-400"
+                  : counts.blocked > 0
+                  ? "text-amber-700 dark:text-amber-400"
                   : counts.all > 0
                   ? "text-emerald-700 dark:text-emerald-400"
                   : "text-indigo-700 dark:text-slate-100"
@@ -259,6 +278,8 @@ export default function BrokenLinkCheckerUI() {
             >
               {counts.all === 0
                 ? "No links found"
+                : counts.broken === 0 && counts.blocked > 0
+                ? "Some links need manual review"
                 : counts.broken === 0
                 ? "No broken links found"
                 : `${counts.broken} broken ${counts.broken === 1 ? "link" : "links"}`}
@@ -274,6 +295,16 @@ export default function BrokenLinkCheckerUI() {
               </span>{" "}
               links on {result.url}
             </p>
+            {counts.blocked > 0 && (
+              <p className="mt-3 text-sm leading-relaxed text-amber-800 dark:text-amber-300">
+                {counts.blocked}{" "}
+                {counts.blocked === 1
+                  ? "link could not be verified"
+                  : "links could not be verified"}{" "}
+                because the destination blocked the request. Review these
+                links manually.
+              </p>
+            )}
           </div>
 
           {counts.all === 0 ? (
