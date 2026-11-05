@@ -2,7 +2,7 @@ import { verifyTurnstile } from "@/lib/turnstile";
 import { NextRequest, NextResponse } from "next/server";
 import * as cheerio from "cheerio";
 import { checkRateLimit, getClientIp } from "@/lib/rateLimit";
-import { safeFetchHtml, validateUrlForSsrf } from "@/lib/ssrf";
+import { safeFetchHtml, safeCheckLink } from "@/lib/ssrf";
 import { normalizeHttpUrl } from "@/lib/validators";
 
 export const runtime = "nodejs";
@@ -16,22 +16,7 @@ interface LinkItem {
   nofollow: boolean;
 }
 
-/** Checks one link and returns its HTTP status (0 = failed to load). */
-async function checkLink(url: string): Promise<number> {
-  try {
-    await validateUrlForSsrf(url);
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 4000);
-    let res = await fetch(url, { method: "HEAD", redirect: "follow", signal: controller.signal });
-    if (res.status === 405 || res.status === 403) {
-      res = await fetch(url, { method: "GET", redirect: "follow", signal: controller.signal });
-    }
-    clearTimeout(timer);
-    return res.status;
-  } catch {
-    return 0;
-  }
-}
+
 
 export async function POST(request: NextRequest) {
   try {
@@ -140,7 +125,7 @@ export async function POST(request: NextRequest) {
     // ---------- Broken link check (max 25 unique links) ----------
     const unique = Array.from(new Set(links.map((l) => l.href))).slice(0, 25);
     const results = await Promise.all(
-      unique.map(async (href) => ({ href, status: await checkLink(href) }))
+      unique.map(async (href) => ({ href, status: await safeCheckLink(href) }))
     );
     return NextResponse.json({
       url: pageUrl,
