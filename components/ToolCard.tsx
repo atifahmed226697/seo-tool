@@ -2,7 +2,6 @@ import React from "react";
 import Link from "next/link";
 import { Tool } from "@/lib/tools";
 import { ToolIcon } from "@/components/ToolIcon";
-import { ComingSoonBadge } from "@/components/ComingSoonBadge";
 import { ArrowRight } from "lucide-react";
 
 interface ToolCardProps {
@@ -21,12 +20,9 @@ export function ToolCard({ tool }: ToolCardProps) {
       />
 
       <div className="min-w-0 flex-1">
-        <div className="flex flex-wrap items-center gap-2">
-          <h3 className="text-base font-semibold text-slate-900 transition-colors group-hover:text-accent-600 dark:text-slate-100 dark:group-hover:text-accent-400">
-            {tool.name}
-          </h3>
-          <ComingSoonBadge status={tool.status} />
-        </div>
+        <h3 className="text-base font-semibold text-slate-900 transition-colors group-hover:text-accent-600 dark:text-slate-100 dark:group-hover:text-accent-400">
+          {tool.name}
+        </h3>
         <p className="mt-0.5 line-clamp-2 text-sm text-slate-600 dark:text-slate-400">
           {tool.shortDescription}
         </p>

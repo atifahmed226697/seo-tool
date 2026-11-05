@@ -314,10 +314,7 @@ export default function DomainAgeCheckerUI() {
   return (
     <div className="space-y-6">
       {/* Input */}
-      <form
-        onSubmit={handleCheck}
-        className="rounded-md border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900"
-      >
+      <form onSubmit={handleCheck}>
         <label htmlFor="domain-input" className={`mb-2 block ${labelClass}`}>
           Domain name or URL
         </label>
