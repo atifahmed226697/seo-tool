@@ -1,0 +1,20 @@
+{
+  "aboutTitle": "What does the UTM Link Builder create?",
+  "about": "Build a campaign tracking link for a web page or a Google Play app. Add a source, medium and campaign name, with optional term and content values.",
+  "exampleTitle": "Example newsletter campaign",
+  "example": "For a website link, choose Web and enter your landing page URL. Use \"newsletter\" as the source, \"email\" as the medium and \"spring_launch\" as the campaign name, then copy the generated link.",
+  "faqs": [
+    {
+      "question": "Which option should I use for a website?",
+      "answer": "Choose Web and enter the full URL of the page visitors should reach. Choose Google Play when building a link for an Android app."
+    },
+    {
+      "question": "What should I enter as the Google Play App ID?",
+      "answer": "Enter the app's package name. It appears after id= in the app's Google Play listing URL."
+    },
+    {
+      "question": "Does creating a link automatically configure analytics?",
+      "answer": "No. Reporting depends on the analytics or attribution setup used by the destination website or app."
+    }
+  ]
+}

@@ -1,12 +1,13 @@
+import { getToolMetadata } from "@/lib/tool-metadata";
 import type { Metadata } from "next";
 import { ToolLayout } from "@/components/ToolLayout";
 import KeywordDensityCheckerUI from "@/components/tools/KeywordDensityCheckerUI";
 
-export const metadata: Metadata = {
-  title: "Keyword Density Checker - Find Your Most Used Keywords | SEO Toolkit",
+export const metadata: Metadata = getToolMetadata("keyword-density-checker", {
+  title: "Keyword Density Checker - Find Your Most Used Keywords",
   description:
     "Free keyword density checker. Paste your text to see the most used words and phrases and their density percentage.",
-};
+});
 
 export default function KeywordDensityCheckerPage() {
   return (

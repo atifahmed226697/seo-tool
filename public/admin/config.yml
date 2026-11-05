@@ -70,37 +70,53 @@ collections:
 
   - name: tool_pages
     label: Tool Pages
-    files:
-      - name: domain_age_checker
-        label: Domain Age Checker
-        file: content/tools/domain-age-checker.json
-        format: json
+    folder: content/tools
+    extension: json
+    format: json
+    create: false
+    delete: false
+    identifier_field: aboutTitle
+    summary: "{{slug}}"
+    preview_path: "tools/{{slug}}"
+    fields:
+
+      - label: SEO Title
+        name: seoTitle
+        widget: string
+        required: false
+        hint: Leave empty to use the existing page title.
+
+      - label: Meta Description
+        name: metaDescription
+        widget: text
+        required: false
+        hint: Leave empty to use the existing page description.
+
+      - label: Explanation Heading
+        name: aboutTitle
+        widget: string
+
+      - label: Explanation
+        name: about
+        widget: text
+
+      - label: Example Heading
+        name: exampleTitle
+        widget: string
+
+      - label: Example
+        name: example
+        widget: text
+
+      - label: Frequently Asked Questions
+        name: faqs
+        widget: list
+        summary: "{{fields.question}}"
         fields:
-          - label: Explanation Heading
-            name: aboutTitle
+          - label: Question
+            name: question
             widget: string
 
-          - label: Explanation
-            name: about
+          - label: Answer
+            name: answer
             widget: text
-
-          - label: Example Heading
-            name: exampleTitle
-            widget: string
-
-          - label: Example
-            name: example
-            widget: text
-
-          - label: Frequently Asked Questions
-            name: faqs
-            widget: list
-            summary: "{{fields.question}}"
-            fields:
-              - label: Question
-                name: question
-                widget: string
-
-              - label: Answer
-                name: answer
-                widget: text

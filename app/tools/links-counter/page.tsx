@@ -1,12 +1,13 @@
+import { getToolMetadata } from "@/lib/tool-metadata";
 import type { Metadata } from "next";
 import { ToolLayout } from "@/components/ToolLayout";
 import LinksCounterUI from "@/components/tools/LinksCounterUI";
 
-export const metadata: Metadata = {
-  title: "Links Counter - Count Internal and External Links | SEO Toolkit",
+export const metadata: Metadata = getToolMetadata("links-counter", {
+  title: "Links Counter - Count Internal and External Links",
   description:
     "Free links counter. Count internal, external and nofollow links on any page and see every link in a table.",
-};
+});
 
 export default function LinksCounterPage() {
   return (

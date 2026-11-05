@@ -4,7 +4,7 @@ import { ChevronRight, Home } from "lucide-react";
 import { getToolBySlug, getRelatedTools } from "@/lib/tools";
 import { ToolCard } from "@/components/ToolCard";
 import { ToolIcon } from "@/components/ToolIcon";
-import domainAgeContent from "@/content/tools/domain-age-checker.json";
+import { getToolContent } from "@/lib/tool-content";
 
 const DEFAULT_STEPS = [
   {
@@ -208,8 +208,7 @@ export function ToolLayout({
   const currentTool = getToolBySlug(slug);
   const relatedTools = getRelatedTools(slug, 3);
   const steps = HOW_TO_STEPS[slug] ?? DEFAULT_STEPS;
-  const content =
-    slug === "domain-age-checker" ? domainAgeContent : undefined;
+  const content = getToolContent(slug);
 
   return (
     <div className="min-h-screen bg-[#EFF7F6] py-8 text-[#181D16] dark:bg-slate-950 dark:text-slate-100 sm:py-12">

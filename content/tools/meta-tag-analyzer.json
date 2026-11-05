@@ -1,0 +1,16 @@
+{
+  "aboutTitle": "What does the Meta Tag Analyzer check?",
+  "about": "Enter a public page URL to inspect metadata returned in its HTML. Review the title, description and available social sharing tags alongside the tool's checks.",
+  "exampleTitle": "Example metadata check",
+  "example": "Paste the full URL of one of your public pages and select Check Tags. Compare the reported title and description with the content of that specific page.",
+  "faqs": [
+    {
+      "question": "Why can a page fail to load in the analyzer?",
+      "answer": "The website may restrict automated requests, require authentication or be temporarily unavailable. Check that the URL is publicly accessible."
+    },
+    {
+      "question": "Can the report differ from what I see in my browser?",
+      "answer": "Yes. A browser may load additional content using JavaScript. The analyzer inspects the HTML returned to its request."
+    }
+  ]
+}

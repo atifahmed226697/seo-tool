@@ -1,0 +1,16 @@
+{
+  "aboutTitle": "What does the Meta Tag Generator create?",
+  "about": "Prepare HTML metadata using your page title, description and optional social sharing information. Review the generated tags before adding them to your website.",
+  "exampleTitle": "Example page metadata",
+  "example": "For a page about a vegetable garden, enter a title such as \"Vegetable Garden Planning Guide\" and a description that summarizes the advice on that page. Copy the generated tags into the page head.",
+  "faqs": [
+    {
+      "question": "Where do I put the generated tags?",
+      "answer": "Add the tags inside the HTML head of the relevant page. If your website uses a CMS or framework, use its metadata settings or metadata API."
+    },
+    {
+      "question": "Should every page have the same description?",
+      "answer": "Write a description that accurately summarizes each individual page. Review existing metadata before adding generated tags to avoid duplicates."
+    }
+  ]
+}

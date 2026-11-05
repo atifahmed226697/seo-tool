@@ -1,0 +1,16 @@
+{
+  "aboutTitle": "What does the Links Counter show?",
+  "about": "Review links found in a public page's HTML, including internal and external links and available nofollow information. Use the filters to inspect each group.",
+  "exampleTitle": "Example page link count",
+  "example": "Enter a public article URL and select Count Links. Compare the Internal and External groups, then inspect the Nofollow group where available.",
+  "faqs": [
+    {
+      "question": "Does counting links check whether they work?",
+      "answer": "The Links Counter lists and groups links. Use the Broken Link Checker when you want to test destination responses."
+    },
+    {
+      "question": "Can the report miss links?",
+      "answer": "Links created by JavaScript after the initial HTML loads may be absent. Access restrictions can also prevent the page from being scanned."
+    }
+  ]
+}

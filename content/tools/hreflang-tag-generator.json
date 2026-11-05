@@ -1,0 +1,16 @@
+{
+  "aboutTitle": "What does the Hreflang Tag Generator create?",
+  "about": "Prepare alternate-language link tags using the languages, regions and page URLs you enter. Review the output before adding it to each relevant language version.",
+  "exampleTitle": "Example language versions",
+  "example": "Add an English page and its French equivalent using their full URLs. Generate the tags and review that the languages and addresses match the correct pages.",
+  "faqs": [
+    {
+      "question": "Does the generator translate my pages?",
+      "answer": "No. Provide the URLs of language versions that already exist."
+    },
+    {
+      "question": "Should I use the homepage URL for every translated page?",
+      "answer": "Use the corresponding page in each language. For example, connect equivalent product pages with each other."
+    }
+  ]
+}

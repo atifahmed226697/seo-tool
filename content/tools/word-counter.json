@@ -1,0 +1,16 @@
+{
+  "aboutTitle": "What does the Word Counter measure?",
+  "about": "Count words, characters, sentences and paragraphs as you edit your text. The tool also provides reading and speaking time estimates to help you plan content length.",
+  "exampleTitle": "Example word count",
+  "example": "Enter \"Write clear and useful content.\" to check a five-word sentence. Add another paragraph to see how the counts change.",
+  "faqs": [
+    {
+      "question": "Are reading and speaking times exact?",
+      "answer": "They are estimates. Actual time varies with the reader, delivery speed and complexity of the text."
+    },
+    {
+      "question": "Why might another editor show a different count?",
+      "answer": "Tools can count punctuation, hyphenated words and whitespace differently. Use the counting method required by your publisher when a strict limit applies."
+    }
+  ]
+}

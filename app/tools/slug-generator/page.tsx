@@ -1,12 +1,13 @@
+import { getToolMetadata } from "@/lib/tool-metadata";
 import type { Metadata } from "next";
 import { ToolLayout } from "@/components/ToolLayout";
 import SlugGeneratorUI from "@/components/tools/SlugGeneratorUI";
 
-export const metadata: Metadata = {
-  title: "Slug Generator - Create SEO-Friendly URL Slugs | SEO Toolkit",
+export const metadata: Metadata = getToolMetadata("slug-generator", {
+  title: "Slug Generator - Create SEO-Friendly URL Slugs",
   description:
     "Free slug generator. Turn any title into a clean, SEO-friendly URL slug in one click.",
-};
+});
 
 export default function SlugGeneratorPage() {
   return (

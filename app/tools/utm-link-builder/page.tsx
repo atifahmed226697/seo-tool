@@ -1,12 +1,13 @@
+import { getToolMetadata } from "@/lib/tool-metadata";
 import type { Metadata } from "next";
 import { ToolLayout } from "@/components/ToolLayout";
 import UtmLinkBuilderUI from "@/components/tools/UtmLinkBuilderUI";
 
-export const metadata: Metadata = {
-  title: "UTM Link Builder - Create Campaign Tracking URLs | SEO Toolkit",
+export const metadata: Metadata = getToolMetadata("utm-link-builder", {
+  title: "UTM Link Builder - Create Campaign Tracking URLs",
   description:
     "Free UTM link builder. Add source, medium and campaign parameters to any URL and copy the tracking link in one click.",
-};
+});
 
 export default function UtmLinkBuilderPage() {
   return (

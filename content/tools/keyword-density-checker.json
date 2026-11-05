@@ -1,0 +1,16 @@
+{
+  "aboutTitle": "What does the Keyword Density Checker show?",
+  "about": "Find repeated words and phrases in your text and review their reported density. Use the results to spot repetition while keeping the wording clear and useful.",
+  "exampleTitle": "Example repetition check",
+  "example": "Paste a draft that repeats \"garden planning\" in several sentences. Compare the single-word and phrase results, then review whether each repetition helps the reader.",
+  "faqs": [
+    {
+      "question": "Does this tool measure keyword search volume?",
+      "answer": "No. It counts words and phrases in the text you provide."
+    },
+    {
+      "question": "How should I use the density results?",
+      "answer": "Use them to identify repeated wording. Review the surrounding sentences before removing or adding words."
+    }
+  ]
+}

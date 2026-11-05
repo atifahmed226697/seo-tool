@@ -1,12 +1,13 @@
+import { getToolMetadata } from "@/lib/tool-metadata";
 import type { Metadata } from "next";
 import { ToolLayout } from "@/components/ToolLayout";
 import HeadingStructureCheckerUI from "@/components/tools/HeadingStructureCheckerUI";
 
-export const metadata: Metadata = {
-  title: "Heading Structure Checker - View H1 to H6 Outline | SEO Toolkit",
+export const metadata: Metadata = getToolMetadata("heading-structure-checker", {
+  title: "Heading Structure Checker - View H1 to H6 Outline",
   description:
     "Free heading structure checker. See the H1 to H6 outline of any page and spot missing or skipped heading levels.",
-};
+});
 
 export default function HeadingStructureCheckerPage() {
   return (

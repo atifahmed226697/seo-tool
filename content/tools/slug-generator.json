@@ -1,0 +1,16 @@
+{
+  "aboutTitle": "What does the Slug Generator do?",
+  "about": "Turn a title or phrase into a URL slug. Choose the available separator and word-removal options, then review and copy the result.",
+  "exampleTitle": "Example URL slug",
+  "example": "Enter \"Garden Planning Guide\" and use a hyphen separator to produce \"garden-planning-guide\". Review the result before using it in your page URL.",
+  "faqs": [
+    {
+      "question": "Does generating a slug change my website URL?",
+      "answer": "No. Copy the result into your website's URL or permalink field to use it."
+    },
+    {
+      "question": "Can I change the slug of an existing page?",
+      "answer": "Yes, but changing a published URL can affect existing links. Set up a redirect from the previous URL when making that change."
+    }
+  ]
+}
