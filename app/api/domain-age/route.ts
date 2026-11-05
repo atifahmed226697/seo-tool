@@ -1,3 +1,4 @@
+import { verifyTurnstile } from "@/lib/turnstile";
 import { NextRequest, NextResponse } from "next/server";
 import { checkRateLimit, getClientIp } from "@/lib/rateLimit";
 import { cleanDomain, isValidDomain } from "@/lib/validators";
@@ -211,6 +212,21 @@ export async function POST(request: NextRequest) {
             "Please provide a valid domain name (e.g., example.com, my-site.org).",
         },
         { status: 400 }
+      );
+    }
+
+    const verification = await verifyTurnstile(
+      body.turnstileToken,
+      "domain-age"
+    );
+
+    if (!verification.success) {
+      return NextResponse.json(
+        {
+          code: verification.code,
+          error: verification.error,
+        },
+        { status: verification.status }
       );
     }
 

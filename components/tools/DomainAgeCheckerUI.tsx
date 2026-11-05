@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { TurnstileWidget } from "@/components/TurnstileWidget";
 import {
   Search,
   Loader2,
@@ -242,10 +243,15 @@ export default function DomainAgeCheckerUI() {
   const [error, setError] = useState<ErrorState | null>(null);
   const [result, setResult] = useState<DomainAgeResult | null>(null);
   const [copied, setCopied] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [turnstileResetKey, setTurnstileResetKey] = useState(0);
 
   async function handleCheck(e: React.FormEvent) {
     e.preventDefault();
-    if (!domain.trim() || loading) return;
+    if (!domain.trim() || loading || !turnstileToken) return;
+
+    const verificationToken = turnstileToken;
+    setTurnstileToken("");
 
     setLoading(true);
     setError(null);
@@ -256,7 +262,10 @@ export default function DomainAgeCheckerUI() {
       const res = await fetch("/api/domain-age", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ domain }),
+        body: JSON.stringify({
+          domain,
+          turnstileToken: verificationToken,
+        }),
       });
       const data = await res.json().catch(() => null);
 
@@ -281,6 +290,8 @@ export default function DomainAgeCheckerUI() {
       });
     } finally {
       setLoading(false);
+      setTurnstileToken("");
+      setTurnstileResetKey((value) => value + 1);
     }
   }
 
@@ -330,7 +341,7 @@ export default function DomainAgeCheckerUI() {
           />
           <button
             type="submit"
-            disabled={loading || !domain.trim()}
+            disabled={loading || !domain.trim() || !turnstileToken}
             className="inline-flex items-center justify-center gap-2 rounded-md bg-accent-500 px-6 py-3 font-bold text-white transition-colors hover:bg-accent-600 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? (
@@ -344,6 +355,11 @@ export default function DomainAgeCheckerUI() {
         <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">
           Works with any domain extension. Subdomains are checked as the root domain.
         </p>
+        <TurnstileWidget
+          action="domain-age"
+          onToken={setTurnstileToken}
+          resetKey={turnstileResetKey}
+        />
       </form>
 
       {/* Messages */}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { TurnstileWidget } from "@/components/TurnstileWidget";
 import {
   Search,
   Globe,
@@ -509,13 +510,17 @@ export default function MetaTagAnalyzerUI() {
   const [snippetUrl, setSnippetUrl] = useState("https://www.example.com");
 
   const [loading, setLoading] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [turnstileResetKey, setTurnstileResetKey] = useState(0);
   const [error, setError] = useState("");
   const [result, setResult] = useState<MetaAnalysisResult | null>(null);
 
   async function handleAnalyze(e: React.FormEvent) {
     e.preventDefault();
-    if (!url.trim() || loading) return;
+    if (!url.trim() || loading || !turnstileToken) return;
 
+    const verificationToken = turnstileToken;
+    setTurnstileToken("");
     setLoading(true);
     setError("");
 
@@ -523,7 +528,10 @@ export default function MetaTagAnalyzerUI() {
       const res = await fetch("/api/meta-analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url }),
+        body: JSON.stringify({
+          url,
+          turnstileToken: verificationToken,
+        }),
       });
       const data = await res.json();
 
@@ -543,6 +551,8 @@ export default function MetaTagAnalyzerUI() {
       setResult(null);
     } finally {
       setLoading(false);
+      setTurnstileToken("");
+      setTurnstileResetKey((value) => value + 1);
     }
   }
 
@@ -657,7 +667,7 @@ export default function MetaTagAnalyzerUI() {
               </div>
               <button
                 type="submit"
-                disabled={loading || !url.trim()}
+                disabled={loading || !url.trim() || !turnstileToken}
                 className="inline-flex shrink-0 items-center justify-center gap-2 rounded-md bg-accent-500 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-accent-600 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {loading ? (
@@ -672,6 +682,11 @@ export default function MetaTagAnalyzerUI() {
               Enter a public page URL. Private or internal addresses are blocked for security.
               You can also skip this and type your own title and description below.
             </p>
+            <TurnstileWidget
+              action="meta-analyze"
+              onToken={setTurnstileToken}
+              resetKey={turnstileResetKey}
+            />
           </form>
 
           {error && (

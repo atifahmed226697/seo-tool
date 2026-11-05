@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { TurnstileWidget } from "@/components/TurnstileWidget";
 import { Search, Loader2, AlertCircle, Copy, Check } from "lucide-react";
 
 interface HeadingItem {
@@ -38,6 +39,8 @@ const LEVELS: (1 | 2 | 3 | 4 | 5 | 6)[] = [1, 2, 3, 4, 5, 6];
 export default function HeadingStructureCheckerUI() {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [turnstileResetKey, setTurnstileResetKey] = useState(0);
   const [error, setError] = useState("");
   const [result, setResult] = useState<Result | null>(null);
   const [filter, setFilter] = useState<Filter>("all");
@@ -45,7 +48,7 @@ export default function HeadingStructureCheckerUI() {
 
   async function handleCheck(e: React.FormEvent) {
     e.preventDefault();
-    if (loading) return;
+    if (loading || !turnstileToken) return;
 
     if (!url.trim()) {
       setResult(null);
@@ -53,6 +56,8 @@ export default function HeadingStructureCheckerUI() {
       return;
     }
 
+    const verificationToken = turnstileToken;
+    setTurnstileToken("");
     setLoading(true);
     setError("");
     setResult(null);
@@ -62,7 +67,11 @@ export default function HeadingStructureCheckerUI() {
       const res = await fetch("/api/page-scan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url, mode: "headings" }),
+        body: JSON.stringify({
+          url,
+          mode: "headings",
+          turnstileToken: verificationToken,
+        }),
       });
       const data = await res.json().catch(() => null);
       if (!res.ok || !data) {
@@ -76,6 +85,8 @@ export default function HeadingStructureCheckerUI() {
       setError("Network error. Please check your connection and try again.");
     } finally {
       setLoading(false);
+      setTurnstileToken("");
+      setTurnstileResetKey((value) => value + 1);
     }
   }
 
@@ -179,7 +190,7 @@ export default function HeadingStructureCheckerUI() {
           />
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !turnstileToken}
             className="inline-flex items-center justify-center gap-2 rounded-md bg-accent-500 px-7 py-3.5 text-base font-bold text-white transition-colors hover:bg-accent-600 disabled:cursor-wait disabled:opacity-90"
           >
             {loading ? (
@@ -209,6 +220,11 @@ export default function HeadingStructureCheckerUI() {
             </button>
           ))}
         </div>
+        <TurnstileWidget
+          action="page-scan-headings"
+          onToken={setTurnstileToken}
+          resetKey={turnstileResetKey}
+        />
       </form>
 
       {/* Error */}

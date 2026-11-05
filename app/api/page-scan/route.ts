@@ -1,3 +1,4 @@
+import { verifyTurnstile } from "@/lib/turnstile";
 import { NextRequest, NextResponse } from "next/server";
 import * as cheerio from "cheerio";
 import { checkRateLimit, getClientIp } from "@/lib/rateLimit";
@@ -54,6 +55,21 @@ export async function POST(request: NextRequest) {
     }
 
     const pageUrl = normalizeHttpUrl(body.url);
+
+    const verification = await verifyTurnstile(
+      body.turnstileToken,
+      `page-scan-${mode}`
+    );
+
+    if (!verification.success) {
+      return NextResponse.json(
+        {
+          code: verification.code,
+          error: verification.error,
+        },
+        { status: verification.status }
+      );
+    }
 
     let html: string;
     try {
