@@ -53,12 +53,12 @@ export function generateMetadata({
 
 function Toc({ toc }: { toc: TocItem[] }) {
   return (
-    <ul className="space-y-2 text-sm">
+    <ul className="space-y-3 text-sm">
       {toc.map((item) => (
         <li key={item.id} className={item.level === 3 ? "pl-4" : ""}>
           <a
             href={`#${item.id}`}
-            className="text-slate-600 transition-colors hover:text-accent-600 dark:text-slate-400 dark:hover:text-accent-400"
+            className="leading-relaxed text-[#465B55] underline-offset-4 hover:text-[#181D16] hover:underline dark:text-slate-300 dark:hover:text-white"
           >
             {item.text}
           </a>
@@ -103,7 +103,7 @@ function ShareLinks({ url, title }: { url: string; title: string }) {
           href={link.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-md border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:border-accent-500 hover:text-accent-600 dark:border-slate-700 dark:text-slate-300 dark:hover:text-accent-400"
+          className="rounded-md border border-[#AFC9C4] px-3 py-2 text-xs font-semibold text-[#181D16] transition-colors hover:bg-[#CA8EFD] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#35615B] dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
         >
           {link.label}
         </a>
@@ -174,7 +174,7 @@ export default function BlogPostPage({
   ];
 
   return (
-    <div>
+    <div className="min-h-screen bg-[#EFF7F6] text-[#181D16] dark:bg-slate-950 dark:text-slate-100">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -182,45 +182,59 @@ export default function BlogPostPage({
         }}
       />
 
-      {/* Enable click-to-enlarge for article images. */}
       <ImageLightbox />
 
       {/* Article header */}
-      <section className="bg-indigo-700 py-10 sm:py-14 dark:bg-indigo-900">
+      <section className="border-b border-[#C6DAD7] bg-[#DDEDEC] py-10 sm:py-14 dark:border-slate-800 dark:bg-slate-900">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <nav className="text-xs text-indigo-200" aria-label="Breadcrumb">
-            <Link href="/" className="hover:text-white">
+          <nav
+            className="flex flex-wrap items-center gap-2 text-xs text-[#465B55] dark:text-slate-300"
+            aria-label="Breadcrumb"
+          >
+            <Link href="/" className="underline-offset-4 hover:underline">
               Home
             </Link>
-            <span className="mx-2">/</span>
-            <Link href="/blog" className="hover:text-white">
+            <span aria-hidden="true">/</span>
+            <Link href="/blog" className="underline-offset-4 hover:underline">
               Blog
             </Link>
-            <span className="mx-2">/</span>
-            <span className="text-accent-400">{post.category}</span>
+            <span aria-hidden="true">/</span>
+            <span>{post.category}</span>
           </nav>
 
-          <h1 className="mt-4 max-w-3xl text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+          <h1 className="mt-5 max-w-4xl break-words text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
             {post.title}
           </h1>
 
-          <p className="mt-4 text-sm text-indigo-200">
-            By {AUTHOR.name} &nbsp;·&nbsp; {post.readMinutes} min read
-            &nbsp;·&nbsp; {formatDate(post.date)}
+          <p className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-[#465B55] dark:text-slate-300">
+            <span>By {AUTHOR.name}</span>
+            <span aria-hidden="true">·</span>
+            <span>{post.readMinutes} min read</span>
+            <span aria-hidden="true">·</span>
+            <time dateTime={post.date}>{formatDate(post.date)}</time>
           </p>
+
+          {post.updated && post.updated !== post.date && (
+            <p className="mt-2 text-xs text-[#465B55] dark:text-slate-400">
+              Updated{" "}
+              <time dateTime={post.updated}>
+                {formatDate(post.updated)}
+              </time>
+            </p>
+          )}
         </div>
       </section>
 
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_17rem]">
-          <div className="mx-auto w-full max-w-3xl">
+          <article className="mx-auto min-w-0 w-full max-w-3xl">
             {/* Mobile table of contents */}
             {post.toc.length > 0 && (
-              <details className="mb-8 rounded-md border border-slate-200 p-4 lg:hidden dark:border-slate-800">
-                <summary className="cursor-pointer text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white">
+              <details className="mb-8 border-y border-[#C6DAD7] py-4 lg:hidden dark:border-slate-800">
+                <summary className="cursor-pointer text-sm font-semibold">
                   Table of Contents
                 </summary>
-                <div className="mt-3">
+                <div className="mt-4">
                   <Toc toc={post.toc} />
                 </div>
               </details>
@@ -230,7 +244,8 @@ export default function BlogPostPage({
               <img
                 src={post.image}
                 alt={post.title}
-                className="mb-8 w-full rounded-md border border-slate-200 dark:border-slate-800"
+                decoding="async"
+                className="mb-8 h-auto w-full rounded-lg"
               />
             )}
 
@@ -240,49 +255,50 @@ export default function BlogPostPage({
             />
 
             {/* Advertisement placement */}
-            <div className="mt-10 flex min-h-[100px] items-center justify-center rounded-md border border-dashed border-slate-300 bg-slate-50 text-xs uppercase tracking-widest text-slate-400 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-600">
+            <div className="mt-10 flex min-h-[100px] items-center justify-center border-y border-[#C6DAD7] text-xs uppercase tracking-widest text-[#465B55] dark:border-slate-800 dark:text-slate-400">
               Advertisement
             </div>
 
             <div className="mt-8">
-              <p className="mb-2 text-xs font-bold uppercase tracking-wider text-slate-500">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-[#465B55] dark:text-slate-300">
                 Share this article
               </p>
               <ShareLinks url={url} title={post.title} />
             </div>
 
             {/* Author information */}
-            <div className="mt-10 flex gap-4 rounded-md border border-slate-200 p-5 dark:border-slate-800">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-indigo-700 text-lg font-bold text-white dark:bg-accent-500">
+            <div className="mt-10 flex items-start gap-4 border-t border-[#C6DAD7] pt-6 dark:border-slate-800">
+              <div
+                aria-hidden="true"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#DDEDEC] text-lg font-bold text-[#181D16] dark:bg-slate-800 dark:text-white"
+              >
                 {AUTHOR.name.charAt(0)}
               </div>
               <div>
-                <p className="font-bold text-slate-900 dark:text-white">
-                  {AUTHOR.name}
-                </p>
-                <p className="mt-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                <p className="font-bold">{AUTHOR.name}</p>
+                <p className="mt-1 text-sm leading-relaxed text-[#465B55] dark:text-slate-300">
                   {AUTHOR.bio}
                 </p>
               </div>
             </div>
-          </div>
+          </article>
 
           {/* Desktop sidebar */}
-          <aside className="hidden lg:block">
-            <div className="sticky top-20 space-y-8">
+          <aside aria-label="Article navigation" className="hidden lg:block">
+            <div className="sticky top-20 space-y-8 border-l border-[#C6DAD7] pl-6 dark:border-slate-800">
               {post.toc.length > 0 && (
                 <div>
-                  <p className="mb-3 text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">
+                  <h2 className="mb-4 text-xs font-bold uppercase tracking-wider">
                     Table of Contents
-                  </p>
+                  </h2>
                   <Toc toc={post.toc} />
                 </div>
               )}
 
               <div>
-                <p className="mb-3 text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">
+                <h2 className="mb-3 text-xs font-bold uppercase tracking-wider">
                   Share
-                </p>
+                </h2>
                 <ShareLinks url={url} title={post.title} />
               </div>
             </div>
@@ -291,12 +307,12 @@ export default function BlogPostPage({
       </div>
 
       {related.length > 0 && (
-        <section className="border-t border-slate-200 py-12 dark:border-slate-800">
-          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+        <section className="border-t border-[#C6DAD7] py-12 dark:border-slate-800">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+            <h2 className="text-2xl font-bold tracking-tight">
               More articles
             </h2>
-            <div className="mt-2">
+            <div className="mt-6 border-t border-[#C6DAD7] dark:border-slate-800">
               {related.map((article) => (
                 <BlogCard key={article.slug} post={article} />
               ))}
