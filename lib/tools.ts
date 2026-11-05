@@ -186,18 +186,24 @@ export function getToolBySlug(slug: string): Tool | undefined {
 }
 
 /** Retrieve related tools excluding the current tool slug. */
-export function getRelatedTools(currentSlug: string, count: number = 3): Tool[] {
+export function getRelatedTools(
+  currentSlug: string,
+  count: number = 3
+): Tool[] {
   const current = getToolBySlug(currentSlug);
+  const available = tools.filter(
+    (tool) => tool.status === "ready" && tool.slug !== currentSlug
+  );
+
   if (!current) {
-    return tools.slice(0, count);
+    return available.slice(0, count);
   }
 
-  // Same category first, then the rest.
-  const sameCategory = tools.filter(
-    (tool) => tool.category === current.category && tool.slug !== currentSlug
+  const sameCategory = available.filter(
+    (tool) => tool.category === current.category
   );
-  const otherCategory = tools.filter(
-    (tool) => tool.category !== current.category && tool.slug !== currentSlug
+  const otherCategory = available.filter(
+    (tool) => tool.category !== current.category
   );
 
   return [...sameCategory, ...otherCategory].slice(0, count);

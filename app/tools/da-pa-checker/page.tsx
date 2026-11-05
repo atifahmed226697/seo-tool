@@ -3,6 +3,10 @@ import { ToolLayout } from "@/components/ToolLayout";
 import { DaPaCheckerUI } from "@/components/tools/DaPaCheckerUI";
 
 export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: true,
+  },
   title: "DA / PA Checker - Check Domain & Page Authority Bulk | SEO Toolkit",
   description:
     "Check Domain Authority (DA) and Page Authority (PA) metrics in single or bulk mode. Benchmark your backlink profile against search competitors.",

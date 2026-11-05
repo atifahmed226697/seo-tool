@@ -25,12 +25,13 @@ function AdSlot({ className = "" }: { className?: string }) {
 }
 
 export default function HomePage() {
-  const liveCount = tools.filter((t) => t.status === "ready").length;
+  const liveTools = tools.filter((tool) => tool.status === "ready");
+  const liveCount = liveTools.length;
 
   return (
     <div className="flex min-h-screen flex-col bg-white text-foreground">
       {/* 1 + 2. HERO and TOOL DIRECTORY */}
-      <HomeTools tools={tools} liveCount={liveCount} />
+      <HomeTools tools={liveTools} liveCount={liveCount} />
 
       {/* AD SLOT 1: after the tool directory */}
       <AdSlot />

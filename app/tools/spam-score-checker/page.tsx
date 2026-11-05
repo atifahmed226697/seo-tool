@@ -3,6 +3,10 @@ import { ToolLayout } from "@/components/ToolLayout";
 import { SpamScoreCheckerUI } from "@/components/tools/SpamScoreCheckerUI";
 
 export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: true,
+  },
   title: "Spam Score Checker - Audit Domain Penalty Risk & Toxicity | SEO Toolkit",
   description:
     "Check domain spam score percentages and bad link indicators in single or bulk mode. Protect your backlink network and organic search visibility.",

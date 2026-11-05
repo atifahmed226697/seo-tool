@@ -19,7 +19,7 @@ export function Navbar() {
   const linkIdle = "text-slate-600 dark:text-slate-300";
 
   function renderToolLinks(closeMenu: () => void) {
-    return tools.map((tool) => {
+    return tools.filter((tool) => tool.status === "ready").map((tool) => {
       const href = `/tools/${tool.slug}`;
       const isActive = pathname === href;
 
