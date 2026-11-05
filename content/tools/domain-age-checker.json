@@ -1,0 +1,20 @@
+{
+  "aboutTitle": "What does the Domain Age Checker show?",
+  "about": "The Domain Age Checker looks up a domain's public registration record. When the registry provides the information, the result shows its registration date, calculated age, expiry date, last update and registrar.",
+  "exampleTitle": "How to check a domain — an example",
+  "example": "Enter example.com or https://example.com and select Check Domain Age. Review the registration date and calculated age in the result. Dates and other details depend on what the registry publishes.",
+  "faqs": [
+    {
+      "question": "How is domain age calculated?",
+      "answer": "The tool calculates the time between the registration date returned by the registry and the date of your check."
+    },
+    {
+      "question": "Why are some registration details missing?",
+      "answer": "A registry may not publish every field. If a date is missing, the tool shows that it is not published instead of estimating it."
+    },
+    {
+      "question": "Does domain age show when a website first went online?",
+      "answer": "The registration date records when the domain was registered. A website may have launched later, and its content or owner may have changed since then."
+    }
+  ]
+}
