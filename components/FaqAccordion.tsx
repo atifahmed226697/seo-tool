@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { tools } from "@/lib/tools";
 import { ChevronDown, HelpCircle } from "lucide-react";
 
 interface FaqItem {
@@ -8,26 +9,30 @@ interface FaqItem {
   answer: string;
 }
 
+const availableToolNames = tools
+  .filter((tool) => tool.status === "ready")
+  .map((tool) => tool.name)
+  .join(", ");
+
 const faqs: FaqItem[] = [
   {
-    question: "Are all tools in SEO Toolkit free to use?",
+    question: "Are the tools in the directory free to use?",
     answer:
-      "Yes. The tools that are live today are free, with no registration or credit card required. Some tools marked Coming soon need paid data sources, and we will announce how they work when they launch.",
+      "Yes. Tools listed in our directory are free to use, with no registration or credit card required.",
   },
   {
-    question: "Which tools are available right now?",
-    answer:
-      "Case Converter, Meta Tag Generator, Meta Tag Analyzer and Domain Age Checker are live. DA/PA Checker, Spam Score Checker and Google Index Checker are coming soon.",
+    question: "Which tools are available?",
+    answer: availableToolNames + ".",
   },
   {
-    question: "Is my data or URL kept private?",
+    question: "How are my text and URLs processed?",
     answer:
-      "Case Converter and Meta Tag Generator run entirely in your browser, so your text is never sent to us. Meta Tag Analyzer and Domain Age Checker send only the URL or domain you enter to our server so it can look it up. We do not sell your queries.",
+      "Text entered into tools such as Case Converter and the text mode of Keyword Density Checker is processed in your browser. URL and domain checks send the address to our server to retrieve public information. Cloudflare Turnstile handles verification for these requests.",
   },
   {
     question: "Why does a domain or URL check sometimes fail?",
     answer:
-      "Some websites block automated requests, and some domain extensions do not publish registration data. If a check fails, try again in a minute or test a different page.",
+      "A website may block automated requests, require a login or take too long to respond. Some registries do not publish every registration detail. Review the error message and try again later or check another public page.",
   },
 ];
 

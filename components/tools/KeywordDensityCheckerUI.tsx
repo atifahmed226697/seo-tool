@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { TurnstileWidget } from "@/components/TurnstileWidget";
 import { Check, Loader2, Trash2, X } from "lucide-react";
 
 /** Common words we skip so results show meaningful keywords. */
@@ -111,6 +112,8 @@ export default function KeywordDensityCheckerUI() {
   const [url, setUrl] = useState("");
   const [page, setPage] = useState<PageData | null>(null);
   const [loading, setLoading] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [turnstileResetKey, setTurnstileResetKey] = useState(0);
   const [error, setError] = useState("");
 
   const [ignoreStop, setIgnoreStop] = useState(true);
@@ -145,14 +148,19 @@ export default function KeywordDensityCheckerUI() {
   const headSearch = useMemo(() => toSearchable((page?.headings || []).join(" ")), [page]);
 
   const handleCheck = async () => {
-    if (!url.trim() || loading) return;
+    if (mode !== "url" || !url.trim() || loading || !turnstileToken) return;
+    const verificationToken = turnstileToken;
+    setTurnstileToken("");
     setLoading(true);
     setError("");
     try {
       const res = await fetch("/api/keyword-scan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url }),
+        body: JSON.stringify({
+          url,
+          turnstileToken: verificationToken,
+        }),
       });
       const data = await res.json().catch(() => null);
       if (!res.ok || !data) {
@@ -166,10 +174,14 @@ export default function KeywordDensityCheckerUI() {
       setPage(null);
     } finally {
       setLoading(false);
+      setTurnstileToken("");
+      setTurnstileResetKey((value) => value + 1);
     }
   };
 
   const handleClear = () => {
+    setTurnstileToken("");
+    setTurnstileResetKey((value) => value + 1);
     setText("");
     setUrl("");
     setPage(null);
@@ -196,7 +208,11 @@ export default function KeywordDensityCheckerUI() {
       <div className="flex gap-2">
         <button
           type="button"
-          onClick={() => setMode("text")}
+          onClick={() => {
+            setTurnstileToken("");
+            setTurnstileResetKey((value) => value + 1);
+            setMode("text");
+          }}
           aria-pressed={mode === "text"}
           className={`${tabBase} ${mode === "text" ? tabActive : tabIdle}`}
         >
@@ -204,7 +220,11 @@ export default function KeywordDensityCheckerUI() {
         </button>
         <button
           type="button"
-          onClick={() => setMode("url")}
+          onClick={() => {
+            setTurnstileToken("");
+            setTurnstileResetKey((value) => value + 1);
+            setMode("url");
+          }}
           aria-pressed={mode === "url"}
           className={`${tabBase} ${mode === "url" ? tabActive : tabIdle}`}
         >
@@ -257,7 +277,7 @@ export default function KeywordDensityCheckerUI() {
               <button
                 type="button"
                 onClick={handleCheck}
-                disabled={!url.trim() || loading}
+                disabled={!url.trim() || loading || !turnstileToken}
                 className="inline-flex shrink-0 items-center justify-center gap-2 rounded-md bg-accent-500 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-accent-600 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {loading && <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />}
@@ -265,6 +285,12 @@ export default function KeywordDensityCheckerUI() {
               </button>
             </div>
           </div>
+
+          <TurnstileWidget
+            action="keyword-scan"
+            onToken={setTurnstileToken}
+            resetKey={turnstileResetKey}
+          />
 
           <div className="flex flex-wrap gap-x-6 gap-y-2">
             <label className={checkboxLabel}>
