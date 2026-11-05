@@ -1,0 +1,69 @@
+backend:
+  name: github
+  repo: atifahmed226697/seo-tool
+  branch: main
+
+local_backend: true
+
+media_folder: public/uploads
+public_folder: /uploads
+
+collections:
+  - name: blog
+    label: Blog Posts
+    folder: content/blog
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    preview_path: "blog/{{slug}}"
+    fields:
+      - label: Title
+        name: title
+        widget: string
+
+      - label: Meta Description
+        name: description
+        widget: text
+
+      - label: SEO Title
+        name: seoTitle
+        widget: string
+        required: false
+        hint: Leave empty to use the article title.
+
+      - label: Publication Date
+        name: date
+        widget: datetime
+        date_format: YYYY-MM-DD
+        time_format: false
+        format: YYYY-MM-DD
+
+      - label: Last Updated
+        name: updated
+        widget: datetime
+        date_format: YYYY-MM-DD
+        time_format: false
+        format: YYYY-MM-DD
+        required: false
+
+      - label: Category
+        name: category
+        widget: string
+
+      - label: Cover Image
+        name: image
+        widget: image
+        required: false
+        hint: Upload a compressed image.
+
+      - label: Draft
+        name: draft
+        widget: boolean
+        default: true
+        required: false
+        hint: Turn off when the article is ready to appear on the website.
+
+      - label: Content
+        name: body
+        widget: markdown

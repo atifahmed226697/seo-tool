@@ -1,17 +1,17 @@
 ---
-title: "How to Write a Meta Description That Gets Clicks"
-description: "A meta description is the short text under your page title in search results. Learn how to write one that earns more clicks."
-date: "2026-11-02"
-category: "On-Page SEO"
+title: How to Write a Meta Description | Practical Guide
+description: A meta description is the short text under your page title in
+  search results. Learn how to write one that earns more clicks.
+date: 2026-11-02
+category: On-Page SEO
+image: /uploads/images.testing-1-.jpg
+draft: false
 ---
-
 When someone searches on Google, they see your page title, your link and a short piece of text below it. That text is usually your meta description. A good one helps people decide to click your page instead of another.
 
 ## What is a meta description?
 
 A meta description is an HTML tag in the head of your page. It gives a short summary of what the page is about. Search engines may show it in the results, and social sites may use it when your link is shared.
-
-![Example image](/blog/test.png)
 
 ## Do meta descriptions help rankings?
 

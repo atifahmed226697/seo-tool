@@ -1,25 +1,41 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 import { tools } from "@/lib/tools";
+import { getAllPosts } from "@/lib/blog";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://seotoolkit.local";
+  const baseUrl = (
+    process.env.NEXT_PUBLIC_SITE_URL || "https://seotoolkit.local"
+  ).replace(/\/+$/, "");
+
   const now = new Date();
 
-  // Root homepage entry
-  const homeEntry = {
+  const homeEntry: MetadataRoute.Sitemap[number] = {
     url: baseUrl,
     lastModified: now,
-    changeFrequency: "daily" as const,
-    priority: 1.0,
+    changeFrequency: "daily",
+    priority: 1,
   };
 
-  // Dynamic tool entries from single source of truth (lib/tools.ts)
-  const toolEntries = tools.map((tool) => ({
+  const blogEntry: MetadataRoute.Sitemap[number] = {
+    url: `${baseUrl}/blog`,
+    changeFrequency: "weekly",
+    priority: 0.7,
+  };
+
+  const toolEntries: MetadataRoute.Sitemap = tools.map((tool) => ({
     url: `${baseUrl}/tools/${tool.slug}`,
     lastModified: now,
-    changeFrequency: "weekly" as const,
+    changeFrequency: "weekly",
     priority: 0.8,
   }));
 
-  return [homeEntry, ...toolEntries];
+  // getAllPosts excludes draft articles.
+  const postEntries: MetadataRoute.Sitemap = getAllPosts().map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: post.updated || post.date,
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+
+  return [homeEntry, blogEntry, ...toolEntries, ...postEntries];
 }
