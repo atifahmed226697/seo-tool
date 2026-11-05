@@ -56,14 +56,27 @@ function formatDate(value: string | null): string {
 }
 
 /** Short note about how far away the expiry date is. */
+
 function expiryNote(value: string | null): string | null {
   if (!value) return null;
-  const d = new Date(value);
-  if (isNaN(d.getTime())) return null;
-  const days = Math.floor((d.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-  if (days < 0) return `Expired ${Math.abs(days).toLocaleString()} days ago`;
-  if (days === 0) return "Expires today";
-  return `${days.toLocaleString()} days remaining`;
+  const date = new Date(value);
+  if (!Number.isFinite(date.getTime())) return null;
+
+  const now = new Date();
+  const expiryDay = Date.UTC(
+    date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()
+  );
+  const today = Date.UTC(
+    now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()
+  );
+  const days = Math.round((expiryDay - today) / 86400000);
+
+  if (days < 0) {
+    return "Reported expiry date passed " +
+      Math.abs(days).toLocaleString() + " days ago";
+  }
+  if (days === 0) return "Reported expiry date is today";
+  return days.toLocaleString() + " days until reported expiry";
 }
 
 type Tone = "good" | "warn" | "neutral";
@@ -81,12 +94,12 @@ function describeStatus(raw: string): StatusInfo {
   const known: Record<string, StatusInfo> = {
     active: {
       label: "Active",
-      explain: "The domain is registered and working normally.",
+      explain: "The registry reports this registration status. Website and email availability are not checked.",
       tone: "good",
     },
     ok: {
       label: "OK",
-      explain: "The domain is registered and working normally.",
+      explain: "The registry reports this registration status. Website and email availability are not checked.",
       tone: "good",
     },
     clienttransferprohibited: {
@@ -227,7 +240,7 @@ function buildSummary(r: DomainAgeResult): string {
     `Domain: ${r.domain}`,
     `Age: ${r.age ? r.age.formatted : NOT_PUBLISHED}`,
     `Registered on: ${formatDate(r.registrationDate)}`,
-    `Expires on: ${formatDate(r.expiryDate)}`,
+    `Registry expiry: ${formatDate(r.expiryDate)}`,
     `Last updated: ${formatDate(r.lastUpdated)}`,
     `Registrar: ${r.registrar}`,
   ];
@@ -313,7 +326,7 @@ export default function DomainAgeCheckerUI() {
       ? [
           { label: "Registered on", value: formatDate(result.registrationDate) },
           {
-            label: "Expires on",
+            label: "Registry expiry",
             value: formatDate(result.expiryDate),
             extra: note,
           },
@@ -353,7 +366,7 @@ export default function DomainAgeCheckerUI() {
           </button>
         </div>
         <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">
-          Works with any domain extension. Subdomains are checked as the root domain.
+          Enter the registered domain, such as example.com. Availability and published details depend on the registry.
         </p>
         <TurnstileWidget
           action="domain-age"

@@ -106,48 +106,70 @@ function pickRdapBase(urls: string[]): string | null {
 /* Age calculation                                                     */
 /* ------------------------------------------------------------------ */
 
-function calculateDomainAge(fromDate: Date, toDate: Date = new Date()): {
-  years: number;
-  months: number;
-  days: number;
-  totalDays: number;
-  formatted: string;
-} {
-  let years = toDate.getFullYear() - fromDate.getFullYear();
-  let months = toDate.getMonth() - fromDate.getMonth();
-  let days = toDate.getDate() - fromDate.getDate();
 
-  if (days < 0) {
-    months -= 1;
-    const prevMonthLastDay = new Date(
-      toDate.getFullYear(),
-      toDate.getMonth(),
+function calculateDomainAge(
+  fromDate: Date,
+  toDate: Date = new Date()
+): DomainAgeResult["age"] {
+  if (
+    !Number.isFinite(fromDate.getTime()) ||
+    !Number.isFinite(toDate.getTime()) ||
+    fromDate.getTime() > toDate.getTime()
+  ) {
+    return null;
+  }
+
+  // Use UTC calendar dates consistently with the displayed dates.
+  const start = Date.UTC(
+    fromDate.getUTCFullYear(),
+    fromDate.getUTCMonth(),
+    fromDate.getUTCDate()
+  );
+  const end = Date.UTC(
+    toDate.getUTCFullYear(),
+    toDate.getUTCMonth(),
+    toDate.getUTCDate()
+  );
+
+  // Clamp anniversaries to the last valid day of the target month.
+  const anniversary = (offset: number): number => {
+    const first = new Date(Date.UTC(
+      fromDate.getUTCFullYear(),
+      fromDate.getUTCMonth() + offset,
+      1
+    ));
+    const lastDay = new Date(Date.UTC(
+      first.getUTCFullYear(),
+      first.getUTCMonth() + 1,
       0
-    ).getDate();
-    days += prevMonthLastDay;
-  }
+    )).getUTCDate();
 
-  if (months < 0) {
-    years -= 1;
-    months += 12;
-  }
+    return Date.UTC(
+      first.getUTCFullYear(),
+      first.getUTCMonth(),
+      Math.min(fromDate.getUTCDate(), lastDay)
+    );
+  };
 
-  const diffTime = Math.max(0, toDate.getTime() - fromDate.getTime());
-  const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  let wholeMonths =
+    (toDate.getUTCFullYear() - fromDate.getUTCFullYear()) * 12 +
+    toDate.getUTCMonth() - fromDate.getUTCMonth();
+
+  if (anniversary(wholeMonths) > end) wholeMonths -= 1;
+
+  const years = Math.floor(wholeMonths / 12);
+  const months = wholeMonths % 12;
+  const days = Math.round((end - anniversary(wholeMonths)) / 86400000);
+  const totalDays = Math.round((end - start) / 86400000);
 
   const parts: string[] = [];
-  if (years > 0) parts.push(`${years} ${years === 1 ? "year" : "years"}`);
-  if (months > 0) parts.push(`${months} ${months === 1 ? "month" : "months"}`);
-  if (days > 0 || parts.length === 0)
-    parts.push(`${days} ${days === 1 ? "day" : "days"}`);
+  if (years) parts.push(years + (years === 1 ? " year" : " years"));
+  if (months) parts.push(months + (months === 1 ? " month" : " months"));
+  if (days || !parts.length) {
+    parts.push(days + (days === 1 ? " day" : " days"));
+  }
 
-  return {
-    years: Math.max(0, years),
-    months: Math.max(0, months),
-    days: Math.max(0, days),
-    totalDays,
-    formatted: parts.join(", "),
-  };
+  return { years, months, days, totalDays, formatted: parts.join(", ") };
 }
 
 /* ------------------------------------------------------------------ */
@@ -272,7 +294,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
           {
             code: "not_registered",
-            error: `"${domain}" is not registered. The registry confirms this domain name does not exist.`,
+            error: `No registration record was returned for "${domain}". This does not confirm that the name is available to register.`,
           },
           { status: 404 }
         );
@@ -300,38 +322,38 @@ export async function POST(request: NextRequest) {
       clearTimeout(timeoutId);
     }
 
-    // 5. Extract events (registration, expiry, last changed)
-    let registrationDateStr: string | null = null;
-    let expiryDateStr: string | null = null;
-    let lastUpdatedStr: string | null = null;
 
-    if (Array.isArray(rdapData.events)) {
-      for (const event of rdapData.events) {
-        const action = (event.eventAction || "").toLowerCase();
-        const date = event.eventDate || null;
-        if (!date) continue;
+    // Use only matching RDAP events; transfers and renewals are distinct.
+    const events = Array.isArray(rdapData.events) ? rdapData.events : [];
 
+    const pickEventDate = (
+      action: string,
+      newest: boolean,
+      allowFuture: boolean
+    ): string | null => {
+      const dates: number[] = [];
+      for (const event of events) {
         if (
-          action === "registration" ||
-          action === "created" ||
-          action === "transfer"
-        ) {
-          if (!registrationDateStr) registrationDateStr = date;
-        } else if (
-          action === "expiration" ||
-          action === "expiration date" ||
-          action === "renew"
-        ) {
-          if (!expiryDateStr) expiryDateStr = date;
-        } else if (
-          action === "last changed" ||
-          action === "last update" ||
-          action === "last updated"
-        ) {
-          if (!lastUpdatedStr) lastUpdatedStr = date;
-        }
+          !event ||
+          typeof event.eventAction !== "string" ||
+          event.eventAction.trim().toLowerCase() !== action ||
+          typeof event.eventDate !== "string"
+        ) continue;
+
+        const time = Date.parse(event.eventDate);
+        if (!Number.isFinite(time)) continue;
+        if (!allowFuture && time > Date.now()) continue;
+        dates.push(time);
       }
-    }
+
+      if (!dates.length) return null;
+      dates.sort((a, b) => a - b);
+      return new Date(newest ? dates[dates.length - 1] : dates[0]).toISOString();
+    };
+
+    const registrationDateStr = pickEventDate("registration", false, false);
+    const expiryDateStr = pickEventDate("expiration", true, true);
+    const lastUpdatedStr = pickEventDate("last changed", true, false);
 
     // 6. Extract registrar name
     let registrarName = NOT_PUBLISHED;
