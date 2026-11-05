@@ -150,15 +150,15 @@ function PixelBar({ pixels, limit }: { pixels: number; limit: number }) {
   if (pixels > 0 && pixels < limit * 0.5) {
     bar = "bg-accent-400";
     text = "text-accent-600 dark:text-accent-400";
-    message = "A bit short";
+    message = "Below preview guide";
   } else if (pixels >= limit * 0.5 && pixels <= limit) {
     bar = "bg-emerald-500";
     text = "text-emerald-600 dark:text-emerald-400";
-    message = "Fits well";
+    message = "Within preview guide";
   } else if (pixels > limit) {
     bar = "bg-red-500";
     text = "text-red-600 dark:text-red-400";
-    message = "Will be cut off";
+    message = "Exceeds preview estimate";
   }
 
   return (
@@ -382,7 +382,7 @@ function buildChecklist(r: MetaAnalysisResult): ChecklistRow[] {
         tag,
         status: "info",
         value: "Not set",
-        note: `Platforms use the Open Graph ${label} instead.`,
+        note: `X may use the Open Graph ${label} as a fallback.`,
       };
     }
     return { tag, status: "warn", value: "Missing", note: `Add ${key} so shared links look right.` };
@@ -395,7 +395,7 @@ function buildChecklist(r: MetaAnalysisResult): ChecklistRow[] {
       tag: "Open Graph image",
       status: "warn",
       value: "Missing",
-      note: "Add og:image so shared links show a preview picture.",
+      note: "Consider adding og:image for link previews. Display depends on the platform and image accessibility.",
     };
   } else if (!/^https?:\/\//i.test(ogImage)) {
     ogImageRow = {
@@ -414,17 +414,17 @@ function buildChecklist(r: MetaAnalysisResult): ChecklistRow[] {
       tag: "Robots",
       status: "info",
       value: "Not set",
-      note: "Search engines index the page by default.",
+      note: "No robots meta tag found. This does not confirm indexability; HTTP headers and other restrictions are not checked.",
     };
   } else if (/noindex/i.test(r.robots)) {
     robotsRow = {
       tag: "Robots",
-      status: "fail",
+      status: "warn",
       value: r.robots,
       note: "This page asks search engines not to index it. Remove noindex if you want it in search results.",
     };
   } else {
-    robotsRow = { tag: "Robots", status: "pass", value: r.robots, note: "Search engines can index this page." };
+    robotsRow = { tag: "Robots", status: "pass", value: r.robots, note: "No noindex value detected in this robots meta tag. This does not confirm indexing eligibility or status." };
   }
 
   return [
@@ -631,6 +631,11 @@ export default function MetaTagAnalyzerUI() {
           </div>
         </div>
 
+        <p className="mb-3 text-xs text-slate-600 dark:text-slate-400">
+          Approximate preview. Search engines may change the title, snippet and
+          layout. Editing here does not update the checked website.
+        </p>
+
         <SnippetPreview
           engine={engine}
           device={device}
@@ -750,8 +755,8 @@ export default function MetaTagAnalyzerUI() {
               </p>
               <p className="mt-0.5 text-sm text-slate-600 dark:text-slate-400">
                 {issueCount === 0
-                  ? "No issues found on this page."
-                  : `${issueCount} ${issueCount === 1 ? "issue" : "issues"} to fix on this page.`}
+                  ? "No review flags in these HTML checks."
+                  : `${issueCount} ${issueCount === 1 ? "item" : "items"} to review in the fetched HTML.`}
               </p>
             </div>
             <span
@@ -761,14 +766,14 @@ export default function MetaTagAnalyzerUI() {
                   : STATUS_STYLES.warn.chip
               }`}
             >
-              {issueCount === 0 ? "All good" : "Needs attention"}
+              {issueCount === 0 ? "Checks complete" : "Review suggested"}
             </span>
           </div>
 
           {/* Social previews */}
           <div>
             <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white">
-              Social previews
+              Social preview estimates
             </h3>
             <div className="grid gap-6 md:grid-cols-2">
               <div>
@@ -803,7 +808,7 @@ export default function MetaTagAnalyzerUI() {
           {/* Checklist */}
           <div>
             <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white">
-              Meta tag checklist
+              Fetched HTML checklist
             </h3>
             <div className="overflow-x-auto rounded-md border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
               <table className="w-full text-left text-sm">

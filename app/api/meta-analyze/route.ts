@@ -101,16 +101,11 @@ export async function POST(request: NextRequest) {
     // 4. Parse with Cheerio
     const $ = cheerio.load(html);
 
-    const title =
-      $("title").first().text().trim() ||
-      $('meta[property="og:title"]').attr("content")?.trim() ||
-      "";
+    const title = $("title").first().text().trim();
     const titleLength = title.length;
 
     const description =
-      $('meta[name="description"]').attr("content")?.trim() ||
-      $('meta[property="og:description"]').attr("content")?.trim() ||
-      "";
+      $('meta[name="description"]').attr("content")?.trim() || "";
     const descriptionLength = description.length;
 
     const canonical = $('link[rel="canonical"]').attr("href")?.trim() || "";
@@ -122,7 +117,7 @@ export async function POST(request: NextRequest) {
       const text = $(el).text().trim();
       if (text) h1List.push(text);
     });
-    const h1Count = h1List.length;
+    const h1Count = $("h1").length;
 
     // Collect Open Graph metadata
     const openGraph: Record<string, string> = {};
@@ -144,146 +139,84 @@ export async function POST(request: NextRequest) {
       }
     });
 
-    // 5. Build Audit Status Checks
-    // Check Title (Ideal 30 - 60 chars)
-    let titleCheck: AuditCheck;
-    if (titleLength === 0) {
-      titleCheck = {
-        label: "Page Title",
-        value: "Missing",
-        status: "fail",
-        suggestion: "Missing title tag. Search engines require a title to rank and display your webpage.",
-      };
-    } else if (titleLength >= 30 && titleLength <= 60) {
-      titleCheck = {
-        label: "Page Title",
-        value: `${titleLength} characters`,
-        status: "pass",
-        suggestion: "Optimal length (30-60 characters). Displays properly in Google SERPs.",
-      };
-    } else if (titleLength < 30) {
-      titleCheck = {
-        label: "Page Title",
-        value: `${titleLength} characters`,
-        status: "warn",
-        suggestion: "Title is brief. Expanding to 30-60 characters helps target more relevant keywords.",
-      };
-    } else if (titleLength <= 70) {
-      titleCheck = {
-        label: "Page Title",
-        value: `${titleLength} characters`,
-        status: "warn",
-        suggestion: "Title is near Google's pixel limit (60-70 characters) and may truncate on mobile.",
-      };
-    } else {
-      titleCheck = {
-        label: "Page Title",
-        value: `${titleLength} characters`,
-        status: "fail",
-        suggestion: "Title exceeds 70 characters and will be cut off by search engines.",
-      };
-    }
+    // Length bands are editorial guidance, not search engine limits.
+    const lengthCheck = (
+      label: string,
+      length: number,
+      min: number,
+      max: number,
+      missing: string
+    ): AuditCheck => {
+      if (length === 0) {
+        return {
+          label,
+          value: "Missing",
+          status: "warn",
+          suggestion: missing,
+        };
+      }
 
-    // Check Description (Ideal 70 - 160 chars)
-    let descCheck: AuditCheck;
-    if (descriptionLength === 0) {
-      descCheck = {
-        label: "Meta Description",
-        value: "Missing",
-        status: "fail",
-        suggestion: "Missing meta description. Google will generate automated snippets from page body.",
+      const withinGuide = length >= min && length <= max;
+      return {
+        label,
+        value: length + " characters",
+        status: withinGuide ? "pass" : "warn",
+        suggestion: withinGuide
+          ? "Within this tool's " + min + "-" + max +
+            " character guide. Review relevance and clarity; search appearance can vary."
+          : "Outside this tool's " + min + "-" + max +
+            " character guide. This is not a search engine limit; review the wording and preview.",
       };
-    } else if (descriptionLength >= 70 && descriptionLength <= 160) {
-      descCheck = {
-        label: "Meta Description",
-        value: `${descriptionLength} characters`,
-        status: "pass",
-        suggestion: "Optimal length (70-160 characters). Captures user intent without truncation.",
-      };
-    } else if (descriptionLength < 70) {
-      descCheck = {
-        label: "Meta Description",
-        value: `${descriptionLength} characters`,
-        status: "warn",
-        suggestion: "Description is under 70 characters. Provide more context to increase search CTR.",
-      };
-    } else if (descriptionLength <= 180) {
-      descCheck = {
-        label: "Meta Description",
-        value: `${descriptionLength} characters`,
-        status: "warn",
-        suggestion: "Description is slightly long and may truncate on narrower mobile screens.",
-      };
-    } else {
-      descCheck = {
-        label: "Meta Description",
-        value: `${descriptionLength} characters`,
-        status: "fail",
-        suggestion: "Description exceeds 180 characters and will be truncated in search snippets.",
-      };
-    }
+    };
 
-    // Check H1 Count (Exactly 1 H1)
-    let h1Check: AuditCheck;
-    if (h1Count === 1) {
-      h1Check = {
-        label: "H1 Heading",
-        value: "1 H1 tag found",
-        status: "pass",
-        suggestion: "Optimal structure. Exactly one primary H1 heading provides clear topical hierarchy.",
-      };
-    } else if (h1Count > 1) {
-      h1Check = {
-        label: "H1 Heading",
-        value: `${h1Count} H1 tags found`,
-        status: "warn",
-        suggestion: `Found ${h1Count} H1 headings. Best practice is a single H1 to avoid diluting topical focus.`,
-      };
-    } else {
-      h1Check = {
-        label: "H1 Heading",
-        value: "0 H1 tags found",
-        status: "fail",
-        suggestion: "No H1 heading found. Add an H1 tag to establish the main topic of your page.",
-      };
-    }
+    const titleCheck = lengthCheck(
+      "Page Title",
+      titleLength,
+      30,
+      60,
+      "No title text found. Add a concise, descriptive title. Search engines may generate a title from other page content."
+    );
 
-    // Check Canonical Tag
-    let canonicalCheck: AuditCheck;
-    if (canonical) {
-      canonicalCheck = {
-        label: "Canonical Tag",
-        value: "Present",
-        status: "pass",
-        suggestion: "Canonical link is specified, preventing duplicate content dilution.",
-      };
-    } else {
-      canonicalCheck = {
-        label: "Canonical Tag",
-        value: "Missing",
-        status: "warn",
-        suggestion: "No canonical tag found. Add <link rel=\"canonical\"> to designate original source.",
-      };
-    }
+    const descCheck = lengthCheck(
+      "Meta Description",
+      descriptionLength,
+      70,
+      160,
+      "No meta description found. Consider a useful page summary. Search engines may use page content for snippets."
+    );
 
-    // Check Open Graph Image
+    const h1Check: AuditCheck = {
+      label: "H1 Heading",
+      value: h1Count + " H1 tags found",
+      status: h1Count === 1 && h1List.length === 1 ? "pass" : "warn",
+      suggestion:
+        h1Count === 0
+          ? "No H1 found in the fetched HTML. Review whether the page has a clear main heading."
+          : h1List.length < h1Count
+            ? "At least one H1 has no text. Review the main heading and heading structure."
+            : h1Count > 1
+              ? "Multiple H1 tags found. Review whether they express a clear page structure; the count alone does not establish an SEO problem."
+              : "One non-empty H1 found. Review whether it clearly describes the page topic.",
+    };
+
+    const canonicalCheck: AuditCheck = {
+      label: "Canonical Tag",
+      value: canonical ? "Present" : "Missing",
+      status: canonical ? "pass" : "warn",
+      suggestion: canonical
+        ? "Canonical tag found. Verify its destination. It signals a preferred URL; its presence does not confirm the search engine's selection."
+        : "No HTML canonical tag found. Consider specifying a preferred URL where appropriate. HTTP header canonicals are not checked.",
+    };
+
     const ogImage = openGraph["og:image"] || twitter["twitter:image"] || "";
-    let ogImageCheck: AuditCheck;
-    if (ogImage) {
-      ogImageCheck = {
-        label: "Social Share Image",
-        value: "Present",
-        status: "pass",
-        suggestion: "Open Graph image specified. Social media posts will feature rich banner previews.",
-      };
-    } else {
-      ogImageCheck = {
-        label: "Social Share Image",
-        value: "Missing",
-        status: "warn",
-        suggestion: "No og:image tag found. Social shares will display as plain text without preview image.",
-      };
-    }
+    const ogImageCheck: AuditCheck = {
+      label: "Social Share Image",
+      value: ogImage ? "Present" : "Missing",
+      status: ogImage ? "pass" : "warn",
+      suggestion: ogImage
+        ? "A social image tag was found. Image access and platform requirements affect whether a preview appears."
+        : "No og:image or twitter:image found. Consider adding a suitable image for link previews.",
+    };
 
     const result: MetaAnalysisResult = {
       url: normalizedUrl,
