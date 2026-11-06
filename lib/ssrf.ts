@@ -171,7 +171,13 @@ async function resolveTarget(
     addresses.find((record) => record.family === 4) ||
     addresses[0];
 
-  return { url, hostname, address };
+  return { url, hostname, address, addresses };
+}
+
+/** Resolve only addresses the existing outbound safety policy accepts. */
+export async function resolvePublicAddresses(rawUrl: string) {
+  const { url, addresses } = await resolveTarget(rawUrl, AbortSignal.timeout(DEFAULT_TIMEOUT_MS));
+  return { hostname: url.hostname, addresses: Array.from(new Set(addresses.map(record => record.address))) };
 }
 
 export async function validateUrlForSsrf(
@@ -445,4 +451,31 @@ export async function safeCheckLink(
   } finally {
     clearTimeout(timer);
   }
+}
+
+/** Inspect each HTTP hop using DNS-pinned requests and a single time budget. */
+export async function inspectHttpRoute(rawUrl: string) {
+  const signal = AbortSignal.timeout(6_000);
+  const hops: { url: string; status: number }[] = [];
+  const seen = new Set<string>();
+  let current = new URL(rawUrl);
+
+  for (let index = 0; index <= MAX_REDIRECTS; index++) {
+    if (current.port) throw new Error("Only standard HTTP and HTTPS ports are supported.");
+    current.hash = "";
+    if (seen.has(current.href)) return { hops, issue: "Redirect loop detected." };
+    seen.add(current.href);
+
+    let response = await requestTarget(current.href, "HEAD", false, 0, signal);
+    if ([403, 405, 501].includes(response.status)) {
+      response = await requestTarget(current.href, "GET", false, 0, signal);
+    }
+    hops.push({ url: current.href, status: response.status });
+    if (!REDIRECT_CODES.has(response.status)) return { hops };
+    if (!response.location) return { hops, issue: "The redirect response did not include a Location header." };
+    if (index === MAX_REDIRECTS) return { hops, issue: "The redirect limit was reached." };
+    current = new URL(response.location, current);
+  }
+
+  return { hops };
 }

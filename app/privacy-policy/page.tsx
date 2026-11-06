@@ -37,6 +37,13 @@ export default function PrivacyPolicyPage() {
         the results.
       </p>
 
+      <p>
+        Image and PDF tools process your files in your browser. Image to Text
+        downloads an English recognition model. Page Speed Test sends the URL
+        you submit to Google PageSpeed Insights to run a Lighthouse test.
+        Domain Hosting Checker queries public IP registration services.
+      </p>
+
       <LegalHeading>Technical data and abuse protection</LegalHeading>
       <p>
         Like most websites, our server and hosting provider may process

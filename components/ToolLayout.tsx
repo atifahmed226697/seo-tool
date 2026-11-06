@@ -190,6 +190,86 @@ const HOW_TO_STEPS: Record<string, { title: string; text: string }[]> = {
       text: "See the age, registration and expiry dates, and the registrar.",
     },
   ],
+  "robots-txt-generator": [
+    { title: "Provide input", text: "Enter crawler groups and Allow or Disallow paths. Add your sitemap URL if you have one." },
+    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Use the result", text: "Copy or download robots.txt and place it at the root of your site." },
+  ],
+  "xml-sitemap-generator": [
+    { title: "Provide input", text: "Paste one complete URL per line. Use the same protocol and hostname for all pages." },
+    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Use the result", text: "Download sitemap.xml and publish it on your site." },
+  ],
+  "json-viewer": [
+    { title: "Provide input", text: "Paste a JSON document into the input." },
+    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Use the result", text: "Review the formatted JSON or copy and download it." },
+  ],
+  "favicon-generator": [
+    { title: "Provide input", text: "Choose a JPG, PNG or WebP logo or image." },
+    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Use the result", text: "Download the favicon with 16, 32 and 48 pixel versions." },
+  ],
+  "image-compressor": [
+    { title: "Provide input", text: "Choose an image, a target size and an output format." },
+    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Use the result", text: "Compare the original and compressed sizes and download the result." },
+  ],
+  "redirect-checker": [
+    { title: "Provide input", text: "Enter the public URL you want to inspect." },
+    { title: "Run the tool", text: "Complete verification and submit the check." },
+    { title: "Use the result", text: "Review each HTTP status and the destination shown at the end of the chain." },
+  ],
+  "is-it-down": [
+    { title: "Provide input", text: "Enter the public URL you want to check." },
+    { title: "Run the tool", text: "Complete verification and submit the check." },
+    { title: "Use the result", text: "Read the observed HTTP status or connection error." },
+  ],
+  "domain-hosting-checker": [
+    { title: "Provide input", text: "Enter the public domain you want to look up." },
+    { title: "Run the tool", text: "Complete verification and submit the check." },
+    { title: "Use the result", text: "Review its IP addresses and the registered network. A proxy can hide the origin host." },
+  ],
+  "image-converter": [
+    { title: "Provide input", text: "Choose an image and select the output format." },
+    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Use the result", text: "Preview and download the converted image." },
+  ],
+  "html-viewer": [
+    { title: "Provide input", text: "Paste the HTML you want to preview." },
+    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Use the result", text: "Review the rendered markup. The preview disables scripts and external resources." },
+  ],
+  "merge-pdf": [
+    { title: "Provide input", text: "Choose two to ten PDFs and arrange them in the order you want." },
+    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Use the result", text: "Download the merged PDF." },
+  ],
+  "split-pdf": [
+    { title: "Provide input", text: "Choose a PDF and enter page numbers or ranges, such as 1, 3-5." },
+    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Use the result", text: "Download a new PDF containing the selected pages." },
+  ],
+  "rotate-pdf": [
+    { title: "Provide input", text: "Choose a PDF, select the pages and set the clockwise rotation." },
+    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Use the result", text: "Download the full PDF with the selected pages rotated." },
+  ],
+  "pdf-to-jpg": [
+    { title: "Provide input", text: "Choose a PDF and enter up to ten page numbers or a range." },
+    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Use the result", text: "Download each selected page as a JPG." },
+  ],
+  "image-to-text": [
+    { title: "Provide input", text: "Choose a clear JPG, PNG or WebP with English text." },
+    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Use the result", text: "Review the extracted text, then copy or download it." },
+  ],
+  "page-speed-test": [
+    { title: "Provide input", text: "Enter a public URL and select mobile or desktop." },
+    { title: "Run the tool", text: "Complete verification and submit the check." },
+    { title: "Use the result", text: "Review the Lighthouse lab score, timings and available suggestions." },
+  ],
 };
 
 interface ToolLayoutProps {
