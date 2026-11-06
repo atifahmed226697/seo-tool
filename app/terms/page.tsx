@@ -1,97 +1,62 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPage, LegalHeading } from "@/components/LegalPage";
+import { sitePageMetadata } from "@/lib/site-page-metadata";
 
-export const metadata: Metadata = {
-  title: "Terms & Conditions | SEO Toolkit",
-  description:
-    "Terms and conditions for using SEO Toolkit, including acceptable use, disclaimers and limits of liability.",
-};
+export const metadata = sitePageMetadata(
+  "/terms",
+  "Terms and Conditions",
+  "Read the terms for using SEO Toolkit, including acceptable use, result limitations and responsibility for submitted inputs.",
+);
 
 export default function TermsPage() {
   return (
-    <LegalPage title="Terms & Conditions" updated="November 2, 2026">
+    <LegalPage title="Terms and Conditions" updated="November 6, 2026">
       <p>
-        By using SEO Toolkit you agree to these terms. If you do not agree,
-        please do not use the site.
-      </p>
-
-      <LegalHeading>Use of the tools</LegalHeading>
-      <p>
-        The tools on this site are free to use for personal and commercial
-        work. You are responsible for how you use the results.
+        These terms apply when you use SEO Toolkit. The public tools are free
+        to use for personal and commercial work. By using the site, you agree
+        to these terms.
       </p>
 
       <LegalHeading>Acceptable use</LegalHeading>
-      <p>When using the site you agree not to:</p>
+      <p>Use the tools for lawful tasks and stay within the limits shown on each tool.</p>
       <ul className="list-disc space-y-2 pl-6">
-        <li>Send automated or excessive requests that slow down the service.</li>
-        <li>Try to break, overload or gain unauthorized access to the site.</li>
-        <li>
-          Use the URL-checking tools to scan websites you have no right to
-          check, or for any illegal purpose.
-        </li>
-        <li>Copy or resell the site&apos;s tools as your own product.</li>
+        <li>Submit files and URLs only when you have the right to process or check them.</li>
+        <li>Respect rate limits, verification and access restrictions.</li>
+        <li>Avoid excessive automated requests, service disruption and attempts to gain unauthorized access.</li>
+        <li>Respect intellectual property rights and avoid copying or reselling the site’s tools as your own product.</li>
       </ul>
 
-      <LegalHeading>Accuracy of results</LegalHeading>
+      <LegalHeading>Results and availability</LegalHeading>
       <p>
-        We try to keep the tools accurate, but results depend on third-party
-        data and on the pages you check. Domain, meta tag and link results are
-        provided for information only and may sometimes be incomplete or out of
-        date. Please verify important results before relying on them.
+        Results depend on the input, the destination response and any external
+        data source used for the check. Verify important results against the
+        original page or an authoritative record before acting on them. The
+        service is provided as available and without warranties to the extent
+        permitted by applicable law.
       </p>
 
-      <LegalHeading>No warranty</LegalHeading>
+      <LegalHeading>Responsibility and limitations</LegalHeading>
       <p>
-        The site and its tools are provided &quot;as is&quot; and &quot;as
-        available&quot;, without warranties of any kind. We do not promise that
-        the site will always be available or free of errors.
+        You are responsible for your inputs and how you use tool output. To
+        the extent permitted by applicable law, SEO Toolkit is not liable for
+        losses arising from use of the site or its unavailability, including
+        loss of traffic, rankings or revenue.
       </p>
 
-      <LegalHeading>Limitation of liability</LegalHeading>
+      <LegalHeading>Content and external services</LegalHeading>
       <p>
-        To the extent allowed by law, SEO Toolkit is not liable for any loss or
-        damage that comes from using, or not being able to use, the site or its
-        tools, including lost traffic, rankings or revenue.
+        You keep the rights you hold in the content you provide. SEO Toolkit’s
+        own content and branding are protected by applicable rights. External
+        sites and services may have their own terms. See the{" "}
+        <Link href="/privacy-policy" className="font-semibold underline">Privacy Policy</Link>
+        {" "}for information about how tool inputs are processed.
       </p>
 
-      <LegalHeading>Advertising and third-party links</LegalHeading>
+      <LegalHeading>Changes and contact</LegalHeading>
       <p>
-        The site may display ads and links to third-party websites. We do not
-        control or endorse those sites and are not responsible for their
-        content. See our{" "}
-        <Link
-          href="/privacy-policy"
-          className="font-semibold text-indigo-700 underline hover:text-accent-600 dark:text-accent-400"
-        >
-          Privacy Policy
-        </Link>{" "}
-        for how advertising cookies work.
-      </p>
-
-      <LegalHeading>Intellectual property</LegalHeading>
-      <p>
-        The design, text and code of SEO Toolkit belong to us. Text you enter
-        into the tools remains yours.
-      </p>
-
-      <LegalHeading>Changes to these terms</LegalHeading>
-      <p>
-        We may update these terms from time to time. Continuing to use the site
-        after a change means you accept the new terms.
-      </p>
-
-      <LegalHeading>Contact us</LegalHeading>
-      <p>
-        Questions about these terms? Email us at{" "}
-        <a
-          href="mailto:contact@yourdomain.com"
-          className="font-semibold text-indigo-700 underline hover:text-accent-600 dark:text-accent-400"
-        >
-          contact@yourdomain.com
-        </a>
-        .
+        We may revise these terms as the service changes. The date at the top
+        shows when this page was last updated. For questions about these
+        terms, visit the <Link href="/contact" className="font-semibold underline">contact page</Link>.
       </p>
     </LegalPage>
   );

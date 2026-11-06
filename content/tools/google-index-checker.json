@@ -1,0 +1,15 @@
+{
+  "seoTitle": "Google Index Checker Preview",
+  "metaDescription": "Explore the planned single and bulk URL workflow. Live Google indexing checks are unavailable.",
+  "intro": "Explore the planned single and bulk URL workflow. Live Google indexing checks are unavailable.",
+  "aboutTitle": "How can I verify indexing for a page I manage?",
+  "about": "Use URL Inspection in Google Search Console for a verified property. This preview cannot check a URL’s live indexing status.",
+  "exampleTitle": "Check a new article in Search Console",
+  "example": "Copy the canonical article URL into URL Inspection and read the indexed status for that address.",
+  "faqs": [
+    {
+      "question": "Does this page provide Google cache dates?",
+      "answer": "Cache dates and live index results are unavailable in this preview."
+    }
+  ]
+}

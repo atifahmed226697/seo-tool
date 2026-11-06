@@ -1,0 +1,15 @@
+{
+  "seoTitle": "Image Compressor to a Target File Size",
+  "metaDescription": "Compress JPG, PNG or WebP input into JPG or WebP with a size target as low as 50 KB.",
+  "intro": "Compress JPG, PNG or WebP input into JPG or WebP with a size target as low as 50 KB.",
+  "aboutTitle": "How does the compressor reach a size target?",
+  "about": "The browser re-encodes the image and can reduce its dimensions if needed. Compare the output size and preview before replacing a production image.",
+  "exampleTitle": "Prepare a smaller article thumbnail",
+  "example": "Upload your source image, select WebP and choose a 100 KB target. Inspect the text and edges in the preview before downloading.",
+  "faqs": [
+    {
+      "question": "Will the compressed image keep its original dimensions?",
+      "answer": "It keeps the dimensions when the target can be met at that size. A tighter target may require a smaller image."
+    }
+  ]
+}

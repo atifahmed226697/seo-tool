@@ -1,20 +1,15 @@
 {
-  "aboutTitle": "What does the UTM Link Builder create?",
-  "about": "Build a campaign tracking link for a web page or a Google Play app. Add a source, medium and campaign name, with optional term and content values.",
-  "exampleTitle": "Example newsletter campaign",
-  "example": "For a website link, choose Web and enter your landing page URL. Use \"newsletter\" as the source, \"email\" as the medium and \"spring_launch\" as the campaign name, then copy the generated link.",
+  "seoTitle": "UTM Link Builder for Campaign Tracking",
+  "metaDescription": "Add source, medium and campaign parameters to a website or Google Play link.",
+  "intro": "Add source, medium and campaign parameters to a website or Google Play link.",
+  "aboutTitle": "How do UTM parameters work?",
+  "about": "UTM parameters label a visit so analytics tools can attribute it to a campaign. Use consistent source, medium and campaign names across all links for the same initiative.",
+  "exampleTitle": "Tag a newsletter link",
+  "example": "For a launch email, use source newsletter, medium email and campaign spring-launch. Copy the generated URL and open it once before publishing.",
   "faqs": [
     {
-      "question": "Which option should I use for a website?",
-      "answer": "Choose Web and enter the full URL of the page visitors should reach. Choose Google Play when building a link for an Android app."
-    },
-    {
-      "question": "What should I enter as the Google Play App ID?",
-      "answer": "Enter the app's package name. It appears after id= in the app's Google Play listing URL."
-    },
-    {
-      "question": "Does creating a link automatically configure analytics?",
-      "answer": "No. Reporting depends on the analytics or attribution setup used by the destination website or app."
+      "question": "Where do I see campaign traffic?",
+      "answer": "Look for acquisition or campaign reporting in the analytics system configured on your destination site. The link builder creates the URL."
     }
   ]
 }

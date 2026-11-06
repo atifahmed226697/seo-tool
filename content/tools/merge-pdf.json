@@ -1,0 +1,15 @@
+{
+  "seoTitle": "Merge PDF Files in Your Browser",
+  "metaDescription": "Combine two to ten PDF files in the order you choose, up to 50 MB total.",
+  "intro": "Combine two to ten PDF files in the order you choose, up to 50 MB total.",
+  "aboutTitle": "How is page order decided when I merge PDFs?",
+  "about": "The output follows the order in the file list, with pages from each document kept together. Move files into the correct order before merging.",
+  "exampleTitle": "Combine an audit summary and appendix",
+  "example": "Add the summary and appendix PDFs. Put the summary first, merge them and check the first page of the downloaded file.",
+  "faqs": [
+    {
+      "question": "Do I upload the PDFs to a server?",
+      "answer": "The PDF files are processed in your browser. The total input size limit is 50 MB."
+    }
+  ]
+}

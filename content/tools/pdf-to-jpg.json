@@ -1,0 +1,15 @@
+{
+  "seoTitle": "PDF to JPG Converter for Selected Pages",
+  "metaDescription": "Convert up to ten selected pages of a PDF to downloadable JPG images in your browser.",
+  "intro": "Convert up to ten selected pages of a PDF to downloadable JPG images in your browser.",
+  "aboutTitle": "What do I get from converting a PDF page to JPG?",
+  "about": "Each selected page becomes a separate image. Use a JPG when you need a preview or thumbnail of the page and the text does not need to remain selectable.",
+  "exampleTitle": "Make an image preview of a report cover",
+  "example": "Choose the PDF, enter 1, convert it and download the cover as a JPG. Open the image to check readability at the size you plan to publish.",
+  "faqs": [
+    {
+      "question": "Can I download a set of pages?",
+      "answer": "Select up to ten pages or a range per run. Download each JPG separately."
+    }
+  ]
+}

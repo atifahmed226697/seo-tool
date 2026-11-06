@@ -92,6 +92,12 @@ collections:
         required: false
         hint: Leave empty to use the existing page description.
 
+      - label: Tool Introduction
+        name: intro
+        widget: text
+        required: false
+        hint: Short description shown above the tool.
+
       - label: Explanation Heading
         name: aboutTitle
         widget: string

@@ -1,16 +1,15 @@
 {
-  "aboutTitle": "What does the Links Counter show?",
-  "about": "Review links found in a public page's HTML, including internal and external links and available nofollow information. Use the filters to inspect each group.",
-  "exampleTitle": "Example page link count",
-  "example": "Enter a public article URL and select Count Links. Compare the Internal and External groups, then inspect the Nofollow group where available.",
+  "seoTitle": "Internal and External Links Counter",
+  "metaDescription": "Count and filter HTTP links by hostname and nofollow status on a public page.",
+  "intro": "Count and filter HTTP links by hostname and nofollow status on a public page.",
+  "aboutTitle": "How are links classified?",
+  "about": "Links to the same hostname as the submitted page are counted as internal. Other hostnames, including subdomains, are counted as external. The report includes up to 500 link entries.",
+  "exampleTitle": "Review outgoing links in an article",
+  "example": "Scan an article and select the external filter. Review the destination and anchor text for links that should point elsewhere.",
   "faqs": [
     {
-      "question": "Does counting links check whether they work?",
-      "answer": "The Links Counter lists and groups links. Use the Broken Link Checker when you want to test destination responses."
-    },
-    {
-      "question": "Can the report miss links?",
-      "answer": "Links created by JavaScript after the initial HTML loads may be absent. Access restrictions can also prevent the page from being scanned."
+      "question": "Does the count include every kind of link?",
+      "answer": "The scan reports HTTP and HTTPS links from the fetched HTML. Fragment-only, email and telephone links are excluded."
     }
   ]
 }

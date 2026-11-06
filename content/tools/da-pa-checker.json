@@ -1,0 +1,15 @@
+{
+  "seoTitle": "DA and PA Checker Preview",
+  "metaDescription": "Explore the single and bulk input modes for a planned authority checker. Live scores are unavailable.",
+  "intro": "Explore the single and bulk input modes for a planned authority checker. Live scores are unavailable.",
+  "aboutTitle": "What can I do with this preview?",
+  "about": "You can try the input and example workflow. This page cannot retrieve Domain Authority or Page Authority scores.",
+  "exampleTitle": "Try the bulk input",
+  "example": "Load the sample domains and review how the interface accepts multiple entries.",
+  "faqs": [
+    {
+      "question": "Can I verify a live authority score here?",
+      "answer": "Live authority data is unavailable in this preview. Check the metric with its data provider."
+    }
+  ]
+}

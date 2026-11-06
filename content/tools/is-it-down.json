@@ -1,0 +1,15 @@
+{
+  "seoTitle": "Is It Down Website Reachability Check",
+  "metaDescription": "Check whether a public URL responds from our server and see its HTTP status or connection error.",
+  "intro": "Check whether a public URL responds from our server and see its HTTP status or connection error.",
+  "aboutTitle": "What does a reachability result prove?",
+  "about": "It tells you what one request from our server observed. A successful response shows that the URL responded to that request. Errors can be specific to a network or location.",
+  "exampleTitle": "Compare a failed browser load with a server check",
+  "example": "Paste the page URL and review the response. If our check succeeds, try the page on a different connection before assuming the site is down for everyone.",
+  "faqs": [
+    {
+      "question": "Is HTTP 403 the same as a site outage?",
+      "answer": "A 403 means a server responded and denied access. The restriction can apply only to particular users or automated checks."
+    }
+  ]
+}

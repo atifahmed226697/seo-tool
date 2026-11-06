@@ -1,16 +1,15 @@
 {
-  "aboutTitle": "What does the Word Counter measure?",
-  "about": "Count words, characters, sentences and paragraphs as you edit your text. The tool also provides reading and speaking time estimates to help you plan content length.",
-  "exampleTitle": "Example word count",
-  "example": "Enter \"Write clear and useful content.\" to check a five-word sentence. Add another paragraph to see how the counts change.",
+  "seoTitle": "Word Counter with Reading and Speaking Estimates",
+  "metaDescription": "Count words, characters, sentences and paragraphs as you edit your text in the browser.",
+  "intro": "Count words, characters, sentences and paragraphs as you edit your text in the browser.",
+  "aboutTitle": "How does the word counter calculate reading time?",
+  "about": "Reading time is estimated at 200 words per minute and speaking time at 130. The tool splits words at whitespace, so counts can differ from editors that use other rules.",
+  "exampleTitle": "Estimate a newsletter’s reading time",
+  "example": "Paste a 400-word draft. The reading estimate is about two minutes. Use the character counts when you have a separate space limit.",
   "faqs": [
     {
-      "question": "Are reading and speaking times exact?",
-      "answer": "They are estimates. Actual time varies with the reader, delivery speed and complexity of the text."
-    },
-    {
-      "question": "Why might another editor show a different count?",
-      "answer": "Tools can count punctuation, hyphenated words and whitespace differently. Use the counting method required by your publisher when a strict limit applies."
+      "question": "Can I see the character count without spaces?",
+      "answer": "Yes. The tool displays the total character count and a separate count that excludes whitespace."
     }
   ]
 }

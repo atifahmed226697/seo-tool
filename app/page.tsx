@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
+import { sitePageMetadata } from "@/lib/site-page-metadata";
 import Link from "next/link";
 import { ArrowRight, CalendarClock, Link2, Minus, Plus, Search } from "lucide-react";
 import HomeTools from "@/components/HomeTools";
 import { tools } from "@/lib/tools";
 
-export const metadata: Metadata = {
-  title: "Free SEO Tools for Webmasters and Marketers",
-  description: "Analyze metadata, check links, research domains and prepare content with SEO Toolkit.",
-};
+export const metadata = sitePageMetadata(
+  "/",
+  "Free SEO Tools for Website Audits and Publishing",
+  "Check meta tags, broken links and redirects, generate robots.txt and XML sitemaps, and prepare images and content with free online tools.",
+);
 
 const featured = [
   { slug: "meta-tag-analyzer", description: "See the title, description and social tags a public page provides.", action: "Analyze metadata", Icon: Search },
@@ -16,16 +17,17 @@ const featured = [
 ];
 
 const steps = [
-  ["Choose a tool", "Search by name or browse all tools below."],
-  ["Enter your input", "Add a public page URL, a domain or some text, depending on the tool."],
-  ["Review the result", "Use what you find to decide what to update or investigate next."],
+  ["Find the right tool", "Search by name or task, such as redirects, sitemaps or image compression."],
+  ["Enter the input", "Paste a public URL or text, or choose a file for an image or PDF tool."],
+  ["Review and use the result", "Confirm flagged issues on the page itself. Copy or download the output when you use a generator or converter."],
 ];
 
 const questions = [
-  ["Do I need an account to use the tools?", "No. The tools are free to use, with no registration or credit card."],
-  ["Where should I start with a page audit?", "Start with Meta Tag Analyzer to review the title and description. Then check the heading structure, links and image alt text to decide what to update."],
-  ["Why might a public page check fail?", "Some websites require a login, block automated requests or take too long to respond. Check that the URL opens publicly and try again."],
-  ["Can I check a draft before publishing it?", "Yes. Paste the draft into Word Counter or use the text mode in Keyword Density Checker. Tools that scan a page need a public URL."],
+  ["Are the SEO tools free?", "The tools listed in the directory are free to use without an account. Some public URL checks require a verification challenge."],
+  ["Which tools should I use before publishing?", "Use Meta Tag Generator for the page title and description, Word Counter for the draft, and Image Compressor for images. Once the page is public, use Meta Tag Analyzer and Broken Link Checker to review what was published."],
+  ["Do uploaded images or PDFs leave my device?", "The image and PDF tools process selected files in your browser. The Image to Text tool downloads a recognition model. Tools that check a public URL send the address to our server."],
+  ["Why did a URL check fail even though the page opens for me?", "A site can limit automated traffic, require authentication, or respond differently by location. Confirm the URL and verify the result in your browser before changing the page."],
+  ["Can the tools tell me whether a page will rank or be indexed?", "Use the reports to check specific inputs and public page responses. For indexing status on a site you manage, check the URL in Google Search Console."],
 ];
 
 export default function HomePage() {
@@ -34,8 +36,8 @@ export default function HomePage() {
     <div className="bg-white text-brand-ink">
       <HomeTools tools={available}>
         <section aria-labelledby="quick-checks" className="mx-auto max-w-7xl px-5 py-12 sm:px-8 sm:py-16">
-          <h2 id="quick-checks" className="text-center text-3xl font-bold">Start with a quick check</h2>
-          <p className="mt-2 text-center text-sm text-slate-600">Open a tool, enter your input and get the result.</p>
+          <h2 id="quick-checks" className="text-center text-3xl font-bold">Quick checks for public pages</h2>
+          <p className="mt-2 text-center text-sm text-slate-600">Paste a URL or domain to see what the page or registry currently reports.</p>
           <ul className="mt-7 grid gap-4 sm:grid-cols-3">
             {featured.map(({ slug, description, action, Icon }) => {
               const tool = available.find((item) => item.slug === slug);
@@ -74,9 +76,9 @@ export default function HomePage() {
         <section id="about" className="scroll-mt-20 border-y border-brand-ink/10 bg-brand-blue">
           <div className="mx-auto grid max-w-7xl items-center gap-8 px-5 py-12 sm:px-8 lg:grid-cols-[1.25fr_1fr] lg:gap-16">
             <div className="max-w-xl">
-              <h2 className="text-3xl font-bold tracking-tight">Review a page before you publish</h2>
+              <h2 className="text-3xl font-bold tracking-tight">Check what a published page serves</h2>
               <p className="mt-4 leading-7 text-slate-700">
-                Use Meta Tag Analyzer on a public URL to see the title and description the page actually serves. Then review the heading outline and count the links on the page. If the page is still a draft, use Word Counter or prepare the title and description in Meta Tag Generator.
+                Start with the title and meta description, then check the page’s headings, links and image alt text. These tools read the HTML returned for the URL you enter. If a site relies on JavaScript to add content, compare the report with the page in your browser.
               </p>
             </div>
             <ul aria-label="Page review tools" className="divide-y divide-brand-ink/15 border-y border-brand-ink/15">
@@ -102,10 +104,10 @@ export default function HomePage() {
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-5 px-5 py-8 sm:px-8">
           <div>
             <h2 className="text-xl font-bold">Writing a meta description?</h2>
-            <p className="mt-1 text-sm text-slate-600">Use the guide to turn a page’s main point into a clear summary.</p>
+            <p className="mt-1 text-sm text-slate-600">See examples for an article, a service page and a product page.</p>
           </div>
           <Link href="/blog" className="inline-flex items-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-bold text-white hover:bg-brand-ink">
-            Read the guide <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            Browse SEO guides <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </div>
       </section>
@@ -127,7 +129,7 @@ export default function HomePage() {
       </section>
 
       <section className="bg-brand-ink px-5 py-10 text-center text-white sm:py-12">
-        <h2 className="text-2xl font-bold">Ready to check a page?</h2>
+        <h2 className="text-2xl font-bold">Find a tool for your next task</h2>
         <Link href="#tools" className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-bold text-brand-ink hover:bg-brand-blue">
           Browse tools <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>

@@ -1,0 +1,15 @@
+{
+  "seoTitle": "HTTP Redirect Checker for Status Codes and Chains",
+  "metaDescription": "Follow a public URL and inspect the HTTP response code at each redirect step.",
+  "intro": "Follow a public URL and inspect the HTTP response code at each redirect step.",
+  "aboutTitle": "What should I look for in a redirect chain?",
+  "about": "Check the first status code, intermediate URLs and final destination. Extra hops or a loop can make a migration harder to verify.",
+  "exampleTitle": "Test an old page after a URL change",
+  "example": "Enter the old address and confirm that it redirects to the intended new URL, which should respond successfully.",
+  "faqs": [
+    {
+      "question": "Does this detect redirects that run in JavaScript?",
+      "answer": "The checker follows HTTP redirects sent by the server. For redirects triggered by page scripts, check navigation in your browser."
+    }
+  ]
+}

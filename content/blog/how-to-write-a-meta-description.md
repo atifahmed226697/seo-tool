@@ -1,52 +1,56 @@
 ---
-title: How to Write a Meta Description | Practical Guide
-description: A meta description is the short text under your page title in
-  search results. Learn how to write one that earns more clicks.
+title: How to Write a Meta Description With Examples
+description: Write a page summary that helps people decide whether to click. See examples for articles, service pages and products, then check your published tag.
 date: 2026-11-02
+updated: 2026-11-06
 category: On-Page SEO
 image: /uploads/images.testing-1-.jpg
 draft: false
 ---
-When someone searches on Google, they see your page title, your link and a short piece of text below it. That text is usually your meta description. A good one helps people decide to click your page instead of another.
+
+A good meta description gives someone a reason to open a page. In a short, page-specific summary, say what the reader will find and include the detail that matters most to them.
 
 ## What is a meta description?
 
-A meta description is an HTML tag in the head of your page. It gives a short summary of what the page is about. Search engines may show it in the results, and social sites may use it when your link is shared.
+A meta description is the content of the `<meta name="description">` tag in a page’s HTML head. Google primarily creates snippets from the content of the page. It may use the description when it gives the searcher a better summary, and the snippet can change with the query. See [Google’s documentation on search snippets](https://developers.google.com/search/docs/appearance/snippet).
 
-## Do meta descriptions help rankings?
+## How to write one
 
-Meta descriptions are not a direct ranking factor. They still matter, because a clear description can bring more clicks from the same position in the results.
+1. Identify the question or task that brought the visitor to the page.
+2. Summarize the answer, product or service the page actually provides.
+3. Put the most useful detail near the beginning, where it can survive truncation.
+4. Read it beside the title. Use the description to add information the title leaves out.
 
-## How to write a good meta description
+## Examples for three page types
 
-### Keep it short
+### Article
 
-Aim for roughly 150 to 160 characters. Longer text may be cut off in the results.
+“Check HTTP status codes, redirect chains and final URLs before you update links after a site migration.”
 
-### Say what the page gives the reader
+This works for a guide that actually explains all three checks. The reader knows which part of the migration the guide covers.
 
-Tell people what they will find or learn. Use plain words, not a list of keywords.
+### Service page
 
-### Use the main keyword naturally
+“Compare flat-roof repair options, see which leaks can be patched and learn what to include when requesting a quote.”
 
-If the words a person searched for appear in your description, they are often shown in bold. This helps your result stand out.
+The description answers a practical question a customer may have before contacting the business. Use locations or service hours only when the page confirms them.
 
-### Make every description different
+### Product page
 
-Do not copy the same description on many pages. Each page needs its own.
+“See the 24-ounce bottle’s dimensions, lid options and care instructions before choosing a size.”
 
-> **Tip:** Write the description for a person, not for a search engine. If it would make you click, it is probably good.
+This is more useful than a list of broad keywords because it tells the shopper what they can compare on the page.
 
-## Check your work with free tools
+## How to verify the published tag
 
-Use our [Meta Tag Generator](/tools/meta-tag-generator) to build your tags, and the [Meta Tag Analyzer](/tools/meta-tag-analyzer) to check how any page looks.
+Use [Meta Tag Generator](/tools/meta-tag-generator) to produce the HTML, then publish it through your CMS or page template. Run the public URL through [Meta Tag Analyzer](/tools/meta-tag-analyzer) and compare the reported description with what you entered. If they differ, inspect the deployed page and check whether your CMS or cache is serving an older version.
 
 ## Frequently asked questions
 
-### Can Google change my meta description?
+### How long should a meta description be?
 
-Yes. Google may show a different piece of text if it thinks that fits the search better.
+Google does not set a fixed character limit for the tag. Search snippets can be shortened to fit the device. Use a concise summary and lead with what the visitor needs to know.
 
-### What if I leave it empty?
+### Why is my Google snippet different from my description?
 
-Search engines will pick text from your page. Writing your own gives you more control.
+Google can choose text from the page that better matches the search. First confirm the correct tag is published, then make sure the page itself answers the main question clearly.

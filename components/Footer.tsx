@@ -16,7 +16,7 @@ export function Footer() {
       ],
     },
     {
-      title: "Popular tools",
+      title: "Start with these tools",
       links: popularSlugs.flatMap((slug) => {
         const tool = tools.find((item) => item.slug === slug && item.status === "ready");
         return tool ? [{ label: tool.name, href: `/tools/${slug}` }] : [];
@@ -43,7 +43,7 @@ export function Footer() {
               SEO Toolkit
             </Link>
             <p className="mt-3 max-w-[16rem] text-sm leading-relaxed text-brand-ink/75">
-              Practical SEO tools and guides to help you check your pages, improve your content and track your campaigns.
+              Free tools for checking public pages, preparing content and working with images or PDFs.
             </p>
           </div>
 
@@ -63,7 +63,7 @@ export function Footer() {
 
         <div className="mt-8 flex flex-wrap justify-between gap-2 border-t border-brand-forest/20 pt-5 text-xs text-brand-ink/75">
           <p>© {new Date().getFullYear()} SEO Toolkit. All rights reserved.</p>
-          <p>Tools and guides for everyday SEO work.</p>
+          <p>SEO tools and publishing guides.</p>
         </div>
       </div>
     </footer>

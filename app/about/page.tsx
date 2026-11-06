@@ -1,13 +1,13 @@
-import type { Metadata } from "next";
+import { sitePageMetadata } from "@/lib/site-page-metadata";
 import Link from "next/link";
 import { tools } from "@/lib/tools";
 import { ArrowRight } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "About Us",
-  description:
-    "SEO Toolkit is a free collection of simple SEO and content tools for webmasters, bloggers and marketers. Learn what we build and why.",
-};
+export const metadata = sitePageMetadata(
+  "/about",
+  "About",
+  "Learn who SEO Toolkit is for, how its browser tools and public URL checks work, and how to report a problem.",
+);
 
 export default function AboutPage() {
   const liveCount = tools.filter((t) => t.status === "ready").length;
@@ -18,10 +18,10 @@ export default function AboutPage() {
       <section className="bg-brand-blue py-12 sm:py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <p className="text-sm font-bold uppercase tracking-widest text-brand-ink">
-            About Us
+            The website
           </p>
           <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-brand-ink sm:text-4xl">
-            Simple SEO tools, built to be used.
+            About SEO Toolkit
           </h1>
         </div>
       </section>
@@ -30,71 +30,41 @@ export default function AboutPage() {
       <section className="py-12 sm:py-16">
         <div className="mx-auto max-w-3xl space-y-4 px-4 text-base leading-relaxed text-slate-700 sm:px-6 lg:px-8 dark:text-slate-300">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Who we are
+            Who the tools are for
           </h2>
           <p>
-            SEO Toolkit is a free website with practical tools for webmasters,
-            bloggers, content writers and digital marketers. Right now there
-            are {liveCount} tools live, and more are on the way.
+            SEO Toolkit is for site owners, content editors and developers who
+            need to check a page or prepare a file before publishing. The directory
+            currently lists {liveCount} tools, from metadata and redirect checks
+            to sitemap, image and PDF utilities.
           </p>
 
           <h2 className="pt-6 text-2xl font-bold text-slate-900 dark:text-white">
-            Why we built it
+            How the tools work
           </h2>
           <p>
-            Many SEO tool websites are slow, full of popups, or ask you to
-            create an account before you can check one thing. We wanted the
-            opposite: open a tool, paste your input, get your answer. Nothing
-            more.
+            Text, image and PDF tools work in the browser. A public URL or domain
+            check uses our server to fetch a response or look up public records.
+            Some checks depend on external services or what the destination returns.
+            See the <Link href="/privacy-policy" className="font-semibold underline">Privacy Policy</Link> for details.
           </p>
 
           <h2 className="pt-6 text-2xl font-bold text-slate-900 dark:text-white">
-            What you can do here
+            How to read the results
           </h2>
           <p>
-            You can generate and analyze meta tags, check how old a domain is,
-            build UTM links, create hreflang tags, scan a page for broken links
-            and missing image alt text, check heading structure, and count
-            words or measure keyword density in your writing.
+            Start with one task. For example, check the old URL after a site
+            migration with <Link href="/tools/redirect-checker" className="font-semibold underline">Redirect Checker</Link>,
+            then use <Link href="/tools/meta-tag-analyzer" className="font-semibold underline">Meta Tag Analyzer</Link> on
+            the destination. Read the result alongside the published page or your
+            own dashboard before making changes.
           </p>
-
-          <h2 className="pt-6 text-2xl font-bold text-slate-900 dark:text-white">
-            How we work
-          </h2>
-          <ul className="list-disc space-y-2 pl-6">
-            <li>
-              <strong>Free to use.</strong> No signup and no credit card for any
-              live tool.
-            </li>
-            <li>
-              <strong>Private by design.</strong> Text tools run in your
-              browser. Tools that check a live page send only the address you
-              enter, and we do not store it.
-            </li>
-            <li>
-              <strong>Honest about limits.</strong> Tools that need paid data,
-              such as DA / PA and Spam Score, are marked Coming soon until they
-              work properly.
-            </li>
-            <li>
-              <strong>Supported by ads.</strong> We may show ads to cover the
-              cost of running the site. See our{" "}
-              <Link
-                href="/privacy-policy"
-                className="font-semibold text-indigo-700 underline hover:text-accent-600 dark:text-accent-400"
-              >
-                Privacy Policy
-              </Link>{" "}
-              for details.
-            </li>
-          </ul>
 
           <h2 className="pt-6 text-2xl font-bold text-slate-900 dark:text-white">
             Get in touch
           </h2>
           <p>
-            Found a bug, or want a tool we do not have yet? We would like to
-            hear it. Visit our{" "}
+            For a bug, a tool suggestion or a question about a result, visit our{" "}
             <Link
               href="/contact"
               className="font-semibold text-indigo-700 underline hover:text-accent-600 dark:text-accent-400"

@@ -35,7 +35,7 @@ export default function HomeTools({ tools, children }: { tools: Tool[]; children
       <section className="bg-brand-blue px-5 py-12 text-center sm:px-8 sm:py-16">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Free SEO tools</h1>
         <p className="mx-auto mt-4 max-w-2xl text-base text-slate-600 sm:text-lg">
-          Check a page, research a domain or prepare content before you publish.
+          Audit public pages, build sitemap and robots.txt files, and prepare text, images and PDFs for publishing.
         </p>
         <form role="search" onSubmit={showResults} className="mx-auto mt-6 flex w-full max-w-lg gap-2">
           <div className="relative min-w-0 flex-1">
@@ -75,9 +75,9 @@ export default function HomeTools({ tools, children }: { tools: Tool[]; children
 
       <section id="tools" className="mx-auto max-w-7xl scroll-mt-20 bg-white px-5 py-12 sm:px-8 sm:py-16">
         <div className="text-center">
-          <h2 ref={resultsHeading} tabIndex={-1} className="scroll-mt-20 text-3xl font-bold tracking-tight">All SEO tools</h2>
+          <h2 ref={resultsHeading} tabIndex={-1} className="scroll-mt-20 text-3xl font-bold tracking-tight">Browse all tools</h2>
           <p className="mt-2 text-sm text-slate-600">
-            {words.length ? `${matchCount} of ${toolCount} tools match your search.` : `${toolCount} free tools. Choose one to get started.`}
+            {words.length ? `${matchCount} of ${toolCount} tools match your search.` : `${toolCount} free tools for SEO, content, images and PDFs.`}
           </p>
         </div>
 

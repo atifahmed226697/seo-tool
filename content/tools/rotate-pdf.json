@@ -1,0 +1,15 @@
+{
+  "seoTitle": "Rotate Selected PDF Pages Online",
+  "metaDescription": "Turn selected PDF pages 90, 180 or 270 degrees clockwise and download the full document.",
+  "intro": "Turn selected PDF pages 90, 180 or 270 degrees clockwise and download the full document.",
+  "aboutTitle": "What happens to pages I leave unselected?",
+  "about": "Only the pages you enter receive the chosen rotation. The download contains the full document, including the other pages in their existing orientation.",
+  "exampleTitle": "Fix a sideways page in a report",
+  "example": "Select the PDF, enter the affected page number and choose 90 degrees clockwise. Open the saved file and check that page before sharing.",
+  "faqs": [
+    {
+      "question": "Can I rotate several pages at once?",
+      "answer": "Yes. Enter individual numbers and ranges together, such as 2, 5-7, then choose a single angle for that selection."
+    }
+  ]
+}

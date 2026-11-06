@@ -1,16 +1,15 @@
 {
-  "aboutTitle": "What does the Meta Tag Analyzer check?",
-  "about": "Enter a public page URL to inspect metadata returned in its HTML. Review the title, description and available social sharing tags alongside the tool's checks.",
-  "exampleTitle": "Example metadata check",
-  "example": "Paste the full URL of one of your public pages and select Check Tags. Compare the reported title and description with the content of that specific page.",
+  "seoTitle": "Meta Tag Analyzer for Public Pages",
+  "metaDescription": "Inspect the title, description, canonical, robots directives and social metadata in a public page’s HTML.",
+  "intro": "Inspect the title, description, canonical, robots directives and social metadata in a public page’s HTML.",
+  "aboutTitle": "What can I see in a metadata scan?",
+  "about": "The analyzer fetches the HTML served by a public URL and reports metadata declared there. Use the report to find missing tags, compare canonical targets and review Open Graph fields.",
+  "exampleTitle": "Check a metadata change after publishing",
+  "example": "Scan the published article, then compare its reported title, description and canonical with the values in your CMS. If they differ, check the deployed template and cache.",
   "faqs": [
     {
-      "question": "Why can a page fail to load in the analyzer?",
-      "answer": "The website may restrict automated requests, require authentication or be temporarily unavailable. Check that the URL is publicly accessible."
-    },
-    {
-      "question": "Can the report differ from what I see in my browser?",
-      "answer": "Yes. A browser may load additional content using JavaScript. The analyzer inspects the HTML returned to its request."
+      "question": "Will the preview match Google exactly?",
+      "answer": "The preview estimates how the metadata may look. Google can select a different title link or snippet for a particular search."
     }
   ]
 }

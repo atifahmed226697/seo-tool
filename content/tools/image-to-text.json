@@ -1,0 +1,15 @@
+{
+  "seoTitle": "Image to Text Converter for English OCR",
+  "metaDescription": "Extract editable English text from a JPG, PNG or WebP image in your browser.",
+  "intro": "Extract editable English text from a JPG, PNG or WebP image in your browser.",
+  "aboutTitle": "What makes OCR text more accurate?",
+  "about": "A sharp image with clear, upright text and good contrast is easier to recognize. Proofread names, numbers and punctuation before reusing the result.",
+  "exampleTitle": "Copy text from a screenshot",
+  "example": "Upload a screenshot of an English heading and paragraph, extract the text and compare it with the image before copying or downloading.",
+  "faqs": [
+    {
+      "question": "Why is the first OCR run slower?",
+      "answer": "The browser downloads the English recognition model on first use. The selected image is processed on your device."
+    }
+  ]
+}

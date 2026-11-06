@@ -1,16 +1,15 @@
 {
-  "aboutTitle": "What does the Broken Link Checker inspect?",
-  "about": "Scan a public page and test up to 25 unique links found on it. Review reported responses and failed requests to identify links that need further checking.",
-  "exampleTitle": "Example link review",
-  "example": "Enter a public article URL and select Check Links. Open any reported problem link in your browser before deciding whether to update or remove it.",
+  "seoTitle": "Broken Link Checker for a Single Web Page",
+  "metaDescription": "Test up to 25 unique HTTP links on a public page and review failed responses.",
+  "intro": "Test up to 25 unique HTTP links on a public page and review failed responses.",
+  "aboutTitle": "What does a broken link scan test?",
+  "about": "The scanner fetches one public page and checks up to 25 distinct HTTP or HTTPS links it finds. The report shows response codes and connection failures for those links.",
+  "exampleTitle": "Verify a reported 404",
+  "example": "Scan an article, open a destination reported as 404 and confirm the address in your browser. Replace the link or restore the destination if the error is reproducible.",
   "faqs": [
     {
-      "question": "Does one scan check my entire website?",
-      "answer": "No. A scan starts from the page URL you provide and tests up to 25 unique links found on that page."
-    },
-    {
-      "question": "Does a failed request always mean a broken link?",
-      "answer": "No. A website may block automated requests, require a login or respond too slowly. Verify the destination before treating it as broken."
+      "question": "Is every failed check a broken link?",
+      "answer": "A login prompt, rate limit or automated-request block can cause a failed check. Confirm the destination before changing the page."
     }
   ]
 }

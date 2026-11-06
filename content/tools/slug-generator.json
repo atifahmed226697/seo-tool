@@ -1,16 +1,15 @@
 {
-  "aboutTitle": "What does the Slug Generator do?",
-  "about": "Turn a title or phrase into a URL slug. Choose the available separator and word-removal options, then review and copy the result.",
-  "exampleTitle": "Example URL slug",
-  "example": "Enter \"Garden Planning Guide\" and use a hyphen separator to produce \"garden-planning-guide\". Review the result before using it in your page URL.",
+  "seoTitle": "URL Slug Generator for Titles",
+  "metaDescription": "Turn a title into a lowercase URL slug with hyphens or underscores.",
+  "intro": "Turn a title into a lowercase URL slug with hyphens or underscores.",
+  "aboutTitle": "How does a title become a URL slug?",
+  "about": "A slug is the part of a URL that names a page. The generator cleans the input and joins the remaining words with your selected separator.",
+  "exampleTitle": "Create a slug for a draft article",
+  "example": "Enter “How to Plan an SEO Audit” and select hyphens. Review the result in your CMS before publishing.",
   "faqs": [
     {
-      "question": "Does generating a slug change my website URL?",
-      "answer": "No. Copy the result into your website's URL or permalink field to use it."
-    },
-    {
-      "question": "Can I change the slug of an existing page?",
-      "answer": "Yes, but changing a published URL can affect existing links. Set up a redirect from the previous URL when making that change."
+      "question": "Will generating a new slug redirect an old URL?",
+      "answer": "A redirect has to be configured on the website that serves the existing URL. Use Redirect Checker after you apply it."
     }
   ]
 }

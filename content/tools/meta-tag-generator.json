@@ -1,16 +1,15 @@
 {
-  "aboutTitle": "What does the Meta Tag Generator create?",
-  "about": "Prepare HTML metadata using your page title, description and optional social sharing information. Review the generated tags before adding them to your website.",
-  "exampleTitle": "Example page metadata",
-  "example": "For a page about a vegetable garden, enter a title such as \"Vegetable Garden Planning Guide\" and a description that summarizes the advice on that page. Copy the generated tags into the page head.",
+  "seoTitle": "Meta Tag Generator for HTML and Social Sharing",
+  "metaDescription": "Generate HTML metadata, canonical tags, Open Graph tags and X card markup.",
+  "intro": "Generate HTML metadata, canonical tags, Open Graph tags and X card markup.",
+  "aboutTitle": "What metadata does the generator produce?",
+  "about": "The generator turns the fields you enter into HTML tags for a page head. Use the title and description for the page itself and Open Graph or X fields for sharing previews.",
+  "exampleTitle": "Prepare tags for a new service page",
+  "example": "Enter a title that names the service, a description that explains what visitors can do, and the preferred page URL. Copy the markup into the page head and inspect the published URL.",
   "faqs": [
     {
-      "question": "Where do I put the generated tags?",
-      "answer": "Add the tags inside the HTML head of the relevant page. If your website uses a CMS or framework, use its metadata settings or metadata API."
-    },
-    {
-      "question": "Should every page have the same description?",
-      "answer": "Write a description that accurately summarizes each individual page. Review existing metadata before adding generated tags to avoid duplicates."
+      "question": "Does generating tags change my site?",
+      "answer": "Copy the generated markup into your CMS or page template, then publish the page to apply it."
     }
   ]
 }

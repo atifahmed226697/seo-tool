@@ -1,0 +1,15 @@
+{
+  "seoTitle": "Robots.txt Generator for Crawler Rules",
+  "metaDescription": "Create a robots.txt file with crawler groups, allow and disallow rules, and an optional sitemap URL.",
+  "intro": "Create a robots.txt file with crawler groups, allow and disallow rules, and an optional sitemap URL.",
+  "aboutTitle": "What does robots.txt control?",
+  "about": "A robots.txt file gives crawlers instructions about which URL paths they can request. Check the rules before publishing, especially a rule that disallows the entire site.",
+  "exampleTitle": "Keep a specific section out of routine crawling",
+  "example": "Add a User-agent group and a Disallow rule for the section path. Download robots.txt, place it at the site root and check that the public file serves the intended rules.",
+  "faqs": [
+    {
+      "question": "Does disallowing a path remove it from search results?",
+      "answer": "Robots.txt controls crawling. Use the appropriate indexing controls if your goal is to remove a URL from search results."
+    }
+  ]
+}

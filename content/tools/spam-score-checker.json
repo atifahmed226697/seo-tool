@@ -1,0 +1,15 @@
+{
+  "seoTitle": "Spam Score Checker Preview",
+  "metaDescription": "Explore the planned single and bulk domain inputs. Live spam scores are unavailable.",
+  "intro": "Explore the planned single and bulk domain inputs. Live spam scores are unavailable.",
+  "aboutTitle": "What can I do with the preview?",
+  "about": "You can enter a domain or try the bulk workflow. The preview cannot retrieve spam metrics or diagnose search penalties.",
+  "exampleTitle": "Try a domain input",
+  "example": "Enter an example domain to see the input flow. Use the original data provider when you need a measured score.",
+  "faqs": [
+    {
+      "question": "Does a spam score confirm a Google penalty?",
+      "answer": "A third-party score describes that provider’s metric. Check verified Search Console data for manual actions on a site you manage."
+    }
+  ]
+}

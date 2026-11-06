@@ -22,12 +22,17 @@ export function getToolMetadata(
     ...fallback,
     title,
     description,
+    alternates: { ...fallback.alternates, canonical: fallback.alternates?.canonical ?? `/tools/${slug}` },
     openGraph: {
+      type: "website",
+      siteName: "SEO Toolkit",
+      url: `/tools/${slug}`,
       ...fallback.openGraph,
       title,
       description,
     },
     twitter: {
+      card: "summary",
       ...fallback.twitter,
       title,
       description,

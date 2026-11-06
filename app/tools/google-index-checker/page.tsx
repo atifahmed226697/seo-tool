@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { getToolMetadata } from "@/lib/tool-metadata";
 import { ToolLayout } from "@/components/ToolLayout";
 import { GoogleIndexCheckerUI } from "@/components/tools/GoogleIndexCheckerUI";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = getToolMetadata("google-index-checker", {
   robots: {
     index: false,
     follow: true,
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   title: "Google Index Checker - Verify Webpage Indexation & Cache Status | SEO Toolkit",
   description:
     "Check if single or bulk URLs are indexed in Google search results. View cache dates and direct site search query commands instantly.",
-};
+});
 
 export default function GoogleIndexCheckerPage() {
   return (

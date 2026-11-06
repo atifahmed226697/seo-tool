@@ -1,0 +1,15 @@
+{
+  "seoTitle": "HTML Viewer for Pasted Markup",
+  "metaDescription": "Preview pasted HTML in a browser sandbox with scripts and external resources disabled.",
+  "intro": "Preview pasted HTML in a browser sandbox with scripts and external resources disabled.",
+  "aboutTitle": "What can I preview safely?",
+  "about": "The viewer renders basic markup and inline styles in a sandboxed frame. Use it to check headings, lists and text layout before adding markup to a page.",
+  "exampleTitle": "Check a short FAQ layout",
+  "example": "Paste a heading and a list of answers, then select Preview HTML. Review the order and spacing before adding the markup to your template.",
+  "faqs": [
+    {
+      "question": "Why did my external image or script disappear?",
+      "answer": "The preview blocks external resources and scripts. Use a local test page for behavior that depends on those resources."
+    }
+  ]
+}

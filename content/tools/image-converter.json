@@ -1,0 +1,15 @@
+{
+  "seoTitle": "JPG, PNG and WebP Image Converter",
+  "metaDescription": "Convert JPG, PNG and WebP images directly in your browser.",
+  "intro": "Convert JPG, PNG and WebP images directly in your browser.",
+  "aboutTitle": "Which image format should I choose?",
+  "about": "PNG preserves transparency when the source has it. WebP is useful when your publishing workflow supports it. JPG is an option for photos and uses a white background when the input is transparent.",
+  "exampleTitle": "Convert a transparent logo",
+  "example": "Upload a transparent PNG and select WebP if your site accepts it. Check the preview and download the converted file.",
+  "faqs": [
+    {
+      "question": "Can this tool convert SVG or animated GIF files?",
+      "answer": "This converter accepts JPG, PNG and WebP image inputs. Use a separate workflow for SVG or animation."
+    }
+  ]
+}

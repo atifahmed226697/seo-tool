@@ -1,0 +1,15 @@
+{
+  "seoTitle": "Split PDF and Extract Selected Pages",
+  "metaDescription": "Extract pages or ranges from a PDF into a new downloadable document.",
+  "intro": "Extract pages or ranges from a PDF into a new downloadable document.",
+  "aboutTitle": "How do I split out specific PDF pages?",
+  "about": "Choose a PDF and enter page numbers or ranges using the document’s page order, starting at 1. The result is a new file containing the pages you selected.",
+  "exampleTitle": "Extract a report section and its cover",
+  "example": "Enter 1, 4-6 to keep the cover and three report pages. Open the result and confirm the pages are in the order you intended.",
+  "faqs": [
+    {
+      "question": "Does splitting change my original file?",
+      "answer": "The tool creates a separate PDF in your browser. You can keep the original and use the extracted file separately."
+    }
+  ]
+}

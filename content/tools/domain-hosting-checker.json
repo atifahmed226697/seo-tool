@@ -1,0 +1,15 @@
+{
+  "seoTitle": "Domain Hosting Checker for IP and Network Details",
+  "metaDescription": "Look up public IP addresses for a domain and inspect the registered network when available.",
+  "intro": "Look up public IP addresses for a domain and inspect the registered network when available.",
+  "aboutTitle": "Which hosting details can this check reveal?",
+  "about": "The tool resolves the domain and uses public IP registration data to report an assigned network. A CDN or proxy can be the visible network even when the site is hosted elsewhere.",
+  "exampleTitle": "Investigate a domain behind a CDN",
+  "example": "Enter the domain and compare its public IPs and network record with your DNS or hosting dashboard to identify which service is visible.",
+  "faqs": [
+    {
+      "question": "Can it find the private origin server behind a CDN?",
+      "answer": "The result describes the public addresses it can resolve. Use your own provider dashboard to confirm the origin setup."
+    }
+  ]
+}

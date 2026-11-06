@@ -1,0 +1,15 @@
+{
+  "seoTitle": "XML Sitemap Generator from a URL List",
+  "metaDescription": "Turn up to 5,000 same-origin URLs into a downloadable XML sitemap.",
+  "intro": "Turn up to 5,000 same-origin URLs into a downloadable XML sitemap.",
+  "aboutTitle": "Which URLs belong in a sitemap?",
+  "about": "Include the preferred URLs you want search engines to discover. Paste one complete URL per line from the same origin. The tool removes duplicate entries.",
+  "exampleTitle": "Create a sitemap for a small site",
+  "example": "Paste the homepage and a few published service pages. Download sitemap.xml, publish it and submit its public URL in Search Console.",
+  "faqs": [
+    {
+      "question": "Will this crawl my website or index the pages?",
+      "answer": "The generator uses your pasted URL list. A published sitemap helps with discovery, and search engines decide which pages to index."
+    }
+  ]
+}

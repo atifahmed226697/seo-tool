@@ -1,16 +1,15 @@
 {
-  "aboutTitle": "What does the Heading Structure Checker show?",
-  "about": "View the H1 to H6 headings found in a public page's HTML. Review their order and wording to understand how the page content is organized.",
-  "exampleTitle": "Example heading review",
-  "example": "Scan a public article and inspect its heading outline. Check whether section headings describe the content below them and whether subsection levels follow a clear order.",
+  "seoTitle": "H1 to H6 Heading Structure Checker",
+  "metaDescription": "Inspect the order and text of H1 through H6 elements in a public page’s HTML.",
+  "intro": "Inspect the order and text of H1 through H6 elements in a public page’s HTML.",
+  "aboutTitle": "What does a heading outline show?",
+  "about": "The outline lists headings in source order so you can see how sections and subsections relate. Check that the labels describe their content and that levels reflect the structure.",
+  "exampleTitle": "Review a guide’s section hierarchy",
+  "example": "Scan a long guide and find its major sections. If a subsection jumps from H2 to H4, check whether it should be H3 in the published template.",
   "faqs": [
     {
-      "question": "Can bold text appear in the heading outline?",
-      "answer": "Only text marked with HTML heading elements H1 through H6 belongs in the heading outline. Bold styling alone does not create a heading."
-    },
-    {
-      "question": "Why might a visible heading be missing?",
-      "answer": "The page may add it with JavaScript, style ordinary text to look like a heading or restrict automated access."
+      "question": "Will this show headings inserted by JavaScript?",
+      "answer": "The scan reads the fetched HTML. Headings that only appear after scripts run may require checking the page in a browser."
     }
   ]
 }

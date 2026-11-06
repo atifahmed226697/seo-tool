@@ -1,16 +1,15 @@
 {
-  "aboutTitle": "What does the Case Converter do?",
-  "about": "Change the capitalization of your text using uppercase, lowercase, title case or sentence case. Use it to prepare headings, labels and other text before copying the result into your document.",
-  "exampleTitle": "Example conversion",
-  "example": "Paste \"hello world\" and choose UPPERCASE to get \"HELLO WORLD\". Choose lowercase to change it back to \"hello world\".",
+  "seoTitle": "Case Converter for Text and Headlines",
+  "metaDescription": "Change text to uppercase, lowercase, title case or sentence case in your browser.",
+  "intro": "Change text to uppercase, lowercase, title case or sentence case in your browser.",
+  "aboutTitle": "Which text cases can I convert between?",
+  "about": "Case Converter changes capitalization while keeping your text in the editor. Choose a standard case for headings and prose, or use alternating and inverse case for stylized text.",
+  "exampleTitle": "Fix an all-caps heading",
+  "example": "Paste “THE WEEKLY SEO REPORT” and choose Sentence case to get “The weekly seo report”. Review acronyms such as SEO before copying.",
   "faqs": [
     {
-      "question": "Can I convert more than one sentence?",
-      "answer": "Yes. Paste your text into the input and choose the case you want to apply."
-    },
-    {
-      "question": "Should I review converted names and abbreviations?",
-      "answer": "Yes. Review proper names, brand names and abbreviations after conversion so their capitalization matches your intended wording."
+      "question": "Can I reverse a conversion?",
+      "answer": "Use Undo to recover your previous text after a conversion."
     }
   ]
 }

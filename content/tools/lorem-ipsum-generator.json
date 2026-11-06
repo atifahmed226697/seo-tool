@@ -1,16 +1,15 @@
 {
-  "aboutTitle": "What is the Lorem Ipsum Generator for?",
-  "about": "Generate placeholder text for layouts and design drafts. Choose paragraphs, sentences or words to fill the space you want to test.",
-  "exampleTitle": "Example layout test",
-  "example": "Generate two paragraphs and paste them into a draft article layout. Check the spacing and replace the placeholder with your final writing before publishing.",
+  "seoTitle": "Lorem Ipsum Generator for Layout Mockups",
+  "metaDescription": "Generate placeholder text by words, sentences or paragraphs for a draft layout.",
+  "intro": "Generate placeholder text by words, sentences or paragraphs for a draft layout.",
+  "aboutTitle": "When is placeholder text useful?",
+  "about": "Lorem ipsum gives a draft layout realistic text blocks while the final copy is being written. Use it to check spacing and wrapping on different screens.",
+  "exampleTitle": "Test an article card layout",
+  "example": "Generate one paragraph, paste it into your article card, and check whether the description wraps cleanly at mobile width.",
   "faqs": [
     {
-      "question": "Is the generated text ready for a finished article?",
-      "answer": "It is placeholder copy for testing a design. Replace it with meaningful content before publishing the page."
-    },
-    {
-      "question": "Can I generate a short amount of text?",
-      "answer": "Yes. Choose words or sentences when you need a smaller block for a layout."
+      "question": "Can I control the length?",
+      "answer": "Choose words, sentences or paragraphs, then set the amount before generating the text."
     }
   ]
 }

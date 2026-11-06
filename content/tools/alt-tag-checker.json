@@ -1,16 +1,15 @@
 {
-  "aboutTitle": "What does the Alt Tag Checker inspect?",
-  "about": "Review image elements and their alt text in a public page's HTML. Use the missing and empty filters to find images that need a closer accessibility review.",
-  "exampleTitle": "Example image review",
-  "example": "Scan a public article, then filter the results by Missing or Empty. Decide what each image contributes before writing or changing its alternative text.",
+  "seoTitle": "Image Alt Text Checker for Public Pages",
+  "metaDescription": "Find missing, empty and populated alt attributes on images in a public page’s HTML.",
+  "intro": "Find missing, empty and populated alt attributes on images in a public page’s HTML.",
+  "aboutTitle": "What is the difference between missing and empty alt text?",
+  "about": "A missing alt attribute is absent from the image markup. An empty attribute is explicit and can be appropriate for a purely decorative image. The scan reports the attributes it finds.",
+  "exampleTitle": "Review images on a product page",
+  "example": "Run the scan and review the missing and empty groups. Write a concise description for informative images and keep decorative images empty where appropriate.",
   "faqs": [
     {
-      "question": "Does every empty alt attribute need to be filled?",
-      "answer": "No. A decorative image can have an empty alt attribute. Meaningful images need alternative text that fits their purpose and context."
-    },
-    {
-      "question": "Will the tool find every image I see in my browser?",
-      "answer": "It inspects the HTML returned by the page. Images added later by JavaScript or displayed as CSS backgrounds may not appear in the report."
+      "question": "Does the checker judge image accessibility?",
+      "answer": "It reports attribute values from the page HTML. Review each image in context to decide whether the text communicates its purpose."
     }
   ]
 }

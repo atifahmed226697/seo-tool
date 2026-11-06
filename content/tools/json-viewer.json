@@ -1,0 +1,15 @@
+{
+  "seoTitle": "JSON Viewer, Formatter and Validator",
+  "metaDescription": "Validate pasted JSON, format it for reading and inspect small results in an expandable tree.",
+  "intro": "Validate pasted JSON, format it for reading and inspect small results in an expandable tree.",
+  "aboutTitle": "What can I do with the formatted JSON?",
+  "about": "Use the formatted view to inspect nested objects and arrays. The output preserves number literals and repeated keys from valid input, and smaller results also have a tree view.",
+  "exampleTitle": "Inspect an API response without editing it",
+  "example": "Paste a compact JSON response and select Format JSON. Expand the result tree where available, then copy or download the formatted output.",
+  "faqs": [
+    {
+      "question": "Why does my input fail validation?",
+      "answer": "JSON requires double-quoted property names and does not allow trailing commas or comments. Review the reported parse error near the location shown."
+    }
+  ]
+}

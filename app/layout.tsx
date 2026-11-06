@@ -15,35 +15,25 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL || "https://seotoolkit.local"
   ),
   title: {
-    default: "SEO Toolkit - Fast, Free & Modern SEO Tools",
+    default: "Free SEO and Website Tools | SEO Toolkit",
     template: "%s | SEO Toolkit",
   },
   description:
-    "A free collection of essential SEO tools, text utilities, and domain checkers designed for creators, webmasters, and SEO professionals.",
-  keywords: [
-    "SEO tools",
-    "case converter",
-    "meta tag generator",
-    "meta tag analyzer",
-    "domain age checker",
-    "DA PA checker",
-    "spam score checker",
-    "google index checker",
-  ],
+    "Free tools for checking public webpages and preparing metadata, sitemaps, images and PDFs.",
   authors: [{ name: "SEO Toolkit Team" }],
   openGraph: {
     type: "website",
     locale: "en_US",
     siteName: "SEO Toolkit",
-    title: "SEO Toolkit - Fast, Free & Modern SEO Tools",
+    title: "Free SEO and Website Tools | SEO Toolkit",
     description:
-      "A free suite of essential SEO tools, text utilities, and domain checkers.",
+      "Check public pages and prepare website content with SEO Toolkit.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "SEO Toolkit - Fast, Free & Modern SEO Tools",
+    title: "Free SEO and Website Tools | SEO Toolkit",
     description:
-      "A free suite of essential SEO tools, text utilities, and domain checkers.",
+      "Check public pages and prepare website content with SEO Toolkit.",
   },
 };
 

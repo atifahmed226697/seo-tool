@@ -1,0 +1,15 @@
+{
+  "seoTitle": "Page Speed Test for Mobile and Desktop",
+  "metaDescription": "Run a Google Lighthouse lab test for a public URL and review performance metrics and suggestions.",
+  "intro": "Run a Google Lighthouse lab test for a public URL and review performance metrics and suggestions.",
+  "aboutTitle": "What does the Page Speed Test measure?",
+  "about": "It requests a Lighthouse lab run for the selected device mode. The score and timings describe that run under simulated conditions. They can vary between tests.",
+  "exampleTitle": "Compare two mobile runs after an image update",
+  "example": "Run the same URL in mobile mode before and after publishing the change. Compare repeated runs and check whether the largest contentful paint timing improves.",
+  "faqs": [
+    {
+      "question": "Is this score real visitor data?",
+      "answer": "This tool reports lab measurements. Use field data where available to understand how actual visitors experience the page."
+    }
+  ]
+}

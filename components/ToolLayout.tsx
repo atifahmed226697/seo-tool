@@ -21,6 +21,12 @@ const DEFAULT_STEPS = [
   },
 ];
 
+const PREVIEW_STEPS = [
+  { title: "Choose an input mode", text: "Select a single entry or switch to the bulk input." },
+  { title: "Try example data", text: "Enter a public domain or URL, or use the sample entries offered on this page." },
+  { title: "Review the workflow", text: "The preview validates inputs. Live lookup results are unavailable." },
+];
+
 const HOW_TO_STEPS: Record<string, { title: string; text: string }[]> = {
   "case-converter": [
     {
@@ -43,7 +49,7 @@ const HOW_TO_STEPS: Record<string, { title: string; text: string }[]> = {
     },
     {
       title: "Check the length",
-      text: "Keep the title near 60 and the description near 160 characters.",
+      text: "Use the preview to spot likely truncation and put the most useful words first.",
     },
     {
       title: "Copy the tags",
@@ -61,7 +67,7 @@ const HOW_TO_STEPS: Record<string, { title: string; text: string }[]> = {
     },
     {
       title: "Fix the warnings",
-      text: "Follow the suggestions on each card to improve your on-page SEO.",
+      text: "Review the missing fields and length guidance against what the page needs.",
     },
   ],
   "slug-generator": [
@@ -127,7 +133,7 @@ const HOW_TO_STEPS: Record<string, { title: string; text: string }[]> = {
     },
     {
       title: "Click Count Links",
-      text: "We list every link found on that page.",
+      text: "The report lists up to 500 HTTP and HTTPS links in the fetched HTML.",
     },
     {
       title: "Filter the results",
@@ -141,11 +147,11 @@ const HOW_TO_STEPS: Record<string, { title: string; text: string }[]> = {
     },
     {
       title: "Click Check Images",
-      text: "We list every image and its alt text.",
+      text: "The report lists up to 300 images and the alt attributes found in the HTML.",
     },
     {
       title: "Fix missing alt text",
-      text: "Filter by Missing or Empty and add descriptive alt text to those images.",
+      text: "Review Missing and Empty results. Describe informative images and leave decorative ones empty where appropriate.",
     },
   ],
   "broken-link-checker": [
@@ -159,7 +165,7 @@ const HOW_TO_STEPS: Record<string, { title: string; text: string }[]> = {
     },
     {
       title: "Fix the broken ones",
-      text: "Errors and failed links are listed first so you can replace or remove them.",
+      text: "Open flagged destinations in your browser and confirm the response before changing a link.",
     },
   ],
   "word-counter": [
@@ -179,7 +185,7 @@ const HOW_TO_STEPS: Record<string, { title: string; text: string }[]> = {
   "domain-age-checker": [
     {
       title: "Enter a domain",
-      text: "Type a domain like example.com. URLs and subdomains are cleaned up automatically.",
+      text: "Enter the registered domain, such as example.com.",
     },
     {
       title: "Click Check Domain Age",
@@ -192,82 +198,82 @@ const HOW_TO_STEPS: Record<string, { title: string; text: string }[]> = {
   ],
   "robots-txt-generator": [
     { title: "Provide input", text: "Enter crawler groups and Allow or Disallow paths. Add your sitemap URL if you have one." },
-    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Generate the file", text: "Review the crawler rules and select Generate." },
     { title: "Use the result", text: "Copy or download robots.txt and place it at the root of your site." },
   ],
   "xml-sitemap-generator": [
     { title: "Provide input", text: "Paste one complete URL per line. Use the same protocol and hostname for all pages." },
-    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Build the XML", text: "Select Generate. Review any rejected URLs before downloading." },
     { title: "Use the result", text: "Download sitemap.xml and publish it on your site." },
   ],
   "json-viewer": [
     { title: "Provide input", text: "Paste a JSON document into the input." },
-    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Format the JSON", text: "Select Format JSON and fix any syntax errors the tool reports." },
     { title: "Use the result", text: "Review the formatted JSON or copy and download it." },
   ],
   "favicon-generator": [
     { title: "Provide input", text: "Choose a JPG, PNG or WebP logo or image." },
-    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Generate the ICO", text: "Select Generate favicon and inspect the preview." },
     { title: "Use the result", text: "Download the favicon with 16, 32 and 48 pixel versions." },
   ],
   "image-compressor": [
     { title: "Provide input", text: "Choose an image, a target size and an output format." },
-    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Compress the image", text: "Select Compress image to see the output size and dimensions." },
     { title: "Use the result", text: "Compare the original and compressed sizes and download the result." },
   ],
   "redirect-checker": [
     { title: "Provide input", text: "Enter the public URL you want to inspect." },
-    { title: "Run the tool", text: "Complete verification and submit the check." },
+    { title: "Trace the route", text: "Complete verification, then select Check redirects." },
     { title: "Use the result", text: "Review each HTTP status and the destination shown at the end of the chain." },
   ],
   "is-it-down": [
     { title: "Provide input", text: "Enter the public URL you want to check." },
-    { title: "Run the tool", text: "Complete verification and submit the check." },
+    { title: "Check the response", text: "Complete verification, then select Check reachability." },
     { title: "Use the result", text: "Read the observed HTTP status or connection error." },
   ],
   "domain-hosting-checker": [
     { title: "Provide input", text: "Enter the public domain you want to look up." },
-    { title: "Run the tool", text: "Complete verification and submit the check." },
+    { title: "Query the network", text: "Complete verification, then select Look up network." },
     { title: "Use the result", text: "Review its IP addresses and the registered network. A proxy can hide the origin host." },
   ],
   "image-converter": [
     { title: "Provide input", text: "Choose an image and select the output format." },
-    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Convert the image", text: "Select Convert image. If you chose JPG, check the white background." },
     { title: "Use the result", text: "Preview and download the converted image." },
   ],
   "html-viewer": [
     { title: "Provide input", text: "Paste the HTML you want to preview." },
-    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Open the preview", text: "Select Preview HTML to render the supported markup." },
     { title: "Use the result", text: "Review the rendered markup. The preview disables scripts and external resources." },
   ],
   "merge-pdf": [
     { title: "Provide input", text: "Choose two to ten PDFs and arrange them in the order you want." },
-    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Merge the documents", text: "Select Merge PDFs once the file order is correct." },
     { title: "Use the result", text: "Download the merged PDF." },
   ],
   "split-pdf": [
     { title: "Provide input", text: "Choose a PDF and enter page numbers or ranges, such as 1, 3-5." },
-    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Extract the pages", text: "Select Extract pages to create the new PDF." },
     { title: "Use the result", text: "Download a new PDF containing the selected pages." },
   ],
   "rotate-pdf": [
     { title: "Provide input", text: "Choose a PDF, select the pages and set the clockwise rotation." },
-    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Apply the angle", text: "Select Rotate pages to update the selected pages." },
     { title: "Use the result", text: "Download the full PDF with the selected pages rotated." },
   ],
   "pdf-to-jpg": [
     { title: "Provide input", text: "Choose a PDF and enter up to ten page numbers or a range." },
-    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Render the pages", text: "Select Convert pages to JPG to render your selection." },
     { title: "Use the result", text: "Download each selected page as a JPG." },
   ],
   "image-to-text": [
     { title: "Provide input", text: "Choose a clear JPG, PNG or WebP with English text." },
-    { title: "Run the tool", text: "Use the main button to process your input." },
+    { title: "Run English OCR", text: "Select Extract text. The first run downloads the model." },
     { title: "Use the result", text: "Review the extracted text, then copy or download it." },
   ],
   "page-speed-test": [
     { title: "Provide input", text: "Enter a public URL and select mobile or desktop." },
-    { title: "Run the tool", text: "Complete verification and submit the check." },
+    { title: "Run the lab test", text: "Complete verification, then select Run speed test." },
     { title: "Use the result", text: "Review the Lighthouse lab score, timings and available suggestions." },
   ],
 };
@@ -287,7 +293,8 @@ export function ToolLayout({
 }: ToolLayoutProps) {
   const currentTool = getToolBySlug(slug);
   const relatedTools = getRelatedTools(slug, 3);
-  const steps = HOW_TO_STEPS[slug] ?? DEFAULT_STEPS;
+  const isPreview = currentTool?.status === "needs-api";
+  const steps = isPreview ? PREVIEW_STEPS : HOW_TO_STEPS[slug] ?? DEFAULT_STEPS;
   const content = getToolContent(slug);
 
   return (
@@ -335,7 +342,7 @@ export function ToolLayout({
             {title}
           </h1>
           <p className="mt-3 max-w-3xl text-base leading-relaxed text-white/90 sm:text-lg">
-            {description}
+            {content?.intro?.trim() || description}
           </p>
         </header>
 
@@ -365,7 +372,7 @@ export function ToolLayout({
           className="mb-12 border-t border-[#C6DAD7] pt-8 dark:border-slate-800"
         >
           <h2 id="tool-steps" className="mb-5 text-xl font-bold">
-            How to Use This Tool
+            {isPreview ? "How to Try the Preview" : "How to Use This Tool"}
           </h2>
           <ol className="grid gap-6 md:grid-cols-3">
             {steps.map((step, index) => (

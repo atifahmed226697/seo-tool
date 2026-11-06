@@ -1,0 +1,15 @@
+{
+  "seoTitle": "Favicon Generator for Multi-size ICO Files",
+  "metaDescription": "Make a favicon.ico with 16, 32 and 48 pixel icons from a JPG, PNG or WebP logo.",
+  "intro": "Make a favicon.ico with 16, 32 and 48 pixel icons from a JPG, PNG or WebP logo.",
+  "aboutTitle": "Which image makes a clear favicon?",
+  "about": "Use a simple mark that remains recognizable at 16 pixels. The generator fits your image into each square icon size while keeping its proportions.",
+  "exampleTitle": "Create a favicon from a brand mark",
+  "example": "Upload a high-contrast logo, generate the ICO file and add it to your site. Check the browser tab after deploying it.",
+  "faqs": [
+    {
+      "question": "What file does the tool create?",
+      "answer": "It downloads one favicon.ico containing 16, 32 and 48 pixel versions."
+    }
+  ]
+}

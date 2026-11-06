@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { getToolMetadata } from "@/lib/tool-metadata";
 import { ToolLayout } from "@/components/ToolLayout";
 import { SpamScoreCheckerUI } from "@/components/tools/SpamScoreCheckerUI";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = getToolMetadata("spam-score-checker", {
   robots: {
     index: false,
     follow: true,
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   title: "Spam Score Checker - Audit Domain Penalty Risk & Toxicity | SEO Toolkit",
   description:
     "Check domain spam score percentages and bad link indicators in single or bulk mode. Protect your backlink network and organic search visibility.",
-};
+});
 
 export default function SpamScoreCheckerPage() {
   return (
