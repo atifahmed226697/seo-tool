@@ -103,7 +103,7 @@ function ShareLinks({ url, title }: { url: string; title: string }) {
           href={link.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-md border border-[#AFC9C4] px-3 py-2 text-xs font-semibold text-[#181D16] transition-colors hover:bg-[#CA8EFD] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#35615B] dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+          className="rounded-md border border-[#AFC9C4] px-3 py-2 text-xs font-semibold text-[#181D16] transition-colors hover:bg-brand-lavender focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#35615B] dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
         >
           {link.label}
         </a>
@@ -174,7 +174,7 @@ export default function BlogPostPage({
   ];
 
   return (
-    <div className="min-h-screen bg-[#EFF7F6] text-[#181D16] dark:bg-slate-950 dark:text-slate-100">
+    <div className="min-h-screen bg-background text-[#181D16] dark:bg-slate-950 dark:text-slate-100">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -185,7 +185,7 @@ export default function BlogPostPage({
       <ImageLightbox />
 
       {/* Article header */}
-      <section className="border-b border-[#C6DAD7] bg-[#DDEDEC] py-10 sm:py-14 dark:border-slate-800 dark:bg-slate-900">
+      <section className="border-b border-[#C6DAD7] bg-brand-blue py-10 sm:py-14 dark:border-slate-800 dark:bg-slate-900">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <nav
             className="flex flex-wrap items-center gap-2 text-xs text-[#465B55] dark:text-slate-300"
@@ -254,11 +254,6 @@ export default function BlogPostPage({
               dangerouslySetInnerHTML={{ __html: post.html }}
             />
 
-            {/* Advertisement placement */}
-            <div className="mt-10 flex min-h-[100px] items-center justify-center border-y border-[#C6DAD7] text-xs uppercase tracking-widest text-[#465B55] dark:border-slate-800 dark:text-slate-400">
-              Advertisement
-            </div>
-
             <div className="mt-8">
               <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-[#465B55] dark:text-slate-300">
                 Share this article
@@ -270,7 +265,7 @@ export default function BlogPostPage({
             <div className="mt-10 flex items-start gap-4 border-t border-[#C6DAD7] pt-6 dark:border-slate-800">
               <div
                 aria-hidden="true"
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#DDEDEC] text-lg font-bold text-[#181D16] dark:bg-slate-800 dark:text-white"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-blue text-lg font-bold text-[#181D16] dark:bg-slate-800 dark:text-white"
               >
                 {AUTHOR.name.charAt(0)}
               </div>

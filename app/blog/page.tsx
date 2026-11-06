@@ -13,8 +13,8 @@ export default function BlogPage() {
   const posts = getAllPosts();
 
   return (
-    <div className="min-h-screen bg-[#EFF7F6] text-[#181D16] dark:bg-slate-950 dark:text-slate-100">
-      <section className="border-b border-[#C6DAD7] bg-[#DDEDEC] py-12 sm:py-16 dark:border-slate-800 dark:bg-slate-900">
+    <div className="min-h-screen bg-background text-[#181D16] dark:bg-slate-950 dark:text-slate-100">
+      <section className="border-b border-[#C6DAD7] bg-brand-blue py-12 sm:py-16 dark:border-slate-800 dark:bg-slate-900">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <p className="text-xs font-semibold uppercase tracking-widest text-[#35615B] dark:text-slate-300">
             SEO Toolkit Blog
@@ -32,24 +32,21 @@ export default function BlogPage() {
       </section>
 
       <section
-        aria-label="Blog articles"
+        aria-labelledby="blog-guides"
         className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8"
       >
-        {/* Advertisement placement */}
-        <div className="mb-8 flex min-h-[100px] items-center justify-center border-y border-[#C6DAD7] text-xs uppercase tracking-widest text-[#465B55] dark:border-slate-800 dark:text-slate-400">
-          Advertisement
-        </div>
+        <h2 id="blog-guides" className="mb-5 text-2xl font-bold tracking-tight">Latest guides</h2>
 
         {posts.length === 0 ? (
           <p className="py-8 text-base text-[#465B55] dark:text-slate-300">
             No articles are published yet.
           </p>
         ) : (
-          <div className="border-t border-[#C6DAD7] dark:border-slate-800">
+          <ul className="space-y-4">
             {posts.map((post) => (
-              <BlogCard key={post.slug} post={post} />
+              <li key={post.slug}><BlogCard post={post} /></li>
             ))}
-          </div>
+          </ul>
         )}
       </section>
     </div>

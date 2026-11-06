@@ -1,17 +1,40 @@
 import type { Config } from "tailwindcss";
 
-const mint = {
-  50: "#EFF7F6",
-  100: "#DBEEEC",
-  200: "#BDDEDA",
-  300: "#9CC9C3",
-  400: "#679C94",
-  500: "#3C7269",
-  600: "#305C55",
-  700: "#244943",
-  800: "#193632",
-  900: "#162522",
-  950: "#101A17",
+// Brand colors sampled from the approved homepage mockup.
+const brand = {
+  blue: "#DDEDEC",
+  lavender: "#ECE9FC",
+  ink: "#181D16",
+  forest: "#244943",
+};
+
+const brandScale = {
+  50: brand.blue,
+  100: brand.blue,
+  200: brand.lavender,
+  300: brand.lavender,
+  400: brand.lavender,
+  500: brand.ink,
+  600: brand.ink,
+  700: brand.ink,
+  800: brand.ink,
+  900: brand.ink,
+  950: brand.ink,
+};
+
+// Neutral text, borders and backgrounds are tints of the brand ink.
+const neutrals = {
+  50: "#FAFAFA",
+  100: "#F2F4F2",
+  200: "#E6E7E6",
+  300: "#C7C8C6",
+  400: "#A2A4A1",
+  500: "#666A65",
+  600: "#525650",
+  700: "#3D413B",
+  800: "#2A2E28",
+  900: brand.ink,
+  950: brand.ink,
 };
 
 const config: Config = {
@@ -28,23 +51,12 @@ const config: Config = {
         serif: ["var(--font-manrope)", "system-ui", "Arial", "sans-serif"],
       },
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-        indigo: mint,
-        violet: mint,
-        purple: mint,
-        accent: {
-          50: "#F8F4FF",
-          100: "#ECE9FC",
-          200: "#E1D1FB",
-          300: "#C090FE",
-          400: "#9161C8",
-          500: "#7445A4",
-          600: "#62358F",
-          700: "#502878",
-          800: "#3D205B",
-          900: "#2E1746",
-        },
+        background: "rgb(var(--background) / <alpha-value>)",
+        foreground: "rgb(var(--foreground) / <alpha-value>)",
+        brand,
+        slate: neutrals,
+        indigo: brandScale,
+        accent: { ...brandScale, 50: brand.lavender, 100: brand.lavender, 600: neutrals[700] },
       },
     },
   },

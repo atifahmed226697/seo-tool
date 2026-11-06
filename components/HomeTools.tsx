@@ -1,185 +1,114 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import type { FormEvent } from "react";
+import { useRef, useState } from "react";
+import type { FormEvent, ReactNode } from "react";
 import Link from "next/link";
-import {
-  ArrowRight,
-  BarChart3,
-  CalendarClock,
-  FileCode2,
-  Globe,
-  Search,
-  SearchCode,
-  ShieldAlert,
-  Type,
-} from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import { ArrowRight, CalendarClock, Link2, Search, Type } from "lucide-react";
+import { ToolIcon } from "@/components/ToolIcon";
 import type { Tool } from "@/lib/tools";
 
-/**
- * Homepage hero + tool directory.
- * The hero search box and the directory share one state, so typing filters the list live.
- */
+const shortcuts = [
+  { slug: "domain-age-checker", label: "Check domain age", Icon: CalendarClock },
+  { slug: "broken-link-checker", label: "Find broken links", Icon: Link2 },
+  { slug: "word-counter", label: "Count words", Icon: Type },
+];
 
-const ICONS: Record<Tool["icon"], LucideIcon> = {
-  Type,
-  FileCode2,
-  SearchCode,
-  CalendarClock,
-  BarChart3,
-  ShieldAlert,
-  Globe,
-};
-
-/** Short one-line descriptions so every row fits on a single line. */
-const SHORT_DESCRIPTIONS: Record<string, string> = {
-  "case-converter": "Change text to UPPER, lower or Title Case.",
-  "meta-tag-generator": "Create meta, Open Graph and Twitter tags.",
-  "meta-tag-analyzer": "Check the meta tags of any live page.",
-  "domain-age-checker": "Find a domain's age, registrar and expiry.",
-  "word-counter": "Count words, characters and reading time.",
-  "slug-generator": "Turn any title into a clean URL slug.",
-  "keyword-density-checker": "See your most used words and phrases.",
-  "lorem-ipsum-generator": "Make placeholder text for your designs.",
-  "utm-link-builder": "Add campaign tracking to any link.",
-  "hreflang-tag-generator": "Create tags for multi-language pages.",
-  "broken-link-checker": "Find links on a page that do not work.",
-  "alt-tag-checker": "Find images with missing alt text.",
-  "links-counter": "Count internal and external links.",
-  "heading-structure-checker": "View the H1 to H6 outline of a page.",
-  "da-pa-checker": "Check Domain and Page Authority scores.",
-  "spam-score-checker": "Check a domain for spam warning signs.",
-  "google-index-checker": "Check if a page is indexed in Google.",
-};
-
-export default function HomeTools({ tools, liveCount }: { tools: Tool[]; liveCount: number }) {
+export default function HomeTools({ tools, children }: { tools: Tool[]; children: ReactNode }) {
   const [query, setQuery] = useState("");
+  const resultsHeading = useRef<HTMLHeadingElement>(null);
+  const words = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  const matches = tools.filter((tool) => {
+    const searchable = `${tool.name} ${tool.shortDescription} ${tool.category}`.toLowerCase();
+    return words.every((word) => searchable.includes(word));
+  });
+  const toolCount = tools.length;
+  const matchCount = matches.length;
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return tools;
-    return tools.filter(
-      (t) =>
-        t.name.toLowerCase().includes(q) ||
-        t.shortDescription.toLowerCase().includes(q) ||
-        t.category.toLowerCase().includes(q)
-    );
-  }, [tools, query]);
-
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    document.getElementById("tools")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  function showResults(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    resultsHeading.current?.focus({ preventScroll: true });
+    resultsHeading.current?.scrollIntoView({ block: "start" });
   }
 
   return (
     <>
-      {/* HERO */}
-      <section className="bg-gradient-to-b from-indigo-100 to-accent-100 py-12 md:py-20">
-        <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
-          <p className="inline-block rounded-md bg-[#ECE9FC] px-3 py-1 text-sm font-semibold text-[#181D16]">
-            {liveCount} free tools, live now
-          </p>
-          <h1 className="mt-4 text-[36px] font-bold leading-[1.1] tracking-tight text-[#181D16] md:text-[56px]">
-            Free SEO Tools
-          </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-[#181D16]">
-            Check domain age, analyze meta tags, find broken links and more. No signup, no popups.
-          </p>
-
-          <form
-            role="search"
-            onSubmit={handleSubmit}
-            className="mx-auto mt-8 flex max-w-xl flex-col gap-3 sm:flex-row"
-          >
-            <div className="relative flex-1">
-              <label htmlFor="home-tool-search" className="sr-only">
-                Search tools
-              </label>
-              <Search
-                className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#181D16]"
-                aria-hidden="true"
-              />
-              <input
-                id="home-tool-search"
-                type="search"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search tools"
-                autoComplete="off"
-                className="w-full rounded-md border-2 border-[#181D16] bg-white py-3.5 pl-12 pr-4 text-base text-[#181D16] placeholder-[#181D16]/60 outline-none focus:ring-2 focus:ring-[#181D16]/30"
-              />
-            </div>
-            <button
-              type="submit"
-              className="rounded-full bg-[#181D16] px-7 py-3.5 text-base font-bold text-white transition-opacity hover:opacity-90"
+      <section className="bg-brand-blue px-5 py-12 text-center sm:px-8 sm:py-16">
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Free SEO tools</h1>
+        <p className="mx-auto mt-4 max-w-2xl text-base text-slate-600 sm:text-lg">
+          Check a page, research a domain or prepare content before you publish.
+        </p>
+        <form role="search" onSubmit={showResults} className="mx-auto mt-6 flex w-full max-w-lg gap-2">
+          <div className="relative min-w-0 flex-1">
+            <label htmlFor="home-tool-search" className="sr-only">Search SEO tools</label>
+            <Search className="pointer-events-none absolute left-3 top-3.5 h-4 w-4" aria-hidden="true" />
+            <input
+              id="home-tool-search"
+              type="search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder={`Search ${toolCount} tools, e.g. “broken links”`}
+              className="w-full rounded-full border border-brand-ink bg-white py-2.5 pl-9 pr-3 text-sm text-brand-ink"
+            />
+          </div>
+          <button type="submit" className="rounded-full bg-brand-ink px-5 py-2 text-sm font-bold text-white hover:bg-brand-ink/90">
+            Search
+          </button>
+        </form>
+        <p aria-live="polite" className="mt-2 text-sm text-slate-600">
+          {words.length > 0 && (matchCount === 0 ? "No matching tools" : `${matchCount} matching ${matchCount === 1 ? "tool" : "tools"}`)}
+        </p>
+        <nav aria-label="Popular shortcuts" className="mt-4 flex flex-wrap justify-center gap-2">
+          {shortcuts.map(({ slug, label, Icon }) => (
+            <Link
+              key={slug}
+              href={`/tools/${slug}`}
+              className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold hover:underline"
             >
-              Search
-            </button>
-          </form>
-
-          <p className="mt-5 text-sm text-[#181D16]/80">
-            Free to use &nbsp;·&nbsp; No signup needed &nbsp;·&nbsp; Works on mobile
-          </p>
-        </div>
+              <Icon className="h-3.5 w-3.5" aria-hidden="true" />
+              {label}
+            </Link>
+          ))}
+        </nav>
       </section>
 
-      {/* TOOL DIRECTORY */}
-      <section id="tools" className="scroll-mt-20 py-10 md:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <h2 className="text-[28px] font-bold leading-tight text-[#181D16]">All SEO Tools</h2>
-              <p className="mt-1 text-base text-[#181D16]/80">Pick a tool and get your result in seconds.</p>
-            </div>
-            <p className="rounded-md bg-[#ECE9FC] px-3 py-1 text-sm font-semibold text-[#181D16]">
-              {query.trim() ? `${filtered.length} of ${tools.length} tools` : `${tools.length} tools`}
-            </p>
-          </div>
+      {children}
 
-          {filtered.length > 0 ? (
-            <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {filtered.map((tool) => {
-                const Icon = ICONS[tool.icon];
-                return (
-                  <li
-                    key={tool.slug}
-                  >
-                    <Link
-                      href={`/tools/${tool.slug}`}
-                      className="group flex h-full min-h-40 flex-col items-start gap-3 rounded-md bg-indigo-100 p-5 transition-colors hover:bg-indigo-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#181D16]"
-                    >
-                      <Icon className="h-6 w-6 shrink-0 text-[#181D16]" strokeWidth={1.75} aria-hidden="true" />
-                      <span className="min-w-0 flex-1">
-                        <span className="block text-[18px] font-semibold leading-snug text-[#181D16]">
-                          {tool.name}
-                        </span>
-                        <span className="mt-1 block text-sm text-[#181D16]/75">
-                          {SHORT_DESCRIPTIONS[tool.slug] ?? tool.shortDescription}
-                        </span>
-                      </span>
-                      <ArrowRight
-                        className="mt-auto h-8 w-8 self-end rounded-full p-1.5 text-[#181D16] transition-colors group-hover:bg-accent-300"
-                        aria-hidden="true"
-                      />
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          ) : (
-            <div className="border-y border-[#181D16]/15 py-10 text-base text-[#181D16]">
-              No tools match &quot;{query.trim()}&quot;.{" "}
-              <button
-                type="button"
-                onClick={() => setQuery("")}
-                className="font-bold underline underline-offset-2"
-              >
-                Clear search
-              </button>
-            </div>
-          )}
+      <section id="tools" className="mx-auto max-w-7xl scroll-mt-20 bg-white px-5 py-12 sm:px-8 sm:py-16">
+        <div className="text-center">
+          <h2 ref={resultsHeading} tabIndex={-1} className="scroll-mt-20 text-3xl font-bold tracking-tight">All SEO tools</h2>
+          <p className="mt-2 text-sm text-slate-600">
+            {words.length ? `${matchCount} of ${toolCount} tools match your search.` : `${toolCount} free tools. Choose one to get started.`}
+          </p>
         </div>
+
+        {matchCount === 0 && (
+          <p className="py-8 text-center">
+            No matching tools.{" "}
+            <button type="button" className="font-semibold underline" onClick={() => setQuery("")}>Clear search</button>
+          </p>
+        )}
+
+        {matchCount > 0 && (
+          <ul className="mt-7 grid gap-3 sm:grid-cols-2">
+            {matches.map((tool) => (
+              <li key={tool.slug}>
+                <Link
+                  href={`/tools/${tool.slug}`}
+                  className="group flex h-full items-start gap-3 rounded-xl border border-brand-ink/10 bg-brand-blue/65 p-4 transition-colors hover:bg-brand-blue sm:gap-4 sm:p-5"
+                >
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-brand-forest text-white">
+                    <ToolIcon name={tool.icon} className="h-4 w-4" aria-hidden="true" />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-bold group-hover:underline group-hover:underline-offset-4">{tool.name}</h3>
+                    <p className="mt-1 text-sm leading-snug text-slate-600">{tool.shortDescription}</p>
+                  </div>
+                  <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-brand-forest" aria-hidden="true" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
     </>
   );

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { tools } from "@/lib/tools";
 import { ToolIcon } from "@/components/ToolIcon";
-import { Wrench, Menu, X, ChevronDown, ArrowRight } from "lucide-react";
+import { Search, Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -31,8 +31,8 @@ export function Navbar() {
           aria-current={isActive ? "page" : undefined}
           className={`flex items-center gap-2.5 rounded-md px-3 py-2.5 text-sm font-medium leading-snug transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#35615B] ${
             isActive
-              ? "bg-[#DDEDEC] text-[#181D16] dark:bg-slate-800 dark:text-accent-400"
-              : "text-[#181D16] hover:bg-[#CA8EFD] dark:text-slate-200 dark:hover:bg-slate-800"
+              ? "bg-brand-blue text-[#181D16] dark:bg-slate-800 dark:text-accent-400"
+              : "text-[#181D16] hover:bg-brand-lavender dark:text-slate-200 dark:hover:bg-slate-800"
           }`}
         >
           <span className="shrink-0" aria-hidden="true">
@@ -54,15 +54,15 @@ export function Navbar() {
           href="/"
           className="flex items-center gap-2 transition-opacity hover:opacity-90"
         >
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-[#181D16] text-white">
-            <Wrench className="h-4 w-4" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-brand-ink text-white">
+            <Search className="h-4 w-4" aria-hidden="true" />
           </div>
-          <span className="text-lg font-extrabold leading-none tracking-tight text-indigo-700 dark:text-white">
+          <span className="text-lg font-extrabold leading-none tracking-tight text-foreground">
             SEO Toolkit
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 md:flex">
+        <nav aria-label="Main navigation" className="hidden items-center gap-7 md:flex">
           <Link
             href="/"
             className={`${linkBase} ${pathname === "/" ? linkActive : linkIdle}`}
@@ -130,10 +130,13 @@ export function Navbar() {
           </Link>
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
+          <Link href="/about" className={`hidden md:inline ${linkBase} ${pathname === "/about" ? linkActive : linkIdle}`}>
+            About
+          </Link>
           <Link
             href="/#tools"
-            className="hidden items-center gap-1.5 rounded-md bg-[#181D16] px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-indigo-800 sm:inline-flex"
+            className="hidden items-center gap-1.5 rounded-full bg-brand-ink px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-brand-ink/90 sm:inline-flex"
           >
             <span>Browse Tools</span>
             <ArrowRight className="h-3.5 w-3.5" />
@@ -183,6 +186,14 @@ export function Navbar() {
             className="text-sm font-semibold text-slate-800 hover:text-accent-600 dark:text-slate-200"
           >
             FAQ
+          </Link>
+
+          <Link
+            href="/about"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-sm font-semibold text-slate-800 hover:underline dark:text-slate-200"
+          >
+            About
           </Link>
 
           <div className="border-t border-[#C6DAD7] pt-3 dark:border-slate-800">

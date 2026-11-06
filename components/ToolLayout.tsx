@@ -211,11 +211,11 @@ export function ToolLayout({
   const content = getToolContent(slug);
 
   return (
-    <div className="min-h-screen bg-[#EFF7F6] py-8 text-[#181D16] dark:bg-slate-950 dark:text-slate-100 sm:py-12">
+    <div className="min-h-screen bg-brand-blue/30 py-6 text-brand-ink dark:bg-slate-950 dark:text-slate-100 sm:py-9">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <nav
           aria-label="Breadcrumb"
-          className="mb-6 flex items-center gap-2 text-xs font-medium text-[#181D16]/75 dark:text-slate-400"
+          className="mb-5 flex w-fit max-w-full items-center gap-2 rounded-lg bg-brand-blue px-3 py-2 text-xs font-semibold text-brand-forest dark:bg-slate-800 dark:text-slate-100"
         >
           <Link
             href="/"
@@ -240,9 +240,9 @@ export function ToolLayout({
           </span>
         </nav>
 
-        <header className="mb-8 rounded-xl bg-[#DDEDEC] p-6 dark:bg-slate-900 sm:p-8">
+        <header className="mb-6 rounded-xl bg-brand-forest p-6 text-white sm:p-8">
           {currentTool && (
-            <span className="mb-3 inline-flex items-center gap-1.5 rounded-md bg-[#ECE9FC] px-2.5 py-1 text-xs font-semibold text-[#181D16]">
+            <span className="mb-3 inline-flex items-center gap-1.5 rounded-md bg-brand-blue px-2.5 py-1 text-xs font-bold text-brand-forest">
               <ToolIcon
                 name={currentTool.icon}
                 className="h-3.5 w-3.5"
@@ -254,14 +254,14 @@ export function ToolLayout({
           <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl lg:text-4xl">
             {title}
           </h1>
-          <p className="mt-3 max-w-3xl text-base leading-relaxed text-[#181D16]/80 dark:text-slate-300 sm:text-lg">
+          <p className="mt-3 max-w-3xl text-base leading-relaxed text-white/90 sm:text-lg">
             {description}
           </p>
         </header>
 
         <section
           aria-label={`${title} interface`}
-          className="mb-12 rounded-xl border border-[#C6DAD7] bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-8"
+          className="mb-12 min-w-0 rounded-xl border border-brand-forest/20 bg-brand-blue/65 p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-8"
         >
           {children}
         </section>
@@ -289,16 +289,16 @@ export function ToolLayout({
           </h2>
           <ol className="grid gap-6 md:grid-cols-3">
             {steps.map((step, index) => (
-              <li key={step.title} className="flex items-start gap-3">
+              <li key={step.title} className="flex items-start gap-3 rounded-xl bg-brand-blue p-4 text-brand-ink">
                 <span
                   aria-hidden="true"
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#ECE9FC] text-sm font-bold text-[#181D16]"
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-forest text-sm font-bold text-white"
                 >
                   {index + 1}
                 </span>
                 <div>
                   <h3 className="text-sm font-bold">{step.title}</h3>
-                  <p className="mt-1 text-sm leading-relaxed text-[#181D16]/75 dark:text-slate-400">
+                  <p className="mt-1 text-sm leading-relaxed text-slate-600">
                     {step.text}
                   </p>
                 </div>

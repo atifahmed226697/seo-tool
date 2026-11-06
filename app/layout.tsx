@@ -57,7 +57,7 @@ export default function RootLayout({
       lang="en"
       className={`scroll-smooth ${manrope.variable}`}
     >
-      <body className="font-sans text-base leading-relaxed antialiased bg-background text-foreground min-h-screen flex flex-col selection:bg-accent-300 selection:text-foreground">
+      <body className="font-sans text-base leading-relaxed antialiased bg-background text-foreground min-h-screen flex flex-col selection:bg-brand-lavender selection:text-foreground">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

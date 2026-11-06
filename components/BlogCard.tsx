@@ -7,7 +7,7 @@ export function BlogCard({ post }: { post: PostMeta }) {
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group flex flex-col gap-5 border-b border-[#C6DAD7] px-3 py-6 transition-colors hover:bg-[#DDEDEC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#35615B] sm:flex-row sm:items-start sm:gap-7 sm:px-5 sm:py-8 dark:border-slate-800 dark:hover:bg-slate-900"
+      className="group flex flex-col gap-5 rounded-xl border border-brand-forest/20 bg-brand-blue/45 p-4 transition-colors hover:bg-brand-blue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#35615B] sm:flex-row sm:items-start sm:gap-6 sm:p-5 dark:border-slate-800 dark:bg-slate-900 dark:hover:bg-slate-800"
     >
       {post.image && (
         <img

@@ -32,12 +32,12 @@ export default function ContactPage() {
   return (
     <div>
       {/* Top banner */}
-      <section className="bg-indigo-700 py-12 sm:py-16 dark:bg-indigo-900">
+      <section className="bg-brand-blue py-12 sm:py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <p className="text-sm font-bold uppercase tracking-widest text-accent-400">
+          <p className="text-sm font-bold uppercase tracking-widest text-brand-ink">
             Contact Us
           </p>
-          <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+          <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-brand-ink sm:text-4xl">
             We would like to hear from you.
           </h1>
         </div>
